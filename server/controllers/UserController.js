@@ -3,10 +3,14 @@ const create = (req, res)=>{
 }
 
 const view = (req, res)=>{
-    res.send("create")
+    res.send("view")
+}
+
+const remove = (req, res)=>{
+    res.send("delete")
 }
 
 
 module.exports = {
-    create, view
+    create, view, remove
 }
