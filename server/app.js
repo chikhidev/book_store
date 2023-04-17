@@ -10,9 +10,8 @@ const app = express()
 //connect to the database:
 connectDB()
 
-//use router (routes manager)
-app.get('/', Controller.Pages.index );
-   //group routing for user
+
+//group routing for user
 app.use('/user', Route.UserRouter );
 
 

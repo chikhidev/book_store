@@ -1,4 +1,5 @@
-const {mongoose} = require('../requires')
+const mongoose = require('mongoose')
+const {bookSchema} = require("./bookModel")
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -11,10 +12,10 @@ const UserSchema = new mongoose.Schema({
         type: String, required: true
     },
     firstName: {
-        type: String, required: true
+        type: String
     },
     lastName: {
-        type: String, required: true
+        type: String
     },
     avatar: {
       type: String, default: 'https://icons8.com/icon/98957/user'
@@ -27,6 +28,12 @@ const UserSchema = new mongoose.Schema({
     },
     updatedAt: {
       type: Date, default: Date.now
+    },
+    age: {
+      type: Number
+    },
+    store: {
+      type: [bookSchema]
     }
   });
   
