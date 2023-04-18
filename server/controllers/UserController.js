@@ -5,7 +5,7 @@ const {mongoose} = require("../server.imports")
 
 
 //function for creating a new user:
-const create = async (req, res)=>{
+const createUser = async (req, res)=>{
         req.body = {
             username: 'Abderrahim_Chikhi',
             email: 'chikhi.dev@gmail.com',
@@ -25,7 +25,7 @@ const create = async (req, res)=>{
         if (existingUser) {
             return res.send({
                 sucess: false,
-                message: "User with this email already exists"
+                data: {message:"User with this email already exists"}
             });
         }
 
@@ -33,13 +33,13 @@ const create = async (req, res)=>{
             await newUser.save()
             res.send({
                 sucess: true,
-                message: "Created successfully"
+                data: {message:"Created successfully"}
             })
         }
         catch{
             res.send({
                 sucess: false,
-                message: "Cannot create this user"
+                data: {message:"Cannot create this user"}
             })
         }
 }
@@ -55,16 +55,55 @@ const findById = async (req, res) => {
       }
         res.send({
           sucess : true,
-          message: userFound
+          data: userFound
         })
     }
     catch (err) {
       res.send({
         sucess : false,
-        message: err
+        data: err
       });
     }
 }
+
+const findByEmail = async (req, res) => {
+  req.body = {email:"chikhi.dev@gmail.com"}
+
+  try{
+    const { email } = req.body;
+    try {
+
+      const userFound = await User.findOne({ email: email }).select(
+        "username email avatar bio createdAt"
+      );
+
+      if (!userFound) return res.send({
+        success: false,
+        data: `User with this email not found`
+      })
+  
+      res.send({
+        success: true,
+        data: userFound,
+      });
+    } catch (err) {
+      res.send({
+        success: false,
+        data: `there was an Error!`
+      });
+    }
+
+  }
+  catch{
+    return res.send({
+      success: false,
+      data: {message:"Please enter an email"}
+    })
+  }
+
+
+};
+
   
 const findFullById = async (req, res) => {
     //hard coded email to test with
@@ -76,13 +115,13 @@ const findFullById = async (req, res) => {
       }
         res.send({
           sucess : true,
-          message: userFound
+          data: userFound
         })
     }
     catch (err) {
       res.send({
         sucess : false,
-        message: err
+        data: err
       });
     }
 }
@@ -97,18 +136,66 @@ const findStoreById = async (req, res) => {
       }
         res.send({
           sucess : true,
-          message: userFound
+          data: userFound
         })
     }
     catch (err) {
       res.send({
         sucess : false,
-        message: err
+        data: err
       });
     }
 }
 
+const dropUser = async (req, res) => {
+  const { id, email, password } = req.body;
+
+  try {
+    let deletedUser;
+
+    if (id) {
+      deletedUser = await User.findByIdAndDelete(id);
+    } else if (email) {
+      const userFound = await User.findOne({ email: email }).select(
+        "username email avatar bio createdAt password"
+      );
+
+      if (!userFound) {
+        return res.send(`User with email ${email} not found`);
+      }
+
+      const isPasswordMatch = await userFound.comparePassword(password);
+
+      if (!isPasswordMatch) {
+        return res.send("Password is incorrect");
+      }
+
+      deletedUser = await User.findByIdAndDelete(userFound._id);
+    } else {
+      return res.send("Please provide either an ID or an email");
+    }
+
+    if (!deletedUser) {
+      return res.send({
+        success: false,
+        data: { message: "User not found" },
+      });
+    }
+
+    res.send({
+      success: true,
+      data: { message: "User deleted successfully" },
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      data: { message: "Failed to delete user" },
+    });
+  }
+};
+
+
 
 module.exports = {
-    create, findById, findStoreById, findFullById
+    createUser, findById, findStoreById, findFullById, dropUser, findByEmail
 }

@@ -23,6 +23,9 @@ const UserSchema = new mongoose.Schema({
     bio: {
       type: String, default: ''
     },
+    address: {
+      type: String, default: ''
+    },
     createdAt: {
       type: Date, default: Date.now
     },
@@ -34,6 +37,12 @@ const UserSchema = new mongoose.Schema({
     },
     store: {
       type: [bookSchema]
+    },
+    saved:{
+      type:[bookSchema]
+    },
+    shoppingCard:{
+      type:[bookSchema]
     }
   });
   
