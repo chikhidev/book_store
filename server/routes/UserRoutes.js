@@ -2,6 +2,7 @@ const {express} = require("../server.imports")
 const Controller = require("../controllers/Controller")
 const UserRouter = express.Router();
 
+// UserRouter.get("/", (req, res) => {console.log("hello user"); res.send("hello user lol")})
 //define user routes
 UserRouter.get("/", Controller.User.findByEmail)
 UserRouter.post("/create", Controller.User.createUser)

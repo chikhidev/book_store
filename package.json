@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "mongoose": "^7.0.3"
+    "mongoose": "^7.0.3",
+    "react-router-dom": "^6.10.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0"
   }
 }

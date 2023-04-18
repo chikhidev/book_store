@@ -1,16 +1,18 @@
 //User model
-const User = require("../models/userModel");
+const User = require("../models/userModel").userModel;
+
 const {mongoose} = require("../server.imports")
 
-
+let { faker } = require("@faker-js/faker")
 
 //function for creating a new user:
+
 const createUser = async (req, res)=>{
         req.body = {
-            username: 'Abderrahim_Chikhi',
-            email: 'chikhi.dev@gmail.com',
-            password: "test123",
-            age: 20
+            username: faker.internet.userName(),
+            email: faker.internet.email(),
+            password: faker.internet.password(),
+            age: faker.datatype.number(18,45)
           };
 
         const newUser = new User({
@@ -43,8 +45,6 @@ const createUser = async (req, res)=>{
             })
         }
 }
-
-// function for getting a user by email
 const findById = async (req, res) => {
     //hard coded email to test with
     const id = req.params.id;
@@ -65,7 +65,7 @@ const findById = async (req, res) => {
       });
     }
 }
-
+// function for getting a user by email
 const findByEmail = async (req, res) => {
   req.body = {email:"chikhi.dev@gmail.com"}
 
@@ -103,8 +103,6 @@ const findByEmail = async (req, res) => {
 
 
 };
-
-  
 const findFullById = async (req, res) => {
     //hard coded email to test with
     const id = req.params.id;
@@ -125,7 +123,6 @@ const findFullById = async (req, res) => {
       });
     }
 }
-  
 const findStoreById = async (req, res) => {
     //hard coded email to test with
     const id = req.params.id;
@@ -146,7 +143,6 @@ const findStoreById = async (req, res) => {
       });
     }
 }
-
 const dropUser = async (req, res) => {
   const { id, email, password } = req.body;
 
@@ -193,8 +189,6 @@ const dropUser = async (req, res) => {
     });
   }
 };
-
-
 
 module.exports = {
     createUser, findById, findStoreById, findFullById, dropUser, findByEmail
