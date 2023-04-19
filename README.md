@@ -1,4 +1,61 @@
-# Project Name
+# Book store
+
+##UML
+@startuml
+class Book {
+  +title: string
+  +author: string
+  +price: float
+  +category: string
+  +description: string
+  +image: string
+  +quantity: int
+  +getDetails(): string
+}
+
+class Customer {
+  +name: string
+  +email: string
+  +password: string
+  +cart: List<Book>
+  +orders: List<Order>
+  +register(): void
+  +login(): void
+  +searchBooks(): List<Book>
+  +addToCart(): void
+  +placeOrder(): void
+  +viewOrder(): Order
+  +cancelOrder(): void
+}
+
+class Order {
+  +orderNumber: int
+  +books: List<Book>
+  +totalAmount: float
+  +status: string
+  +date: Date
+  +getDetails(): string
+}
+
+class Admin {
+  +name: string
+  +email: string
+  +password: string
+  +addBook(): void
+  +editBook(): void
+  +removeBook(): void
+  +viewOrders(): List<Order>
+  +updateOrderStatus(): void
+}
+
+Book --> Order
+Customer --> Book
+Customer --> Order
+Admin --> Book
+Admin --> Order
+@enduml
+
+  ---------------------------------------------------------------------
 
 ## Description
 
