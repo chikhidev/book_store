@@ -1,3 +1,4 @@
 module.exports = {
-    userMiddleWare: require("./userMiddleWare")
+    auth: require("./Auth"),
+    validate: require("./Validation")
 }

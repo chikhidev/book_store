@@ -19,6 +19,7 @@ app.use(cors({
 
 //group routing for user
 app.use('/user', Route.UserRouter );
+app.use('/auth', Route.AuthRouter );
 
 
 //Server listening

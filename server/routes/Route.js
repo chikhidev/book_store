@@ -1,5 +1,4 @@
-const UserRouter = require("./UserRoutes")
-
 module.exports = {
-    UserRouter
+    UserRouter: require("./UserRoutes"),
+    AuthRouter: require("./AuthRoutes")
 }

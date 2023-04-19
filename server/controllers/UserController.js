@@ -12,9 +12,9 @@ const test = (req, res)=>{
 
 //function for creating a new user:
 const createUser = async (req, res)=>{
-    req.body = {
-      username:"abderrahim", email:"chikhi.dev@gmail.com", password: "test123"
-    }
+    // req.body = {
+    //   username:"abderrahim", email:"chikhi.dev@gmail.com", password: "test123"
+    // }
 
     
     try{
@@ -24,7 +24,7 @@ const createUser = async (req, res)=>{
           password: req.body.password
         }
         //validate
-          const {error} = MiddleWare.userMiddleWare.validateCreate(query)
+          const {error} = MiddleWare.validate.validateUserNameEmailPass(query)
           if (error) return res.json({
             success:false,
             data:error
@@ -218,7 +218,7 @@ const dropUser = async (req, res) => {
         email: req.body.email,
         password: req.body.password
       }
-      const {error} = MiddleWare.userMiddleWare.validateDrop(query)
+      const {error} = MiddleWare.validate.validateEmailPass(query)
       if (error) return res.json({
         success:false,
         data:error
