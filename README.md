@@ -1,60 +1,48 @@
-# Project Name
+<h1 align="center">Project Name</h1>
 
-## Description
+<p align="center">
+  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/user/repo.svg?style=flat-square">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/user/repo.svg?style=flat-square">
+  <img alt="GitHub" src="https://img.shields.io/github/license/user/repo.svg?style=flat-square">
+</p>
 
-Briefly describe what your project does.
+<p align="center">
+  <b>Server</b>
+</p>
 
-## Installation
+<p align="center">
+  <i>Auth route</i><br>
+  <code>/auth</code><br>
+  This route takes an email and a password, validates the inputs, generates an authentication token, and sends it in the "Authorization" header. The token expires in 2 days.
+</p>
 
-Describe the installation process in detail.
+<p align="center">
+  <i>User routes</i><br>
+  <code>/user</code><br>
+  This route returns the user's username, email, and id by sending the email in the request body using the GET method.
+</p>
 
-## Usage
+<p align="center">
+  <code>/user/create</code><br>
+  This route creates a user by sending the username, email, and password in the request body using the POST method.
+</p>
 
-### Server
+<p align="center">
+  <code>/user/drop</code><br>
+  This route deletes a user by sending the email and password in the request body using the DELETE method.
+</p>
 
-#### Auth Route
+<p align="center">
+  <code>/user/{id}</code><br>
+  This route returns the user's _id, username, email, avatar, bio, and createdAt by putting the id in the request URL using the GET method.
+</p>
 
-Route: `/auth`
+<p align="center">
+  <code>/user/{id}/full</code><br>
+  This route returns the user's information (except password) by putting the id in the request URL using the GET method.
+</p>
 
-This route takes `email` and `password` as inputs, validates them, generates a token, and sends it in the `Authorization` header. The token expires in 2 days.
-
-#### User Routes
-
-##### Get User Information
-
-Route: `/user`
-
-This route returns user information (`username`, `email`, `id`) by sending the `email` in the body request as `{email:"example@ex.com"}` with method `GET`.
-
-##### Create a User
-
-Route: `/user/create`
-
-This route creates a user by sending `username`, `email`, and `password` in the body request as `{email:"example@ex.com", username: "example", password: "example$123"}` with method `POST`.
-
-##### Drop a User
-
-Route: `/user/drop`
-
-This route drops a user by sending `email` and `password` in the body request as `{email:"example@ex.com", password: "example$123"}` with method `DELETE`.
-
-##### Get User Information by ID
-
-Route: `/user/{id}`
-
-This route returns user information (`_id`, `username`, `email`, `avatar`, `bio`, `createdAt`) by putting the `id` with method `GET`.
-
-##### Get Full User Information by ID
-
-Route: `/user/{id}/full`
-
-This route returns full user information (every user information except password) by putting the `id` with method `GET`.
-
-## Contributing
-
-If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
-
-## License
-
-The code in this project is licensed under MIT license.```
-
+<p align="center">
+  <code>/user/{id}/store</code><br>
+  This route returns the user's username, avatar, and store by putting the id in the request URL using the GET method.
+</p>
