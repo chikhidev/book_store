@@ -1,59 +1,8 @@
 # Book store
 
 ##UML
-@startuml
-class Book {
-  +title: string
-  +author: string
-  +price: float
-  +category: string
-  +description: string
-  +image: string
-  +quantity: int
-  +getDetails(): string
-}
 
-class Customer {
-  +name: string
-  +email: string
-  +password: string
-  +cart: List<Book>
-  +orders: List<Order>
-  +register(): void
-  +login(): void
-  +searchBooks(): List<Book>
-  +addToCart(): void
-  +placeOrder(): void
-  +viewOrder(): Order
-  +cancelOrder(): void
-}
-
-class Order {
-  +orderNumber: int
-  +books: List<Book>
-  +totalAmount: float
-  +status: string
-  +date: Date
-  +getDetails(): string
-}
-
-class Admin {
-  +name: string
-  +email: string
-  +password: string
-  +addBook(): void
-  +editBook(): void
-  +removeBook(): void
-  +viewOrders(): List<Order>
-  +updateOrderStatus(): void
-}
-
-Book --> Order
-Customer --> Book
-Customer --> Order
-Admin --> Book
-Admin --> Order
-@enduml
+<table><thead><tr><th>Class</th><th>Properties</th><th>Methods</th></tr></thead><tbody><tr><td>Book</td><td>title: string&lt;br&gt;author: string&lt;br&gt;price: float&lt;br&gt;category: string&lt;br&gt;description: string&lt;br&gt;image: string&lt;br&gt;quantity: int</td><td>getDetails(): string</td></tr><tr><td>Customer</td><td>name: string&lt;br&gt;email: string&lt;br&gt;password: string&lt;br&gt;cart: List&lt;Book&gt;&lt;br&gt;orders: List&lt;Order&gt;</td><td>register(): void&lt;br&gt;login(): void&lt;br&gt;searchBooks(): List&lt;Book&gt;&lt;br&gt;addToCart(): void&lt;br&gt;placeOrder(): void&lt;br&gt;viewOrder(): Order&lt;br&gt;cancelOrder(): void</td></tr><tr><td>Order</td><td>orderNumber: int&lt;br&gt;books: List&lt;Book&gt;&lt;br&gt;totalAmount: float&lt;br&gt;status: string&lt;br&gt;date: Date</td><td>getDetails(): string</td></tr><tr><td>Admin</td><td>name: string&lt;br&gt;email: string&lt;br&gt;password: string</td><td>addBook(): void&lt;br&gt;editBook(): void&lt;br&gt;removeBook(): void&lt;br&gt;viewOrders(): List&lt;Order&gt;&lt;br&gt;updateOrderStatus(): void</td></tr></tbody></table>
 
   ---------------------------------------------------------------------
 
