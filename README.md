@@ -1,127 +1,59 @@
-Server API Documentation
-Auth Route
-POST /auth
-Generates an authentication token based on email and password input.
+# Project Name
 
-Request
+## Description
 
-http
-Copy code
-POST /auth HTTP/1.1
-Content-Type: application/json
+Briefly describe what your project does.
 
-{
-  "email": "example@ex.com",
-  "password": "example$123"
-}
-Parameter	Type	Required	Description
-email	string	yes	User email.
-password	string	yes	User password.
-Response
+## Installation
 
-http
-Copy code
-HTTP/1.1 200 OK
-Content-Type: application/json
-Authorization: Bearer <auth_token>
-Status code	Description
-200	Authentication successful.
-401	Authentication failed.
-400	Invalid input.
-User Routes
-GET /user
-Get a user by their email.
+Describe the installation process in detail.
 
-Request
+## Usage
 
-http
-Copy code
-GET /user HTTP/1.1
-Content-Type: application/json
+### Server
 
-{
-  "email": "example@ex.com"
-}
-Parameter	Type	Required	Description
-email	string	yes	User email.
-Response
+#### Auth Route
 
-http
-Copy code
-HTTP/1.1 200 OK
-Content-Type: application/json
+Route: `/auth`
 
-{
-  "username": "example",
-  "email": "example@ex.com",
-  "id": "12345"
-}
-Status code	Description
-200	User found.
-404	User not found.
-400	Invalid input.
-POST /user/create
-Create a new user.
+This route takes `email` and `password` as inputs, validates them, generates a token, and sends it in the `Authorization` header. The token expires in 2 days.
 
-Request
+#### User Routes
 
-http
-Copy code
-POST /user/create HTTP/1.1
-Content-Type: application/json
+##### Get User Information
 
-{
-  "username": "example",
-  "email": "example@ex.com",
-  "password": "example$123"
-}
-Parameter	Type	Required	Description
-username	string	yes	User username.
-email	string	yes	User email.
-password	string	yes	User password.
-Response
+Route: `/user`
 
-http
-Copy code
-HTTP/1.1 200 OK
-Content-Type: application/json
+This route returns user information (`username`, `email`, `id`) by sending the `email` in the body request as `{email:"example@ex.com"}` with method `GET`.
 
-{
-  "username": "example",
-  "email": "example@ex.com",
-  "id": "12345"
-}
-Status code	Description
-200	User created successfully.
-400	Invalid input.
-DELETE /user/drop
-Drop a user.
+##### Create a User
 
-Request
+Route: `/user/create`
 
-http
-Copy code
-DELETE /user/drop HTTP/1.1
-Content-Type: application/json
+This route creates a user by sending `username`, `email`, and `password` in the body request as `{email:"example@ex.com", username: "example", password: "example$123"}` with method `POST`.
 
-{
-  "email": "example@ex.com",
-  "password": "example$123"
-}
-Parameter	Type	Required	Description
-email	string	yes	User email.
-password	string	yes	User password.
-Response
+##### Drop a User
 
-http
-Copy code
-HTTP/1.1 200 OK
-Content-Type: application/json
+Route: `/user/drop`
 
-{
-  "message": "User successfully deleted."
-}
-Status code	Description
-200	User successfully deleted.
-401	Authentication failed.
-400	
+This route drops a user by sending `email` and `password` in the body request as `{email:"example@ex.com", password: "example$123"}` with method `DELETE`.
+
+##### Get User Information by ID
+
+Route: `/user/{id}`
+
+This route returns user information (`_id`, `username`, `email`, `avatar`, `bio`, `createdAt`) by putting the `id` with method `GET`.
+
+##### Get Full User Information by ID
+
+Route: `/user/{id}/full`
+
+This route returns full user information (every user information except password) by putting the `id` with method `GET`.
+
+## Contributing
+
+If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
+
+## License
+
+The code in this project is licensed under MIT license.```
