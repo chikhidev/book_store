@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const {bookSchema} = require("./bookModel")
+const {orderSchema} = require("./OrderModel")
 const MiddleWare = require("../middlewares/MiddleWare")
 
 const UserSchema = new mongoose.Schema({
@@ -44,6 +45,9 @@ const UserSchema = new mongoose.Schema({
     },
     shoppingCard:{
       type:[bookSchema]
+    },
+    orders: {
+      type: [orderSchema]
     }
   });
   

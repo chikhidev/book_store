@@ -4,6 +4,6 @@ const Middleware = require("../middlewares/MiddleWare")
 const AuthRouter = express.Router();
 
 
-AuthRouter.get("/", Controller.Auth)
+AuthRouter.post("/", Controller.Auth)
 
 module.exports = AuthRouter
