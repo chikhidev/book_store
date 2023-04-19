@@ -2,17 +2,10 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config()
 
 //generate token middleWare
-const generateToken = (req, res, next) => {
-    console.log("inside mid ",req.body.username)  
-
-    const { username } = req.body;
+const generateToken = id => {
     const secret = process.env.JWT_SECRET;
-  
-    const token = jwt.sign({ username }, secret, { expiresIn: '1h' });
-  
-    // set the token in the response headers for the client to access
-    res.setHeader('Authorization', `Bearer ${token}`);
-    next();
+    const token = jwt.sign({_id:id }, secret, { expiresIn: '2d' });
+    return token
 };
 
 // Middleware to authenticate token

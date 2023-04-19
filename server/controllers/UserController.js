@@ -211,7 +211,7 @@ const findCardByID = async (req, res) => {
 
 
 const dropUser = async (req, res) => {
-    // req.body = {email:"chikhi.dev@gmail.com", password:"test123"}
+    // req.body = {email: "chikhi.dev@gmail.com", password:"test123"}
     try {
 
       const query = {
@@ -225,39 +225,40 @@ const dropUser = async (req, res) => {
       })
   
       try {
-        const userFound = await User.findOne({ email: query.email }).select(
-          "username email password"
-        );
+          const userFound = await User.findOne({ email: query.email }).select(
+            "username email password"
+          );
   
-        if (!userFound) {
-          return res.status(404).json({
-            success:false,
-            data:{message:`User with email ${email} not found`}
+          if (!userFound) {
+            return res.status(404).json({
+              success:false,
+              data:{message:`User with email ${email} not found`}
+            });
+          }
+  
+          const isPasswordMatch = await argon2.verify(userFound.password, query.password);
+    
+          if (!isPasswordMatch) {
+            return res.status(401).json({
+              success:false,
+              data:{message:"Password is incorrect"}
+            });
+          }
+    
+          const deletedUser = await User.findByIdAndDelete(userFound._id);
+    
+          if (!deletedUser) {
+            return res.status(404).json({
+              success: false,
+              data: { message: "User not found" },
+            });
+          }
+    
+          res.status(200).json({
+            success: true,
+            data: { message: "User deleted successfully" },
           });
-        }
-  
-        const isPasswordMatch = await argon2.verify(userFound.password, query.password);
-  
-        if (!isPasswordMatch) {
-          return res.status(401).json({
-            success:false,
-            data:{message:"Password is incorrect"}
-          });
-        }
-  
-        const deletedUser = await User.findByIdAndDelete(userFound._id);
-  
-        if (!deletedUser) {
-          return res.status(404).json({
-            success: false,
-            data: { message: "User not found" },
-          });
-        }
-  
-        res.status(200).json({
-          success: true,
-          data: { message: "User deleted successfully" },
-        });
+
       } catch (err) {
         res.status(406).json({
           success: false,
