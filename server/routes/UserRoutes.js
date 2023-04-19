@@ -10,7 +10,7 @@ UserRouter.post("/create",
                 Controller.User.createUser
                 ) //this a private route it requires a password
 
-UserRouter.get("/drop",
+UserRouter.delete("/drop",
                 Controller.User.dropUser
                 ) //this a private route it requires a password
 
