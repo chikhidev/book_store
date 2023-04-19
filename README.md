@@ -1,7 +1,7 @@
 <h1>Server</h1>
 
 # Atuh route:
-   <span style="color: blue">/auth</span>
+   /*/auth*/
     takes (email, password) it uses validation and it generates token and send it in "Authorization" header expires in 2 days
 
 # user routes:
