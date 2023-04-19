@@ -5,7 +5,7 @@
 server for book store client
 
 ## Server start
-<code> ```npx nodemon app.js```</code>
+```npx nodemon app.js```
 
 ## Usage
 
