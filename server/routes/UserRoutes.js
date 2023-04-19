@@ -6,11 +6,11 @@ const UserRouter = express.Router();
 //define user routes
 UserRouter.get("/", Controller.User.findByEmail)
 
-UserRouter.get("/create",
+UserRouter.post("/create",
                 Controller.User.createUser
                 ) //this a private route it requires a password
 
-UserRouter.delete("/drop",
+UserRouter.get("/drop",
                 Controller.User.dropUser
                 ) //this a private route it requires a password
 
