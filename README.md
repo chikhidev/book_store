@@ -2,11 +2,12 @@
 
 ## Description
 
-Briefly describe what your project does.
+server for book store client
 
-## Installation
-
-Describe the installation process in detail.
+## Server start
+<pre><code>```bash
+npx nodemon app.js
+```</code></pre>
 
 ## Usage
 
