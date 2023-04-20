@@ -15,7 +15,7 @@ To run the application, you need to have Node.js and MongoDB installed on your m
 The API provides the following endpoints:
 
 
-br
+
 ## POST /user/register
 
 This endpoint registers a new user with the provided username, email, and password.
