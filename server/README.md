@@ -14,6 +14,8 @@ To run the application, you need to have Node.js and MongoDB installed on your m
 
 The API provides the following endpoints:
 
+
+
 ## POST /user/register
 
 This endpoint registers a new user with the provided username, email, and password.
@@ -41,6 +43,8 @@ Content-Type: application/json
 "message": "Created successfully"
 }
 }
+
+
 
 
 ## POST /user/login
@@ -73,6 +77,7 @@ Authorization: <JWT token>
 
 
 
+  
 ## DELETE /user/drop
   
 This endpoint deletes a user with the provided email and password.
@@ -89,6 +94,7 @@ Authorization: <JWT token>
 }
 
 
+  
 ### Response
 
 Status: 200 OK
