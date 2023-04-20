@@ -11,11 +11,11 @@ connectDB()
 
 //allow app use only client url
 app.use(cors({
-   origin: process.env.CLIENT
+   origin: 'http://localhost:5173'
  }));
 
 //use body-parser
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 //group routing for user
 app.use('/user', Route.UserRouter );
