@@ -4,7 +4,7 @@ Project description goes here.
 
 ## API Reference
 
-### User Routes
+### Auth Routes
 
 | Route | Method | Description | Request Body | Response |
 | --- | --- | --- | --- | --- |
