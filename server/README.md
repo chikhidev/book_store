@@ -2,28 +2,6 @@
 
 Project description goes here.
 
-## Getting Started
-
-Instructions on how to get a copy of the project up and running on a local machine for development and testing purposes.
-
-### Prerequisites
-
-- Node.js
-- npm
-
-### Installing
-
-1. Clone the repository
-2. Navigate to the project folder in your terminal
-3. Install dependencies with `npm install`
-4. Create a `.env` file in the project root and add necessary environment variables (e.g. PORT, DATABASE_URL)
-
-### Running
-
-- Start the development server with `npm run dev`
-- Build the project with `npm run build`
-- Start the built project with `npm start`
-
 ## API Reference
 
 ### User Routes
