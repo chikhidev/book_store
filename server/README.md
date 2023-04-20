@@ -1,19 +1,44 @@
-# User Authentication API
+# Project Name
 
-This is a Node.js API that provides user authentication features using JWT (JSON Web Tokens). It includes endpoints for registering, logging in, and deleting users.
+Project description goes here.
 
-## Installation
+## Getting Started
 
-To run the application, you need to have Node.js and MongoDB installed on your machine.
+Instructions on how to get a copy of the project up and running on a local machine for development and testing purposes.
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installing
 
 1. Clone the repository
-2. Install the dependencies using `npm install`
-3. Start the application using `npm start`
+2. Navigate to the project folder in your terminal
+3. Install dependencies with `npm install`
+4. Create a `.env` file in the project root and add necessary environment variables (e.g. PORT, DATABASE_URL)
 
-## Usage
+### Running
 
-The API provides the following endpoints:
+- Start the development server with `npm run dev`
+- Build the project with `npm run build`
+- Start the built project with `npm start`
 
+## API Reference
+
+### User Routes
+
+| Route | Method | Description | Request Body | Response |
+| --- | --- | --- | --- | --- |
+| `/auth/register` | POST | Creates a new user | `{ "username": string, "email": string, "password": string }` | `200 OK` if successful |
+| `/auth/login` | POST | Logs in a user | `{ "email": string, "password": string }` | `200 OK` if successful |
+| `/auth/drop` | DELETE | Deletes a user | `{ "email": string, "password": string }` | `200 OK` if successful |
+
+## Built With
+
+- Node.js
+- Express.js
+- Mongoose
 
 
 ## POST /user/register
