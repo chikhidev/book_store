@@ -150,12 +150,31 @@ const findCardByID = async (req, res) => {
 
 
 
-
+searchUsers = async (req, res) => {
+  const query = req.query.q;
+  try {
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } },
+      ],
+    });
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      data: 'Server Error',
+    });
+  }
+};
 
 
 
 
 module.exports = {
     findById, findStoreById, findFullById, 
-    findByEmail, findCardByID, test
+    findByEmail, findCardByID, test, searchUsers
 }

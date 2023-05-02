@@ -11,11 +11,21 @@ const generateToken = id => {
 // Middleware to authenticate token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.sendStatus(401);
 
-  jwt.verify(token, '_token', (err, decoded) => {
-    if (err) return res.sendStatus(403);
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({
+    sucess: false,
+    data:{
+      message:"You are not logged!",
+      req: req.headers
+    }
+  });
+
+  jwt.verify(token, 'token', (err, decoded) => {
+    if (err) return res.status(403).json({
+      sucess:false,
+      data: err
+    });
     req.userId = decoded.userId;
     next();
   });

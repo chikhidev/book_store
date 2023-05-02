@@ -1,6 +1,7 @@
 const {express} = require("../server.imports")
 const Controller = require("../controllers/Controller")
-const Middleware = require("../middlewares/MiddleWare")
+const Middleware = require("../middlewares/MiddleWare");
+const MiddleWare = require("../middlewares/MiddleWare");
 const AuthRouter = express.Router();
 
 //loging route
@@ -17,12 +18,21 @@ AuthRouter.post(
                 Controller.Auth.register
                 )
 
+AuthRouter.post(
+                "/logout",
+                Middleware.auth.authenticateToken,
+                Controller.Auth.logout
+                );
+
 //drop user route
 AuthRouter.delete(
                 "/drop",
                 Middleware.validate.validateEmailPass,
+                MiddleWare.auth.authenticateToken,
                 Controller.Auth.drop
                 )
+
+
 
 
 module.exports = AuthRouter

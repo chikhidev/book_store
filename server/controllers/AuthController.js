@@ -37,12 +37,19 @@ const login = async (req, res) => {
         // Generate a JSON Web Token (JWT) for the authenticated user
         const token = user.generateAuthToken();
 
+
+        // res.cookie("token", token, {
+        //   httpOnly: true
+        //   // You can add more options like `expires` or `secure` if needed
+        // });
+
         // Return success response with JWT and message
-        res.set('Authorization', token);
         return res.status(200).json({
             success: true,
+            token,
             data: {
-                message: "Logged in successfully"
+                message: "Logged in successfully",
+                token
             }
         });
     } catch (error) {
@@ -158,7 +165,24 @@ const register = async (req, res)=>{
         
 }
 
+const logout = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    // Remove the user's token from the database
+    await User.findByIdAndUpdate(userId, { token: null });
+    res.status(200).json({
+      success: true,
+      data:{message: "Logout successful"},
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      data:{message: "Logout failed"},
+    });
+  }
+};
 
 module.exports = {
-    login, register, drop
+    login, register, drop, logout
 }

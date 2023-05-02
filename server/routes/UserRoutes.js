@@ -4,11 +4,16 @@ const Middleware = require("../middlewares/MiddleWare")
 const UserRouter = express.Router();
 
 //define user routes
-UserRouter.get("/", Controller.User.findByEmail)
+UserRouter.get("/", Controller.User.searchUsers) //this route for searching users takes `user?q=searchTerm` returns a users array
 UserRouter.get("/:id", Controller.User.findById)
-UserRouter.get("/:id/full", Controller.User.findFullById)
-UserRouter.get("/:id/store", Controller.User.findStoreById)
-UserRouter.get("/:id/card", Controller.User.findCardByID)
+UserRouter.get("/:id/full", Controller.User.findFullById) //this route for tacking full information about user
+UserRouter.get("/:id/store", Controller.User.findStoreById) //this route for showing store of a user
+UserRouter.get(
+                "/:id/card",
+                Middleware.auth.authenticateToken,
+                Controller.User.findCardByID
+                ) //this route for showing user card it requires login
+                
 // UserRouter.get("/:id/saved", Controller.User.findCardByID) //this a private route it requires a password
 
 
