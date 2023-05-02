@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const {bookSchema} = require("./bookModel")
 const {orderSchema} = require("./OrderModel")
-const MiddleWare = require("../middlewares/MiddleWare")
+const Auth = require("../middlewares/Auth")
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -52,7 +52,7 @@ const UserSchema = new mongoose.Schema({
   });
   
   UserSchema.methods.generateAuthToken = function() {
-    return  MiddleWare.auth.generateToken(this._id);
+    return  Auth.generateToken(this._id);
   };
 
   module.exports = mongoose.model('User', UserSchema);

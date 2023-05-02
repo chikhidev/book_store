@@ -31,8 +31,20 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+    // user is an admin, continue with the request
+  }
+  else
+  {
+    return res.status(401).json({ message: 'Unauthorized: You are not an admin' });
+    // user is not an admin, return error response
+  }
+};
+
 
 module.exports = {
-    authenticateToken, generateToken
+    authenticateToken, generateToken, isAdmin
 }
 
