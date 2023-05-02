@@ -9,6 +9,7 @@ import './js/index.js';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 
+import Login from './components/login';
 
 function Home() {
   return (
@@ -38,20 +39,22 @@ function Navbar() {
           </div>
           <div className="nav-center">
               <button>
-                  < SearchRoundedIcon />
+                  < SearchRoundedIcon sx={{ color :'#444' }} />
               </button>
               <input className="search" placeholder='search for a book'/>
           </div>
           <div className="empty_el">
           </div>
           <div className="nav-right">
-              <button
-                className="nav-btn sign-in">
-                Sign in
-              </button>
+              <Link to="/login">
+                  <button
+                    className="nav-btn sign-in">
+                    Sign in
+                  </button>
+              </Link>
               <button
                 className="nav-btn cart">
-                  <ShoppingCartRoundedIcon color='black' sx={{ fontSize: 15 }}/>
+                  <ShoppingCartRoundedIcon sx={{ fontSize: 15 }}/>
               </button>
           </div>
 			</nav>
@@ -86,6 +89,7 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/categories" element={<About/>} />
           <Route path="/new" element={<Contact/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </div>
     </Router>

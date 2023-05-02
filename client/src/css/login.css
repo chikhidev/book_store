@@ -1,0 +1,36 @@
+div.popup {
+    padding: 25px;
+    display: flex;
+    border-radius: 10px;
+    width: 80%;
+    height: 80%;
+    background: #ddd;
+    z-index: 100;
+    box-shadow: 0px 0px 4px 2px rgba(31, 31, 31, 0.325);
+}
+
+form .form-header .welcome-msg {
+    font-size: 26px;
+    font-weight: 600;
+}
+form .sign-in-msg {
+    font-size: x-small;
+}
+.form-popup form {
+
+}
+form .form-popup .form-header {
+    
+}
+form .form-popup .form-hero {
+    
+}
+form .form-popup .form-footer {
+    
+}
+.form-primary-btn {
+    color: blue;
+}
+.primary-color {
+	color: rgb(43, 20, 219);
+}
