@@ -33,18 +33,20 @@ return (
 <div className='flex justify-center items-center w-screen h-screen'>
 <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div className="mx-auto max-w-lg text-center">
-    <h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+    <div className="welcome-msg">
+        Welcome Back
+        <div className="line-break"></div>
+        to <span className="primary-color">BookStore</span>
+    </div>
 
-    <p className="mt-4 text-gray-500">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla
-      eaque error neque ipsa culpa autem, at itaque nostrum!
-    </p>
+    <span className="sign-in-msg">
+        Sign in to your account below.
+    </span>
   </div>
 
-  <form onSubmit={handleLogin} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-    <div>
+  <div className="form-hero">
+  <div className="input-grp">
       <label htmlFor="email" className="sr-only">Email</label>
-
       <div className="relative">
         <input
           type="email"
@@ -55,7 +57,6 @@ return (
            setEmail(e.target.value)
         }}
         />
-
         <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,10 +75,8 @@ return (
         </span>
       </div>
     </div>
-
-    <div>
+    <div className="input-grp">
       <label htmlFor="password" className="sr-only">Password</label>
-
       <div className="relative">
         <input
           type="password"
@@ -88,7 +87,6 @@ return (
            setPassword(e.target.value)
         }}
         />
-
         <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,6 +111,11 @@ return (
         </span>
       </div>
     </div>
+        <button className="sign-in-btn form-primary-btn">Sign In</button>
+    </div>
+
+    <form onSubmit={handleLogin} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+
     <p className={`text-sm flex items-center ${error ? 'text-red-700' : 'text-green-700'}` } >
         {
           error ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 pr-2">
@@ -130,10 +133,9 @@ return (
         No account?
         <a className="underline" href="">Sign up</a>
       </p>
-
       <button
         type="submit"
-        className="inline-block rounded-lg bg-blue-500 px-3 py-2 text-sm font-medium text-white"
+        className="sign-in-btn form-primary-btn  inline-block rounded-lg bg-blue-500 px-3 py-2 text-sm font-medium text-white"
       >
         {
           loading ? 'loading...'
@@ -142,7 +144,7 @@ return (
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 pr-2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-          Login
+          Sign in
         </span>
         }
       </button>

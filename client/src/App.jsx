@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
-import { useState } from 'react';
 import banner from './assets/banner.webp'
 import { useRef } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './css/navbar.css';
 import './css/index.css';
 import './js/index.js';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 
-import Login from './components/login';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function Home() {
   return (
@@ -54,9 +54,15 @@ function Navbar() {
                     Sign in
                   </button>
               </Link>
+              <Link to="/register">
+                  <button
+                    className="nav-btn sign-in">
+                    Register
+                  </button>
+              </Link>
               <button
                 className="nav-btn cart">
-                  <ShoppingCartRoundedIcon sx={{ fontSize: 15 }}/>
+                  <ShoppingCartRoundedIcon sx={{ fontSize: 18 }}/>
               </button>
           </div>
 			</nav>
@@ -92,6 +98,7 @@ function App() {
           <Route path="/categories" element={<About/>} />
           <Route path="/new" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
         </Routes>
       </div>
     </Router>

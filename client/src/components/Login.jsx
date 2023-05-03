@@ -1,9 +1,13 @@
-import "../css/login.css"
+import "../css/forms.css";
+import { useState } from "react";
 
 const Login = () => {
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     return (
-        <div className="popup form-popup">
-            <form>
+        <div className="login popup">
+            <form className="form-popup">
                 <div className="form-header">
                     <div className="welcome-msg">
                         Welcome Back
@@ -14,20 +18,76 @@ const Login = () => {
                         Sign in to your account below.
                     </span>
                 </div>
+
                 <div className="form-hero">
-                    <div className="input-grp">
-                        <input placeholder="Email" />
+                    <div className="input-grp relative">
+                        <input
+                            placeholder="Email"
+                            className="w-full rounded-lg text-sm shadow-sm"
+                        />
+                        <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 text-gray-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                                />
+                            </svg>
+                        </span>
                     </div>
-                    <div className="input-grp">
-                        <input placeholder="Password" />
+
+                    <div className="input-grp relative">
+                        <input
+                            placeholder="Password"
+                            type="password"
+                            className="w-full rounded-lg text-sm shadow-sm"
+                        />
+                        <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 text-gray-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"
+                                />
+                            </svg>
+                        </span>
                     </div>
-                    <div className="input-grp">
-                        <button className="sign-in-btn form-primary-btn">Sign In</button>
+
+                    <div className="btn-grp">
+                        <button
+                            type="submit"
+                            className="sign-in-btn form-primary-btn  inline-block rounded-lg bg-blue-500  text-sm font-medium text-white"
+                    >
+                        {
+                        loading ? 'loading...'
+                        : 
+                        <span className='flex items-center '>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 pr-2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Sign in
+                        </span>
+                        }
+                    </button>
                     </div>
                 </div>
+                
                 <div className="form-footer">
-                    <span>Don't have an account?</span>
-                    <button className="register-btn form-primary-btn">Register</button>
+                    Don't have an account?
+                    <button className="footer-register-btn form-primary-btn">Register</button>
                 </div>
             </form>
         </div>
