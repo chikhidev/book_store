@@ -1,7 +1,9 @@
 const {express} = require("../server.imports")
 const Controller = require("../controllers/Controller")
-const Middleware = require("../middlewares/MiddleWare");
-const MiddleWare = require("../middlewares/MiddleWare");
+const Middleware = {
+    validate : require("../middlewares/Validation"),
+    auth : require('../middlewares/Auth')
+};
 const AuthRouter = express.Router();
 
 //loging route
@@ -28,7 +30,7 @@ AuthRouter.post(
 AuthRouter.delete(
                 "/drop",
                 Middleware.validate.validateEmailPass,
-                MiddleWare.auth.authenticateToken,
+                Middleware.auth.authenticateToken,
                 Controller.Auth.drop
                 )
 

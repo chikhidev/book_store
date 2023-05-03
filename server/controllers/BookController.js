@@ -1,3 +1,6 @@
+const Middleware = require('../middlewares/Middleware');
+const User = require('../models/userModel')
+
 const Book = require('../models/Model').bookModel;
 
 // find all books in the store
@@ -26,26 +29,44 @@ const getBookById = async (req, res) => {
 
 // create a new book
 const createBook = async (req, res) => {
-  const { title, author, description, publisher, publicationDate, language, price, category, stock, imageUrl } = req.body;
-  try {
-    const book = new Book({
-      title,
-      author,
-      description,
-      publisher,
-      publicationDate,
-      language,
-      price,
-      category,
-      stock,
-      imageUrl,
-    });
-    await book.save();
-    return res.status(201).json({ success: true, data: { book } });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
-  }
+
+  const { title, author,
+    description, publisher,
+    publicationDate, language,
+    price, category,
+    stock, imageUrl } = req.body;
+
+      try {
+        const book = new Book({
+          title,
+          author,
+          description,
+          publisher,
+          publicationDate,
+          language,
+          price,
+          category,
+          stock,
+          imageUrl,
+          createdBy: req.user.id
+        });
+
+        await book.save();
+        console.log('userid: ',req.user.id)
+        const user = await User.findById( req.user.id);
+        user.store.push(book);
+        await user.save();
+
+        return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
+
+
+      } catch (error) {
+        console.error(error);
+       return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+      }
+ 
+
+  
 };
 
 // update a book's information

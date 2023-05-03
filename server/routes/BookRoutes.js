@@ -16,9 +16,10 @@ BookRoute.get(
 
 // create a new book
 BookRoute.post(
-            '/',
+            '/create',
             Middleware.auth.authenticateToken,
             Middleware.auth.isAdmin,
+            Middleware.validate.createBook,
             Controller.Book.createBook
             );
 

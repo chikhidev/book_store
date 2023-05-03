@@ -36,6 +36,56 @@ const findById = async (req, res) => {
 }
 
 
+const makeAdmin = async (req, res) => {
+    //hard coded email to test with
+    const id = req.params.id;
+    try {
+        const userFound = await User.findById(id).select('username email isAdmin');
+      if (!userFound) {
+        return res.status(404).json({
+          sucess:false,
+          data:{message:`User with id ${id} not found`}
+        });
+      }
+
+      if(userFound.isAdmin){
+        return res.json({
+          success: false,
+          data:{
+            message: 'This user is already an admin'
+          }
+        })
+      }
+
+       try{
+
+        User.updateOne({ _id: id }, { isAdmin: true })
+
+        return res.status(200).json({
+          sucess : true,
+          data: {
+            message: 'User is an admin now'
+          }
+        })
+
+       }
+       catch(err){
+        return res.json({
+          sucess : false,
+          data: err
+        });
+       }
+        
+    }
+    catch (err) {
+      return res.json({
+        sucess : false,
+        data: err
+      });
+    }
+}
+
+
 
 
 const findByEmail = async (req, res) => {
@@ -176,5 +226,5 @@ searchUsers = async (req, res) => {
 
 module.exports = {
     findById, findStoreById, findFullById, 
-    findByEmail, findCardByID, test, searchUsers
+    findByEmail, findCardByID, test, searchUsers, makeAdmin
 }
