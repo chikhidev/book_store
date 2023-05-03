@@ -42,13 +42,13 @@ const UserSchema = new mongoose.Schema({
       type: Number
     },
     store: {
-      type: [bookSchema]
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     saved:{
-      type:[bookSchema]
+      type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     shoppingCard:{
-      type:[bookSchema]
+      type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     orders: {
       type: [orderSchema]

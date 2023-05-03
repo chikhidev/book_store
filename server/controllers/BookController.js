@@ -37,6 +37,18 @@ const createBook = async (req, res) => {
     stock, imageUrl } = req.body;
 
       try {
+
+        // Check if a book with the same title already exists
+        const bookCount = await Book.countDocuments({ title: title });
+        if (bookCount > 0) {
+          return res.status(400).json({
+            success: false,
+            data: {
+              message: "There's already a book with the same title",
+            },
+          });
+        }
+
         const book = new Book({
           title,
           author,
@@ -50,12 +62,12 @@ const createBook = async (req, res) => {
           imageUrl,
           createdBy: req.user.id
         });
+        
 
         await book.save();
-        console.log('userid: ',req.user.id)
-        const user = await User.findById( req.user.id);
-        user.store.push(book);
-        await user.save();
+        
+        // Update the store array of the user with the ID of the created book
+        await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
 
         return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
 
