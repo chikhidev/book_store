@@ -20,10 +20,10 @@ app.use(bodyParser.json());
 //group routing for user
 app.use('/user', Route.UserRouter );
 app.use('/auth', Route.AuthRouter );
-app.use('/book', Route.BookRouter );
+// app.use('/book', Route.BookRouter );
 
 
 //Server listening
-app.listen(4000, ()=>
+app.listen(4000, () =>
    console.log("Server started!")
 );
