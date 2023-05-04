@@ -9,9 +9,11 @@ import './js/index.js';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-
+import { createContext } from 'react';
 import Login from './components/Login';
 import Register from './components/Register';
+const LoginContext = createContext();
+import { useContext } from 'react';
 
 function Home() {
   return (
@@ -23,7 +25,7 @@ function Home() {
 
 function Navbar() {
 	const navRef = useRef();
-
+  const [logged, setLogged] = useContext(LoginContext)
 	return (
 			<nav ref={navRef}>
           <div className="nav-left links">
@@ -48,7 +50,9 @@ function Navbar() {
           <div className="empty_el">
           </div>
           <div className="nav-right">
-              <Link to="/login">
+              {!logged ? 
+                <>
+                <Link to="/login">
                   <button
                     className="nav-btn sign-in">
                     Sign in
@@ -60,6 +64,9 @@ function Navbar() {
                     Register
                   </button>
               </Link>
+                </>
+              : ""
+              }
               <button
                 className="nav-btn cart">
                   <ShoppingCartRoundedIcon sx={{ fontSize: 18 }}/>
@@ -89,20 +96,23 @@ function Contact() {
 }
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/categories" element={<About/>} />
-          <Route path="/new" element={<Contact/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-        </Routes>
-      </div>
-    </Router>
+    const [isLogged, setIsLogged] = useState(false);
+    return (
+    <LoginContext.Provider value={[isLogged, setIsLogged]} >
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/categories" element={<About/>} />
+            <Route path="/new" element={<Contact/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+          </Routes>
+        </div>
+      </Router>
+    </LoginContext.Provider>
   );
 }
 
-export default App;
+export {App, LoginContext};

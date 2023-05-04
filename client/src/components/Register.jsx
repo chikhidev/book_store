@@ -3,23 +3,44 @@ import { useState } from "react";
 
 const Register = () => {
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [age, setAge] = useState("");
 
-  const handleSubmit = (e) => {
+      
+  const handleRegister = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    setLoading(true)
+    fetch('http://127.0.0.1:4000/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setError(!data.success)
+        setMessage(data.data.message ? data.data.message : data.data[0].message)
+        setLoading(false)
+        console.log(data.data);
+      });
   };
 
   return (
     <div className="register popup">
-        <form className="form-popup" onSubmit={handleSubmit}>
+        <form className="form-popup" onSubmit={handleRegister}>
             <div className="form-header">
             <div className="welcome-msg">
                 Welcome, 
@@ -34,10 +55,10 @@ const Register = () => {
                     {/* first name */}
                     <div className="input-grp first-name relative">
                         <input
+                        value = {firstName}
+                        onChange = {(e) => setFirstName(e.target.value)}
                         placeholder="First Name"
                         className="rounded-lg text-sm shadow-sm"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
                         required
                         />
                         <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -62,9 +83,8 @@ const Register = () => {
                         <input
                         placeholder="Last Name"
                         className="rounded-lg text-sm shadow-sm"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        type="email"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         required
                         />
                         <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -89,8 +109,10 @@ const Register = () => {
                     {/* email */}
                     <div className="input-grp email relative">
                         <input
+                        value = {email}
+                        onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email"
-                            type="Email"
+                            type="email"
                             className="rounded-lg text-sm shadow-sm"
                         />
                         <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -114,6 +136,8 @@ const Register = () => {
                     {/* username */}
                     <div className="input-grp username relative">
                             <input
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 placeholder="Username"
                                 type="text"
                                 className="rounded-lg text-sm shadow-sm"
@@ -180,6 +204,62 @@ const Register = () => {
                                     d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"
                                 />
                             </svg>
+                        </span>
+                    </div>
+                </div>
+                <div className="form-grp">
+                    {/* password */}
+                    <div className="input-grp password relative">
+                        <input
+                        value = {password}
+                        onChange = {(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        className="rounded-lg text-sm shadow-sm"
+                        type="password"
+                        required
+                        />
+                        <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-gray-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                            />
+                        </svg>
+                        </span>
+                    </div>
+                    {/* confirm */}
+                    <div className="input-grp confirm relative">
+                        <input
+                        placeholder="Confirm"
+                        className="rounded-lg text-sm shadow-sm"
+                        value={confirm}
+                        onChange={(e) => setConfirm(e.target.value)}
+                        type="password"
+                        required
+                        />
+                        <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-gray-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M22 12h-6l-2 3h-4l-2-3H2"
+                            />
+                        </svg>
                         </span>
                     </div>
                 </div>

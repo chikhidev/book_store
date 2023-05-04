@@ -1,13 +1,49 @@
 import "../css/forms.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom"; 
+
+import { LoginContext } from "../App";
 
 const Login = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [message, setMessage] = useState();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const [logged, setLogged] = useContext(LoginContext);
+    // will come from jwt
+    
+    const handleLogin = (e) => {
+        e.preventDefault();
+        setLoading(true)
+        fetch('http://127.0.0.1:4000/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setError(!data.success)
+            setMessage(data.data.message ? data.data.message : data.data[0].message)
+            localStorage.setItem('token', data.data.token)
+            setLoading(false)
+            console.log(data.data);
+            if (data.success)
+            {
+                setLogged(true)
+                navigate("/")
+            }
+          });
+      };
     return (
         <div className="login popup">
-            <form className="form-popup">
+            <form onSubmit={handleLogin} className="form-popup">
                 <div className="form-header">
                     <div className="welcome-msg">
                         Welcome Back
@@ -22,6 +58,8 @@ const Login = () => {
                 <div className="form-hero">
                     <div className="input-grp relative">
                         <input
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email"
                             className="w-full rounded-lg text-sm shadow-sm"
                         />
@@ -45,6 +83,8 @@ const Login = () => {
 
                     <div className="input-grp relative">
                         <input
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             type="password"
                             className="w-full rounded-lg text-sm shadow-sm"
@@ -70,7 +110,7 @@ const Login = () => {
                         <button
                             type="submit"
                             className="sign-in-btn form-primary-btn  inline-block rounded-lg bg-blue-500  text-sm font-medium text-white"
-                    >
+                        >
                         {
                         loading ? 'loading...'
                         : 
