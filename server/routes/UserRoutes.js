@@ -4,7 +4,11 @@ const Middleware = require("../middlewares/MiddleWare")
 const UserRouter = express.Router();
 
 //define user routes
-UserRouter.get("/", Controller.User.searchUsers) //this route for searching users takes `user?q=searchTerm` returns a users array
+UserRouter.get(
+            "/", 
+            Middleware.validate.searchUsers,
+            Controller.User.searchUsers
+            ) //this route for searching users takes `user?q=searchTerm` returns a users array
 UserRouter.post(
             "/",
             Middleware.auth.authenticateToken,

@@ -131,8 +131,27 @@ const updatePassword = async (req, res, next) => {
     next()
 }
 
+const searchUsers = async (req, res, next) => {
+  const query = Joi.object({
+    query: Joi.string().allow('').trim().label('query').required()
+  });
+
+  try {
+    const validatedQuery = await query.validateAsync(req.query);
+    req.query = validatedQuery;
+    next();
+  } catch (error) {
+    res.status(400).json({
+      success:false,
+      data:{
+        message:'Theres no query provided',
+        err: error.details[0].message
+      }
+    });
+  }
+};
 
 
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword
+    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers
   }

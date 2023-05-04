@@ -242,23 +242,24 @@ const findCardByID = async (req, res) => {
 
 
 
-searchUsers = async (req, res) => {
-  const query = req.query.q;
+const searchUsers = async (req, res) => {
+  const query = req.query.query;
+
   try {
     const users = await User.find({
       $or: [
         { username: { $regex: query, $options: 'i' } },
         { email: { $regex: query, $options: 'i' } },
-      ],
-    });
+      ]
+    }).select('username email avatar bio createdAt');
     res.status(200).json({
       success: true,
-      data: users,
+      data: users
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      data: 'Server Error',
+      data: err.message
     });
   }
 };
