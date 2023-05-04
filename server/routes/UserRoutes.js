@@ -5,6 +5,11 @@ const UserRouter = express.Router();
 
 //define user routes
 UserRouter.get("/", Controller.User.searchUsers) //this route for searching users takes `user?q=searchTerm` returns a users array
+UserRouter.post(
+            "/",
+            Middleware.auth.authenticateToken,
+            Controller.User.getUserByToken
+            ) //this route for searching users takes `user?q=searchTerm` returns a users array
 UserRouter.get("/:id", Controller.User.findById)
 UserRouter.post(
             "/:id/make_admin", 

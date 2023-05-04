@@ -11,7 +11,7 @@ connectDB()
 
 //allow app use only client url
 app.use(cors({
-   origin: 'http://localhost:5173'
+   origin: process.env.CLIENT
  }));
 
 //use body-parser

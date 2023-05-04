@@ -36,6 +36,33 @@ const findById = async (req, res) => {
 }
 
 
+
+// find user by passing token
+const getUserByToken = async (req, res) => {
+    //hard coded email to test with
+    const id = req.user.id;
+    try {
+        const userFound = await User.findById(id).select('username email avatar bio createdAt');
+      if (!userFound) {
+        return res.status(404).json({
+          sucess:false,
+          data:{message:`User with id ${id} not found`}
+        });
+      }
+        res.status(200).json({
+          sucess : true,
+          data: userFound
+        })
+    }
+    catch (err) {
+      res.json({
+        sucess : false,
+        data: err
+      });
+    }
+}
+
+
 const makeAdmin = async (req, res) => {
     //hard coded email to test with
     const id = req.params.id;
@@ -226,5 +253,6 @@ searchUsers = async (req, res) => {
 
 module.exports = {
     findById, findStoreById, findFullById, 
-    findByEmail, findCardByID, test, searchUsers, makeAdmin
+    findByEmail, findCardByID, test, searchUsers, makeAdmin,
+    getUserByToken
 }
