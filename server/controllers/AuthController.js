@@ -48,7 +48,6 @@ const login = async (req, res) => {
         // Return success response with JWT and message
         return res.status(200).json({
             success: true,
-            token,
             data: {
                 message: "Logged in successfully",
                 token
@@ -64,6 +63,51 @@ const login = async (req, res) => {
         });
     }
 }
+
+//change user pqssword
+const updatePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const { email } = req.user;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        data: {
+          message: "This user does not exist!",
+        },
+      });
+    }
+
+    const isPasswordMatch = await argon2.verify(user.password, oldPassword);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        data: {
+          message: "Incorrect password",
+        },
+      });
+    }
+
+    user.password = await argon2.hash(newPassword);
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        message: "Password changed successfully",
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      data: {
+        message: "Something went wrong, please try again later",
+      },
+    });
+  }
+};
 
 const drop = async (req, res) => {
     // req.body = {email: "chikhi.dev@gmail.com", password:"test123"}
@@ -186,5 +230,5 @@ const logout = async (req, res) => {
 };
 
 module.exports = {
-    login, register, drop, logout
+    login, register, drop, logout, updatePassword
 }

@@ -66,6 +66,7 @@ const getUserByToken = async (req, res) => {
 const makeAdmin = async (req, res) => {
     //hard coded email to test with
     const id = req.params.id;
+
     try {
         const userFound = await User.findById(id).select('username email isAdmin');
       if (!userFound) {
@@ -86,21 +87,35 @@ const makeAdmin = async (req, res) => {
 
        try{
 
-        User.updateOne({ _id: id }, { isAdmin: true })
+          try{
 
-        return res.status(200).json({
-          sucess : true,
-          data: {
-            message: 'User is an admin now'
+            await User.updateOne({ _id: id }, { isAdmin: true })
+
+          }catch(err){
+
+            return res.json({
+              sucess : false,
+              data: {
+                message: 'There was an error',
+                err
+              }
+            })
+            
           }
-        })
+
+          return res.status(200).json({
+            sucess : true,
+            data: {
+              message: 'User is an admin now'
+            }
+          })
 
        }
-       catch(err){
-        return res.json({
-          sucess : false,
-          data: err
-        });
+        catch(err){
+          return res.json({
+            sucess : false,
+            data: err
+          });
        }
         
     }

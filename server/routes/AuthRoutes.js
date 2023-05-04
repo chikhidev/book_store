@@ -21,6 +21,13 @@ AuthRouter.post(
                 )
 
 AuthRouter.post(
+                "/change_password",
+                Middleware.auth.authenticateToken,
+                Middleware.validate.updatePassword,
+                Controller.Auth.updatePassword
+                )
+
+AuthRouter.post(
                 "/logout",
                 Middleware.auth.authenticateToken,
                 Controller.Auth.logout

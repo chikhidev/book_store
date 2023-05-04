@@ -111,6 +111,28 @@ const createBook = async (req, res, next) => {
     next()
 }
 
+
+const updatePassword = async (req, res, next) => {
+
+  const query = Joi.object({
+    oldPassword: Joi.string().required().label('Old password'),
+    newPassword: Joi.string().required().label('New password')
+  });
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        },
+      });
+    }
+    next()
+}
+
+
+
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass, createBook
+    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword
   }

@@ -25,9 +25,6 @@ function App() {
         'Content-Type': 'application/json',
         'authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      // user:{
-      //   isAdmin: true
-      // },
       body: JSON.stringify({
         title: title,
         author: author,
