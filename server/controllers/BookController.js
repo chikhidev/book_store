@@ -1,16 +1,69 @@
-const Middleware = require('../middlewares/Middleware');
 const User = require('../models/userModel')
 
 const Book = require('../models/Model').bookModel;
 
-// find all books in the store
-const getAllBooks = async (req, res) => {
+const getBooks = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 10;
+  const title = req.query.title;
+  const author = req.query.author ;
+  const publisher = req.query.publisher;
+  const publicationDate = req.query.publicationDate;
+  const language = req.query.language;
+  const price = parseFloat(req.query.price);
+  const category = req.query.category;
+  const createdBy = req.query.createdBy;
+  const dateRegex = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
+
+  const query = {};
+
+  if (createdBy) {
+    query.createdBy = new RegExp(createdBy, 'i');
+  }
+  if (title) {
+    query.title = new RegExp(title, 'i');
+  }
+  if (author) {
+    query.author = new RegExp(author, 'i');
+  }
+  if (publisher) {
+    query.publisher = new RegExp(publisher, 'i');
+  }
+  if (publicationDate && dateRegex.test(publicationDate)) {
+    query.publicationDate = new RegExp(publicationDate, 'i');
+  }
+  if (language) {
+    query.language = new RegExp(language, 'i');
+  }
+  if (price) {
+    query.price = { $lte: parseFloat(price) };
+  }
+  if (category) {
+    query.category = new RegExp(category, 'i');
+  }
+
   try {
-    const books = await Book.find({});
-    return res.status(200).json({ success: true, data: { books } });
+    const books = await Book.find(query).select('-description -createdAt -updatedAt -author')
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .exec();
+
+    const totalBooksCount = await Book.countDocuments(query).exec();
+    const totalPages = Math.ceil(totalBooksCount / pageSize);
+
+    return res.status(200).json({
+      success: true,
+      data: { books },
+      page,
+      pageSize,
+      totalPages,
+      totalBooksCount,
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to get all books' } });
+    return res
+      .status(500)
+      .json({ success: false, data: { message: 'Failed to get books' } });
   }
 };
 
@@ -30,11 +83,15 @@ const getBookById = async (req, res) => {
 // create a new book
 const createBook = async (req, res) => {
 
+  if (!req.file) {
+    return res.status(400).json({ success:false, data:{message: 'No file uploaded'} });
+  }
+
   const { title, author,
     description, publisher,
     publicationDate, language,
     price, category,
-    stock, imageUrl } = req.body;
+    stock } = req.body;
 
       try {
 
@@ -59,7 +116,7 @@ const createBook = async (req, res) => {
           price,
           category,
           stock,
-          imageUrl,
+          imageUrl: `/uploads/books/${req.file.filename}`,
           createdBy: req.user.id
         });
         
@@ -113,7 +170,7 @@ const deleteBook = async (req, res) => {
 
 
   module.exports = {
-    getAllBooks,
+    getBooks,
     getBookById,
     createBook,
     updateBook,

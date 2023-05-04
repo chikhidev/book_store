@@ -93,8 +93,7 @@ const createBook = async (req, res, next) => {
     language: Joi.string().required(),
     price: Joi.number().required(),
     category: Joi.string().required(),
-    stock: Joi.number().required(),
-    imageUrl: Joi.string().uri().required(),
+    stock: Joi.number().required()
   });
 
 

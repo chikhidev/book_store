@@ -5,8 +5,11 @@ const Controller = require('../controllers/Controller');
 
 const BookRoute = express.Router();
 
-// get all books
-BookRoute.get('/', Controller.Book.getAllBooks);
+// get books `book?page=1&pageSize=10` with pagination
+//queres:
+        //page, pagesize, author, publisher, publicationDate, language, price, category
+        //book?category=manga
+BookRoute.get('/', Controller.Book.getBooks);
 
 // get a book by ID
 BookRoute.get(
@@ -20,6 +23,7 @@ BookRoute.post(
             Middleware.auth.authenticateToken,
             Middleware.auth.isAdmin,
             Middleware.validate.createBook,
+            Middleware.file.uploadBookImage,
             Controller.Book.createBook
             );
 
