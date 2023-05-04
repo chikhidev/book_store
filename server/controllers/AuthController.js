@@ -11,7 +11,7 @@ const login = async (req, res) => {
 
 
         // Search for user by email
-        const user = await User.findOne({ email }).select("email password");
+        const user = await User.findOne({ email }).select("email password isAdmin username");
 
         // Check if user exists
         if (!user) {
@@ -35,7 +35,9 @@ const login = async (req, res) => {
         }
 
         // Generate a JSON Web Token (JWT) for the authenticated user
-        const token = user.generateAuthToken();
+        const token = MiddleWare.auth.generateToken({
+          id: user._id, isAdmin : user.isAdmin, username: user.username, email: user.email
+        })
 
 
         // res.cookie("token", token, {
@@ -112,7 +114,7 @@ const drop = async (req, res) => {
       }
     } catch (err) {
       res.status(400).json({
-        sucess:false,
+        success:false,
         message: "Something went wrong"
       })
     }
@@ -137,7 +139,7 @@ const register = async (req, res)=>{
           const existingUser = await User.findOne({ email: email });
           if (existingUser) {
               return res.status(400).json({
-                  sucess: false,
+                  success: false,
                   data: {message:"User with this email already exists"}
               });
           }
@@ -145,20 +147,20 @@ const register = async (req, res)=>{
           try{
               await newUser.save()
               res.status(200).json({
-                  sucess: true,
+                  success: true,
                   data: {message:"Created successfully"}
               })
           }
           catch{
               res.status(406).json({
-                  sucess: false,
+                  success: false,
                   data: {message:"Cannot create this user"}
               })
           }
 
         }catch{
           res.status(502).json({
-            sucess:false,
+            success:false,
             data:{message: "Failed to create this user!"
           }
           })

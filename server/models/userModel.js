@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     lastName: {
         type: String
     },
+    isAdmin:{
+        type: Boolean,
+        default: false
+    },
     avatar: {
       type: String, default: 'https://icons8.com/icon/98957/user'
     },
@@ -38,21 +42,18 @@ const UserSchema = new mongoose.Schema({
       type: Number
     },
     store: {
-      type: [bookSchema]
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     saved:{
-      type:[bookSchema]
+      type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     shoppingCard:{
-      type:[bookSchema]
+      type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     orders: {
       type: [orderSchema]
     }
   });
   
-  UserSchema.methods.generateAuthToken = function() {
-    return  Auth.generateToken(this._id);
-  };
 
   module.exports = mongoose.model('User', UserSchema);

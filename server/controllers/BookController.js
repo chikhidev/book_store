@@ -1,3 +1,6 @@
+const Middleware = require('../middlewares/Middleware');
+const User = require('../models/userModel')
+
 const Book = require('../models/Model').bookModel;
 
 // find all books in the store
@@ -26,26 +29,56 @@ const getBookById = async (req, res) => {
 
 // create a new book
 const createBook = async (req, res) => {
-  const { title, author, description, publisher, publicationDate, language, price, category, stock, imageUrl } = req.body;
-  try {
-    const book = new Book({
-      title,
-      author,
-      description,
-      publisher,
-      publicationDate,
-      language,
-      price,
-      category,
-      stock,
-      imageUrl,
-    });
-    await book.save();
-    return res.status(201).json({ success: true, data: { book } });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
-  }
+
+  const { title, author,
+    description, publisher,
+    publicationDate, language,
+    price, category,
+    stock, imageUrl } = req.body;
+
+      try {
+
+        // Check if a book with the same title already exists
+        const bookCount = await Book.countDocuments({ title: title });
+        if (bookCount > 0) {
+          return res.status(400).json({
+            success: false,
+            data: {
+              message: "There's already a book with the same title",
+            },
+          });
+        }
+
+        const book = new Book({
+          title,
+          author,
+          description,
+          publisher,
+          publicationDate,
+          language,
+          price,
+          category,
+          stock,
+          imageUrl,
+          createdBy: req.user.id
+        });
+        
+
+        await book.save();
+        
+        // Update the store array of the user with the ID of the created book
+        await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
+
+        return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
+
+
+      } catch (error) {
+        console.error(error);
+       return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+      }
+ 
+
+  
 };
 
 // update a book's information

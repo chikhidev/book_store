@@ -81,6 +81,36 @@ const validateEmailPass = (req, res, next) =>{
   }
 }
 
+
+const createBook = async (req, res, next) => {
+
+  const query = Joi.object({
+    title: Joi.string().required(),
+    author: Joi.string().required(),
+    description: Joi.string().required(),
+    publisher: Joi.string().required(),
+    publicationDate: Joi.date().required(),
+    language: Joi.string().required(),
+    price: Joi.number().required(),
+    category: Joi.string().required(),
+    stock: Joi.number().required(),
+    imageUrl: Joi.string().uri().required(),
+  });
+
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        },
+      });
+    }
+
+    next()
+}
+
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass
+    validateEmailPass, validateUserNameEmailPass, createBook
   }
