@@ -1,7 +1,7 @@
 import "../css/forms.css";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
-
+import { Link } from "react-router-dom";
 import { LoginContext } from "../App";
 
 const Login = () => {
@@ -13,7 +13,20 @@ const Login = () => {
     const navigate = useNavigate();
     const [logged, setLogged] = useContext(LoginContext);
     // will come from jwt
-    
+    const verifyUserInput = (e) => {
+        e.preventDefault()
+        if (!email.trim())
+        {
+            setError("bad email")
+            return false;
+        }
+        if (password.trim().length < 8 || password != confirm )
+        {
+            setError("bad password")
+            return false;
+        }
+        handleLogin(e)
+  }
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true)
@@ -43,7 +56,7 @@ const Login = () => {
       };
     return (
         <div className="login popup">
-            <form onSubmit={handleLogin} className="form-popup">
+            <form onSubmit={verifyUserInput} className="form-popup">
                 <div className="form-header">
                     <div className="welcome-msg">
                         Welcome Back
@@ -105,7 +118,10 @@ const Login = () => {
                             </svg>
                         </span>
                     </div>
-
+                    {/* error */}
+                    <div className="form-error">
+                        {error ? <span>{error}</span> : ""}
+                    </div>
                     <div className="btn-grp">
                         <button
                             type="submit"
@@ -127,7 +143,11 @@ const Login = () => {
                 
                 <div className="form-footer">
                     Don't have an account?
-                    <button className="footer-register-btn form-primary-btn">Register</button>
+                    <Link to="/register">
+                        <button className="footer-register-btn form-primary-btn">
+                            Register
+                        </button>
+                    </Link>
                 </div>
             </form>
         </div>

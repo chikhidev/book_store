@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import banner from './assets/banner.webp'
-import { useRef } from "react";
 import './css/navbar.css';
 import './css/index.css';
 import './js/index.js';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import { createContext } from 'react';
@@ -24,10 +23,14 @@ function Home() {
 }
 
 function Navbar() {
-	const navRef = useRef();
   const [logged, setLogged] = useContext(LoginContext)
+  const logout = (e) => {
+    e.preventDefault()
+    setLogged(false)
+    localStorage.removeItem("token")
+  }
 	return (
-			<nav ref={navRef}>
+			<nav>
           <div className="nav-left links">
               <div className="link">
                   <Link to="/">Home</Link>
@@ -53,19 +56,33 @@ function Navbar() {
               {!logged ? 
                 <>
                 <Link to="/login">
-                  <button
-                    className="nav-btn sign-in">
-                    Sign in
-                  </button>
-              </Link>
-              <Link to="/register">
-                  <button
-                    className="nav-btn sign-in">
-                    Register
-                  </button>
-              </Link>
+                    <button
+                      className="nav-btn sign-in">
+                      Sign in
+                    </button>
+                </Link>
+                <Link to="/register">
+                    <button
+                      className="nav-btn sign-in">
+                      Register
+                    </button>
+                </Link>
                 </>
-              : ""
+                : 
+                <div className="dropdown">
+                  <div className="dropdown-hover user-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>  
+                  </div>
+                  <div className="dropdown-menu">
+                    <div className="dropdown-item"> account</div>
+                    <div
+                      onClick={logout}
+                      className="dropdown-item logout">Logout</div>
+                  </div>
+                </div>
+                
               }
               <button
                 className="nav-btn cart">
@@ -96,7 +113,19 @@ function Contact() {
 }
 
 function App() {
-    const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+
+  const checkAlreadyLogged = () => {
+    if (localStorage.getItem("token")) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }
+
+  useEffect(() => {
+    checkAlreadyLogged();
+  }, []);
     return (
     <LoginContext.Provider value={[isLogged, setIsLogged]} >
       <Router>
@@ -106,8 +135,8 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/categories" element={<About/>} />
             <Route path="/new" element={<Contact/>} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register/>} />
+            <Route path="login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+            <Route path="/register" element={isLogged ? <Navigate to="/"/> : <Register />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
           </Routes>
         </div>
       </Router>

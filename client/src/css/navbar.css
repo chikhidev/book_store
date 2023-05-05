@@ -65,7 +65,7 @@ nav .nav-center button > svg {
 
 nav .nav-right {
 	display: flex;
-	flex-basis: 15%;
+	flex-basis: 20%;
 	align-items: center;
 	justify-content: space-evenly;
 }
@@ -85,5 +85,70 @@ nav .nav-right button.cart {
 	background: none;
 	color: #111;
 	display: flex;
+	justify-content: center;
 	align-items: center;
+	width: 35px;
+	height: 35px;
+}
+
+.user-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 35px;
+}
+.dropdown{
+	position: relative;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+}
+.dropdown-hover{
+	display: inline-block;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.dropdown-hover:hover{
+	color: black;
+	border-radius: 50%;
+}
+.dropdown-menu {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #323b40;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+  min-width: 30px;
+  height: 60px;
+  left: -200%;
+  top: 100%;
+  padding: 0;
+}
+.dropdown:hover .dropdown-menu {
+	display: flex;
+	transition: 0.3 all;
+}
+.dropdown-menu .dropdown-item{
+	font-size: 13px;
+	text-decoration: none;
+	border-width: 0;
+	transition: 0.1s;
+}
+.dropdown-menu .dropdown-item:hover:not(.logout) {
+	background: #323b40;
+	color: white;
+}
+.dropdown-menu .dropdown-item:not(:first-of-type){
+	border-top: 1px solid #e0e0e0;
+}
+.logout {
+	color: rgb(219, 11, 11);
+	cursor: pointer;
+	transition: 0.1s;
+}
+.logout:hover {
+	background: rgb(219, 11, 11);
+	color: white;
 }

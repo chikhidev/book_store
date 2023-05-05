@@ -1,5 +1,6 @@
 import "../css/forms.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [error, setError] = useState(false);
@@ -14,7 +15,30 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [age, setAge] = useState("");
 
-      
+  const verifyUserInput = (e) => {
+    e.preventDefault()
+    if (firstName.trim().length < 2)
+    {
+        setError("bad first name")
+        return false;
+    }
+    if (lastName.trim().length < 2)
+    {
+        setError("bad first name")
+        return false;
+    }
+    if (!username.trim() || !/^[a-zA-Z0-9]+$/.test(username))
+    {
+        setError("bad username")
+        return false;
+    }
+    if (password.trim().length < 8 || password != confirm )
+    {
+        setError("bad password")
+        return false;
+    }
+     handleRegister(e)
+  }
   const handleRegister = (e) => {
     e.preventDefault();
     setLoading(true)
@@ -40,7 +64,7 @@ const Register = () => {
 
   return (
     <div className="register popup">
-        <form className="form-popup" onSubmit={handleRegister}>
+        <form className="form-popup" onSubmit={verifyUserInput}>
             <div className="form-header">
             <div className="welcome-msg">
                 Welcome, 
@@ -263,12 +287,16 @@ const Register = () => {
                         </span>
                     </div>
                 </div>
+                {/* error */}
+                <div className="form-error">
+                    {error ? <span>{error}</span> : ""}
+                </div>
                 {/* register btn */}
                 <div className="btn-grp">
                     <button
                         type="submit"
                         className="register-btn"
-                >
+                    >
                     {
                     loading ? 'loading...'
                     : 
@@ -285,7 +313,9 @@ const Register = () => {
                     
             <div className="form-footer">
                 Already have an account?
-                <button className="footer-login-btn form-primary-btn">Login</button>
+                <Link to="/login">
+                    <button className="footer-login-btn form-primary-btn">Login</button>
+                </Link>
             </div>
         </form>
     </div>
