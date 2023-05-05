@@ -4,6 +4,7 @@ import React from 'react';
 import banner from './assets/banner.webp'
 import './css/navbar.css';
 import './css/index.css';
+import './css/hero.css';
 import './js/index.js';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -13,12 +14,52 @@ import Login from './components/Login';
 import Register from './components/Register';
 const LoginContext = createContext();
 import { useContext } from 'react';
+import data from './data.json';
+
 
 function Home() {
   return (
-    <section className="hero">
-       <img src={banner} className="banner"/>
+    <div className="hero featured">
+    <h2 className="featured-title">
+      Books
+      <div className="line-break"></div>
+      For you
+    </h2>
+    <section className="featured-book-section book-section">
+       {data.books.map(
+        (book) => {
+          return (
+            <div key={book._id.$oid} className="book-card">
+                <div className="book-icons">
+                    <div className="book-heart-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 24 24" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>
+                    </div>
+                    <div className="book-cart-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <img className="book-imageUrl" src={book.imageUrl}/>
+                <h5 className="book-title">{book.title}</h5>
+                <hr className="line"></hr>
+                <div className="author-label-call-to-action-container">
+                    <div className="author-label">Writer</div>
+                    <div className="call-to-action">Buy now</div>
+                </div>
+                    <div className="author-price-container">
+                        <div className="book-author">{book.author}</div>
+                        <i className="book-price">{book.price}</i>
+                    </div>
+            </div>
+          )
+        }
+       )}
     </section>
+    </div>
   );
 }
 
@@ -77,16 +118,19 @@ function Navbar() {
                   </div>
                   <div className="dropdown-menu">
                     <div className="dropdown-item"> account</div>
+                    <div className="dropdown-item"> favorite</div>
                     <div
-                      onClick={logout}
-                      className="dropdown-item logout">Logout</div>
-                  </div>
+                    onClick={logout}
+                    className="dropdown-item logout">Logout</div>
+                   </div>
                 </div>
                 
               }
               <button
                 className="nav-btn cart">
-                  <ShoppingCartRoundedIcon sx={{ fontSize: 18 }}/>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  </svg>
               </button>
           </div>
 			</nav>

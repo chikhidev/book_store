@@ -20,7 +20,7 @@ const Login = () => {
             setError("bad email")
             return false;
         }
-        if (password.trim().length < 8 || password != confirm )
+        if (password.trim().length < 8 )
         {
             setError("bad password")
             return false;

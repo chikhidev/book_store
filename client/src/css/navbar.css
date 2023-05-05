@@ -121,8 +121,7 @@ nav .nav-right button.cart {
   color: #323b40;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
   min-width: 30px;
-  height: 60px;
-  left: -200%;
+  left: -100%;
   top: 100%;
   padding: 0;
 }
