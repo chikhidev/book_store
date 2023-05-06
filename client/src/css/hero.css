@@ -1,24 +1,71 @@
 .hero {
-    width: 60%;
-    margin: 0 auto;
-
-}
-.featured .featured-title {
-    font-weight: 600;
-
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
 }
 .book-section {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
     flex-wrap: wrap;
-    box-shadow: 2px 2px 25px 1px rgba(0, 0, 0, 0.029);
-    margin: 0 auto;
+}
+.book-section .featured-header {
+    font-weight: 600;
+    width: 88%;
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: -0.5px;
+}
+.featured .featured-title {
+    font-size: 30px;
+    letter-spacing: -0.5px;
+    line-height: 95%;
+    flex-basis: 20%;
+}
+.book-section .featured-header .featured-arrows {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-basis: 12%;
+    
+}
+.book-section .featured-header .featured-arrows .left-arrow,
+.book-section .featured-header .featured-arrows .right-arrow {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    stroke-width: 1.5;
+    stroke :rgb(32, 32, 32);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 0px 2px 0.5px rgba(57, 57, 57, 0.48);
+    transition: 0.3s;
+}
+.book-section .featured-header .featured-arrows .right-arrow svg,
+.book-section .featured-header .featured-arrows .left-arrow svg {
+    width: 25px;
+    height: 25px;
+}
+.book-section .featured-header .featured-arrows .right-arrow:hover,
+.book-section .featured-header .featured-arrows .left-arrow:hover {
+    stroke :rgb(255,255,255);
+    background: rgb(32, 32, 32);
+}
+.book-cards {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .book-card {
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 22%;
     padding-top: 20px;
     padding-bottom: 10px;
     padding-left: 20px;
@@ -27,6 +74,7 @@
     border-radius: 5px;
     z-index: 100;
     transition: 0.3s;
+    cursor: pointer;
 }
 .book-card:hover {
     z-index: 101;
@@ -45,6 +93,7 @@
     stroke-width: 1.5;
     transition: 0.2s;
     cursor: pointer;
+    width: 20px;
 }
 .book-card .book-icons .book-heart-icon {
     fill : white;
@@ -53,6 +102,7 @@
     transition: 0.2s;
     stroke-width: 1.5;
     cursor: pointer;
+    width: 20px;
 }
 .book-card .book-icons .book-heart-icon:hover {
     fill: rgb(32, 32, 32);
@@ -66,12 +116,20 @@
         max-width: 100%;
         height: auto;
         padding-top: 20px;
+        padding-bottom: 10px;
         padding-left: 30px;
         padding-right: 30px;
-        padding-bottom: 30px;
+        background: #fafafa;
 }
 .book-title {
-
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    height: 35px;
+    justify-content: flex-end;
+    align-self: start;
+    letter-spacing: -0.2px;
 }
 .author-label-call-to-action-container {    
 display: flex;
@@ -79,8 +137,8 @@ flex-direction: row;
 justify-content: space-between;
 width: 100%;
 font-size: 10px;
-color: #33333396;
-font-weight: 400;
+color: #333333c2;
+font-weight: 500;
 }
 hr.line
 {
@@ -100,8 +158,10 @@ hr.line
     width: 100%;
 }
 .book-author {
-
+    font-size: 14px;
+    font-weight: 700;
 }
 .book-price {
-
+    font-size: 14px;
+    font-weight: 700;
 }
