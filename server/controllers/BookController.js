@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
+const {mongoose} = require('../server.imports')
 const fs = require('fs')
-
+const Category = require('../models/CategoryModel').categoryModel
 const Book = require('../models/Model').bookModel;
 
 const getBooks = async (req, res) => {
@@ -91,55 +92,65 @@ const createBook = async (req, res) => {
   const { title, author,
     description, publisher,
     publicationDate, language,
-    price, category,
+    price, categories,
     stock } = req.body;
 
+  try {
 
-      try {
+    // Check if a book with the same title already exists
+    const bookCount = await Book.countDocuments({ title: title });
+    if (bookCount > 0) {
+      fs.unlinkSync(req.imagePath);
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: "There's already a book with the same title",
+        },
+      });
+    }
 
-        // Check if a book with the same title already exists
-        const bookCount = await Book.countDocuments({ title: title });
-        if (bookCount > 0) {
-          fs.unlinkSync(req.imagePath);
-          return res.status(400).json({
-            success: false,
-            data: {
-              message: "There's already a book with the same title",
-            },
-          });
-        }
+    const book = new Book({
+      title,
+      author,
+      description,
+      publisher,
+      publicationDate,
+      language,
+      price,
+      stock,
+      imageUrl: `/images/books/${req.file.filename}`,
+      createdBy: req.user.id
+    });
 
-        const book = new Book({
-          title,
-          author,
-          description,
-          publisher,
-          publicationDate,
-          language,
-          price,
-          category,
-          stock,
-          imageUrl: `/images/books/${req.file.filename}`,
-          createdBy: req.user.id
+    for (const category of categories.split(' ')) {
+      const cat = await Category.findOne({ name: category });
+      if (!cat) {
+        const new_cat = new Category({
+          name: category
         });
-        
-
-        await book.save();
-        
-        // Update the store array of the user with the ID of the created book
-        await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
-
-        return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
-
-
-      } catch (error) {
-        console.error(error);
-        fs.unlinkSync(req.imagePath);
-        return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+        book.categories.push(new_cat._id);
+        new_cat.books.push(book._id)
+        await new_cat.save();
+      } else {
+        book.categories.push(cat._id);
+        cat.books.push(book._id) 
+        await cat.save();
       }
- 
+    }
 
-  
+    await book.save();
+
+    // Update the store array of the user with the ID of the created book
+    await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
+
+
+    return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
+
+  } catch (error) {
+    console.error(error);
+    fs.unlinkSync(req.imagePath);
+    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+  }
 };
 
 // update a book's information

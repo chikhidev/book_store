@@ -15,9 +15,9 @@ BookRoute.get('/', Controller.Book.getBooks);
 
 // get a book by ID
 BookRoute.get(
-            '/:id',
-            Controller.Book.getBookById
-            );
+        '/:id',
+        Controller.Book.getBookById
+        );
 
 // create a new book
 BookRoute.post(
@@ -31,18 +31,18 @@ BookRoute.post(
 
 // update a book by ID
 BookRoute.put(
-            '/:id',
-            Middleware.auth.authenticateToken,
-            Middleware.auth.isAdmin,
-            Controller.Book.updateBook
-            );
+        '/:id',
+        Middleware.auth.authenticateToken,
+        Middleware.auth.isAdmin,
+        Controller.Book.updateBook
+        );
 
 // delete a book by ID
 BookRoute.delete(
-            '/:id',
-            Middleware.auth.authenticateToken,
-            Middleware.auth.isAdmin,
-            Controller.Book.deleteBook
-            );
+        '/:id',
+        Middleware.auth.authenticateToken,
+        Middleware.auth.isAdmin,
+        Controller.Book.deleteBook
+        );
 
 module.exports = BookRoute;

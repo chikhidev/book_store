@@ -29,10 +29,10 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  category: {
-    type: String,
-    required: true
-  },
+  categories: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  }],
   stock: {
     type: Number,
     required: true

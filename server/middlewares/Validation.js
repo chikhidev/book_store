@@ -97,7 +97,7 @@ const createBook = async (req, res, next) => {
       publicationDate: Joi.date().required(),
       language: Joi.string().required(),
       price: Joi.number().required(),
-      category: Joi.string().required(),
+      categories: Joi.string().required(),
       stock: Joi.number().required()
     });
 
