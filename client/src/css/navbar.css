@@ -87,14 +87,17 @@ nav .nav-right button.cart {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 35px;
-	height: 35px;
+	width: 32px;
+	height: 32px;
+	stroke-width: 1.5;
+	stroke: #151515;
 }
 
 .user-icon {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	stroke: #151515;
 	width: 35px;
 }
 .dropdown{
