@@ -1,7 +1,6 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const sharp = require('sharp');
 
 const storageBooks = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -19,10 +18,10 @@ const storageBooks = multer.diskStorage({
       return cb(new Error('Image file already exists'));
     }
 
+    cb(null, filename);
+
     // Store the image path in req object
     req.imagePath = imagePath;
-
-    cb(null, filename);
   },
 });
 
@@ -37,40 +36,44 @@ const uploadImage = multer({
   },
   limits: {
     fileSize: 1024 * 1024 * 2, // 2 MB
+    width: 200,
+    height: 300
   },
-}).single('image')
+});
 
-const uploadBookImage = async (req, res, next) => {
-  uploadImage(req, res, async (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(400).json({ success: false, data: { message: err.message } });
-    }
-
-    // Check if no file was uploaded
-    if (!req.file) {
-      return res.status(400).json({ success: false, data: { message: 'No file uploaded' } });
-    }
-
-    try {
-      const resizedImage = await sharp(req.file.buffer)
-        .resize({ width: 300 })
-        .jpeg({ quality: 70 })
-        .toBuffer();
-
-      // Save the resized image to the server
-      fs.writeFile(req.imagePath, resizedImage, (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ success: false, data: { message: 'Failed to upload image' } });
-        }
-        next();
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ success: false, data: { message: 'Failed to resize image' } });
-    }
-  });
+const uploadBookImage = (req, res, next) => {
+  try {
+    uploadImage.single('image')(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        return res.json({
+          success: false,
+          data: {
+            message: 'Failed while uploading image',
+            err,
+          },
+        });
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        return res.json({
+          success: false,
+          data: {
+            message: 'failed to upload image, make sure you select image file (png, jpeg, jpg)',
+            err,
+          },
+        });
+      }
+      // Everything went fine.
+      next();
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      data: {
+        message: 'Unable to upload image',
+      },
+    });
+  }
 };
 
 module.exports = {
