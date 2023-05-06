@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const fs = require('fs')
 
 const Book = require('../models/Model').bookModel;
 
@@ -93,11 +94,13 @@ const createBook = async (req, res) => {
     price, category,
     stock } = req.body;
 
+
       try {
 
         // Check if a book with the same title already exists
         const bookCount = await Book.countDocuments({ title: title });
         if (bookCount > 0) {
+          fs.unlinkSync(req.imagePath);
           return res.status(400).json({
             success: false,
             data: {
@@ -116,7 +119,7 @@ const createBook = async (req, res) => {
           price,
           category,
           stock,
-          imageUrl: `/uploads/books/${req.file.filename}`,
+          imageUrl: `/images/books/${req.file.filename}`,
           createdBy: req.user.id
         });
         
@@ -131,7 +134,8 @@ const createBook = async (req, res) => {
 
       } catch (error) {
         console.error(error);
-       return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+        fs.unlinkSync(req.imagePath);
+        return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
       }
  
 

@@ -1,42 +1,46 @@
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [description, setDescription] = useState('');
-  const [publisher, setPublisher] = useState('');
-  const [publicationDate, setPublicationDate] = useState('');
-  const [language, setLanguage] = useState('');
-  const [price, setPrice] = useState(0);
-  const [category, setCategory] = useState('');
-  const [stock, setStock] = useState(0);
-  const [imageUrl, setImageUrl] = useState('');
+  
+  const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  //temp
+  const [books, setBooks] = useState([])
 
   const handleCreateBook = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const bookDetails = {
+      title: 'The Name of the Wind',
+      author: 'Patrick Rothfuss',
+      description:
+        'The Name of the Wind is a fantasy novel about a young orphan boy named Kvothe who grows up to become a powerful wizard.',
+      publisher: 'DAW Books',
+      publicationDate: '2007-03-27',
+      language: 'English',
+      price: 12.99,
+      category: 'fantasy',
+      stock: 25,
+    };
+
+    for (const key in bookDetails) {
+      formData.append(key, bookDetails[key]);
+    }
+
     setLoading(true)
     fetch('http://127.0.0.1:4000/book/create', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify({
-        title: title,
-        author: author,
-        description: description,
-        publisher: publisher,
-        publicationDate: publicationDate,
-        language: language,
-        price: price,
-        category: category,
-        stock: stock,
-        imageUrl: imageUrl
-      }),
+      body: formData
     })
       .then((res) => res.json())
       .then((data) => {
@@ -48,119 +52,41 @@ function App() {
       });
   };
 
+  const handleImageChange = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+
+  useEffect(()=>{
+    fetch('http://localhost:4000/book?title=Test')
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      setBooks(data.data.books)
+      console.log(books);
+    })
+  },[books.length])
+
+
   return (
     <div className="container w-full">
-      <form onSubmit={handleCreateBook}>
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            placeholder="Enter title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="author">Author:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="author"
-            placeholder="Enter author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea
-            className="form-control"
-            id="description"
-            placeholder="Enter description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="publisher">Publisher:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="publisher"
-            placeholder="Enter publisher"
-            value={publisher}
-            onChange={(e) => setPublisher(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="publicationDate">Publication Date:</label>
-          <input
-            type="date"
-            className="form-control"
-            id="publicationDate"
-            placeholder="Enter publication date"
-            value={publicationDate}
-            onChange={(e) => setPublicationDate(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="language">Language:</label>
-          <input
-           type="text"
-           className="form-control"
-           id="language"
-           placeholder="Enter language"
-           value={language}
-           onChange={(e) => setLanguage(e.target.value)}
-           />
-           </div>
-           <div className="form-group">
-           <label htmlFor="price">Price:</label>
-           <input
-           type="number"
-           className="form-control"
-           id="price"
-           placeholder="Enter price"
-           value={price}
-           onChange={(e) => setPrice(e.target.value)}
-           />
-           </div>
-           <div className="form-group">
-           <label htmlFor="category">Category:</label>
-           <input
-           type="text"
-           className="form-control"
-           id="category"
-           placeholder="Enter category"
-           value={category}
-           onChange={(e) => setCategory(e.target.value)}
-           />
-           </div>
-           <div className="form-group">
-           <label htmlFor="stock">Stock:</label>
-           <input
-           type="number"
-           className="form-control"
-           id="stock"
-           placeholder="Enter stock"
-           value={stock}
-           onChange={(e) => setStock(e.target.value)}
-           />
-           </div>
-           <div className="form-group">
-           <label htmlFor="imageUrl">Image URL:</label>
-           <input
-           type="text"
-           className="form-control"
-           id="imageUrl"
-           placeholder="Enter image URL"
-           value={imageUrl}
-           onChange={(e) => setImageUrl(e.target.value)}
-           />
-           </div>
 
+
+        {
+          books?.map((book, idBook)=>{
+            return <div key={idBook} className="card">
+              <img className="card-img-top" src={'http://localhost:4000' + book.imageUrl} alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">{book.title}</h5>
+                <p className="card-text">{book.category}</p>
+                <a href="#" className="btn btn-primary">shop</a>
+              </div>
+            </div>
+          })
+        }
+
+
+      {/* <form onSubmit={handleCreateBook}>
+          <input type="file" onChange={handleImageChange} />
            <p className={`text-sm flex items-center ${error ? 'text-red-700' : 'text-green-700'}` } >
               {
                 error ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 pr-2">
@@ -188,7 +114,7 @@ function App() {
               </span>
               }
            </button>
-           </form>
+           </form> */}
            </div>
   )}
 

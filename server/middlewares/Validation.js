@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const fs = require('fs')
 
 const validateUserNameEmailPass = (req, res, next) =>{
     try{
@@ -82,33 +83,48 @@ const validateEmailPass = (req, res, next) =>{
 }
 
 
+
+
+
 const createBook = async (req, res, next) => {
 
-  const query = Joi.object({
-    title: Joi.string().required(),
-    author: Joi.string().required(),
-    description: Joi.string().required(),
-    publisher: Joi.string().required(),
-    publicationDate: Joi.date().required(),
-    language: Joi.string().required(),
-    price: Joi.number().required(),
-    category: Joi.string().required(),
-    stock: Joi.number().required()
-  });
+  try {
+    const bookSchema = Joi.object({
+      title: Joi.string().required(),
+      author: Joi.string().required(),
+      description: Joi.string().required(),
+      publisher: Joi.string().required(),
+      publicationDate: Joi.date().required(),
+      language: Joi.string().required(),
+      price: Joi.number().required(),
+      category: Joi.string().required(),
+      stock: Joi.number().required()
+    });
 
+    const { error, value } = bookSchema.validate(req.body);
 
-    const { error, value } = query.validate(req.body);
     if (error) {
+      fs.unlinkSync(req.imagePath);
       return res.status(400).json({
         success: false,
         data: {
-          message: error.details[0].message,
-        },
+          message: error.details[0].message
+        }
       });
     }
 
-    next()
-}
+    // If validation passes, pass the request to the next middleware
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+  }
+};
+
+
+
+
+
 
 
 const updatePassword = async (req, res, next) => {

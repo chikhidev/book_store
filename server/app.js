@@ -16,11 +16,16 @@ app.use(cors({
 
 //use body-parser
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the 'images/books' directory
+app.use('/images/books', express.static('images/books'));
 
 //group routing for user
 app.use('/user', Route.UserRouter );
 app.use('/auth', Route.AuthRouter );
 app.use('/book', Route.BookRouter );
+app.use('/images', Route.ImagesRouter)
 
 
 //Server listening

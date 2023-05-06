@@ -4,28 +4,26 @@ const User = require('../models/userModel')
 
 //generate token middleWare
 const generateToken = payload => {
-  console.log('payload for genrating toke: ',payload)
     const secret = process.env.JWT_SECRET;
-    return jwt.sign(payload, secret, { expiresIn: '1h' });
+    return jwt.sign(payload, secret, { expiresIn: '2d' });
 
 };
 
 // Middleware to authenticate token
 const authenticateToken = (req, res, next) => {
-
+  
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
     if (!token)
     {
-      return res.status(401).json({success:false,data:{ message: 'You are not authorized'} });
+      return res.status(401).json({success:false,data:{ message: 'You are not authorized, Please login'} });
     }
     // Verify the JWT token
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      if (err) return res.status(403).json({success:false, data:{ message: 'Access token is not valid' }});
-  
-      console.log(payload)
+      if (err) return res.status(403).json({success:false, data:{ message: 'Your session has expired, Please login!' }});
       req.user = payload
+
       next()
     
     })
@@ -34,7 +32,6 @@ const authenticateToken = (req, res, next) => {
 
 
 const isAdmin = async (req, res, next) => {
-  console.log(req.user)
   try
   {
     
@@ -45,7 +42,6 @@ const isAdmin = async (req, res, next) => {
     if (!req.user.isAdmin) {
       return res.status(401).json({ success: false, data: { message: 'Unauthorized: You are not an admin' } });
     }
-
     next();
   }
   catch (error)

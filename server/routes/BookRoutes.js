@@ -3,7 +3,9 @@ const { express } = require('../server.imports');
 const Middleware = require('../middlewares/Middleware');
 const Controller = require('../controllers/Controller');
 
+
 const BookRoute = express.Router();
+BookRoute.use(express.urlencoded({ extended: true }));
 
 // get books `book?page=1&pageSize=10` with pagination
 //queres:
@@ -19,13 +21,13 @@ BookRoute.get(
 
 // create a new book
 BookRoute.post(
-            '/create',
-            Middleware.auth.authenticateToken,
-            Middleware.auth.isAdmin,
-            Middleware.validate.createBook,
-            Middleware.file.uploadBookImage,
-            Controller.Book.createBook
-            );
+        '/',
+        Middleware.auth.authenticateToken,
+        Middleware.auth.isAdmin,
+        Middleware.file.uploadBookImage,
+        Middleware.validate.createBook,
+        Controller.Book.createBook
+        );
 
 // update a book by ID
 BookRoute.put(
