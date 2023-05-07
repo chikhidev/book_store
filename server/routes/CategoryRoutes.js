@@ -22,4 +22,15 @@ CategoryRouter.post(
     Controller.Category.makeCategory
 )
 
+//update category by id
+//example: /category/{id}
+CategoryRouter.put(
+    '/:id',
+    MiddleWare.auth.authenticateToken,
+    MiddleWare.auth.isAdmin,
+    MiddleWare.validate.createCategory,
+    MiddleWare.validate.updateCategory,
+    Controller.Category.updateCategoryById
+)
+
 module.exports = CategoryRouter

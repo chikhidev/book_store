@@ -117,6 +117,29 @@ const makeCategory = async (req, res) => {
     }
 };
 
+const updateCategoryById = async (req, res) => {
+    const id = req.params.id;
+    const { name, description } = req.body;
+  
+    try {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        id,
+        { name, description },
+        { new: true }
+      );
+  
+      return res
+        .status(200)
+        .json({ success: true, data: { category: updatedCategory } });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ success: false, data: { message: 'Failed to update category' } });
+    }
+  };
+  
+
 module.exports = {
-    getAllCategories, getCategoryById, makeCategory
+    getAllCategories, getCategoryById, makeCategory, updateCategoryById
 }

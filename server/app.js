@@ -26,7 +26,7 @@ app.use('/user', Route.UserRouter );
 app.use('/auth', Route.AuthRouter );
 app.use('/book', Route.BookRouter );
 app.use('/category', Route.CategoryRouter );
-app.use('/images', Route.ImagesRouter)
+app.use('/images', Route.ImagesRouter )
 
 
 //Server listening

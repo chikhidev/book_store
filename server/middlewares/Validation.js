@@ -1,5 +1,6 @@
 const Joi = require('joi')
 const fs = require('fs')
+const Model = require('../models/Model')
 
 const validateUserNameEmailPass = (req, res, next) =>{
     try{
@@ -178,7 +179,38 @@ const createCategory = async (req, res, next)=>{
     next()
 }
 
+const updateCategory = async (req, res, next) => {
+  const id = req.params.id;
+  const { name, description } = req.body;
+
+  try {
+    const category = await Model.categoryModel.findById(id);
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        data: { message: 'Category not found' },
+      });
+    }
+
+    if (category.name === name && category.description === description) {
+      return res.status(400).json({
+        success: false,
+        data: { message: 'You have to provide changes to update the category!' },
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      data: { message: 'Something went wrong!' },
+    });
+  }
+};
+
 
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers, createCategory
+    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers, createCategory, updateCategory
   }
