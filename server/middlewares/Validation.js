@@ -119,13 +119,7 @@ const createBook = async (req, res, next) => {
     console.error(error);
     return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
   }
-};
-
-
-
-
-
-
+}
 
 const updatePassword = async (req, res, next) => {
 
@@ -164,9 +158,27 @@ const searchUsers = async (req, res, next) => {
       }
     });
   }
-};
+}
+
+const createCategory = async (req, res, next)=>{
+  const query = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required()
+  });
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        },
+      });
+    }
+    next()
+}
 
 
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers
+    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers, createCategory
   }

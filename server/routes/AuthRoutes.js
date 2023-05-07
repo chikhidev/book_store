@@ -1,9 +1,6 @@
 const {express} = require("../server.imports")
 const Controller = require("../controllers/Controller")
-const Middleware = {
-    validate : require("../middlewares/Validation"),
-    auth : require('../middlewares/Auth')
-};
+const Middleware = require('../middlewares/MiddleWare')
 const AuthRouter = express.Router();
 
 //loging route
