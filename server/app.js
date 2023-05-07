@@ -30,6 +30,6 @@ app.use('/images', Route.ImagesRouter)
 
 
 //Server listening
-app.listen(4000, ()=>
+app.listen(process.env.PORT, ()=>
    console.log("Server started!")
 );
