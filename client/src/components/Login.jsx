@@ -3,6 +3,8 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Link } from "react-router-dom";
 import { LoginContext } from "../App";
+import store from '../redux/store';
+import { login, logout } from '../redux/actions';
 
 const Login = () => {
     const [error, setError] = useState(false);
@@ -11,8 +13,8 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const [logged, setLogged] = useContext(LoginContext);
-    // will come from jwt
+      const [logged, setLogged] = useState(store.getState().loginStatus);
+  // will come from jwt
     const verifyUserInput = (e) => {
         e.preventDefault()
         if (!email.trim())
@@ -44,13 +46,22 @@ const Login = () => {
           .then((data) => {
             setError(!data.success)
             setMessage(data.data.message ? data.data.message : data.data[0].message)
-            localStorage.setItem('token', data.data.token)
             setLoading(false)
-            console.log(data.data);
+            console.log(data);
             if (data.success)
             {
+                localStorage.setItem('token', data.data.token)
+                console.log("store before => ");
+                console.log(store.getState())
+                store.dispatch(login(data.data.token))
+                console.log("store after => ");
+                console.log(store.getState())
                 setLogged(true)
                 navigate("/")
+                store.dispatch(login(data.data.token))
+                setTimeout(function() {
+                    localStorage.removeItem('token');
+                  }, 1000 * 60 * 5); // after 5 min
             }
           });
       };

@@ -1,18 +1,28 @@
 import { useState, useEffect, createContext, useContext } from 'react';
+import { useSelector } from 'react-redux';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import '../css/navbar.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { LoginContext } from '../App';
-
+import store from "../redux/store"
+import { logout } from "../redux/actions"
 
 function Navbar() {
-    const [logged, setLogged] = useContext(LoginContext)
-    const logout = (e) => {
-      e.preventDefault()
-      setLogged(false)
-      localStorage.removeItem("token")
-    }
+      const [logged, setLogged] = useState(false);
+
+      const loginStatus = useSelector(state => state.loginStatus);
+
+      useEffect(() => {
+        setLogged(loginStatus);
+      }, [loginStatus]);
+
+      const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        store.dispatch(logout())
+      };
       return (
         <nav>
             <div className="nav-left links">
@@ -54,6 +64,7 @@ function Navbar() {
                   </>
                   : 
                   <>
+                      {/* user icon */}
                       <div className="dropdown">
                         <div className="dropdown-hover user-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -64,10 +75,11 @@ function Navbar() {
                           <div className="dropdown-item">account</div>
                           <div className="dropdown-item"> favorite</div>
                           <div
-                            onClick={logout}
+                            onClick={handleLogout}
                             className="dropdown-item logout">Logout</div>
                         </div>
                       </div>
+                      {/* cart icon */}
                       <button
                       className="nav-btn cart">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
