@@ -53,6 +53,7 @@ const login = async (req, res) => {
                 token
             }
         });
+        
     } catch (error) {
         // Handle any errors that may occur during the execution of the function
         return res.status(500).json({

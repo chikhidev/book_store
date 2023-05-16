@@ -168,7 +168,6 @@ const updateBook = async (req, res) => {
 };
 
 // delete a book
-// delete a book
 const deleteBook = async (req, res) => {
     const id = req.params.id;
     try {
