@@ -15,6 +15,9 @@ const getAllCategories = async (req, res) => {
       if (!name) name = '';
       const skip = (page - 1) * pageSize;
       const categories = await Category.find({ name: { $regex: name, $options: 'i' } })
+          .populate({
+            path: 'books'
+        })
         .skip(skip)
         .limit(parseInt(pageSize));
   

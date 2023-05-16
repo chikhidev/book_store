@@ -12,18 +12,20 @@ const orderSchema = new Schema({
 
 /*
 
-order: {
-  buyer: Object('userID'),
+order:{
+  _id: orderID,
+  buyer: Object('userID') [ref: user],
   books: [
-    Object('bookID'), Object('bookID')
+    Object('bookID'), Object('bookID') [ref: book]
   ],
-  totalAmount: 400,
+  totalAmount: ...,
   status: 'processing',
-  date: '2023-05-02'
+  date: 'YY-MM-DD'
 }
 
 user/admin (seller):{
-  
+  username: '...',
+  email! '...'
 }
 
 */
