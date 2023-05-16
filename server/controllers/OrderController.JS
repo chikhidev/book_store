@@ -1,14 +1,14 @@
 const Order = require('../models/OrderModel');
 
 // GET /orders
-getOrders = async (req, res) => {
+const getOrders = async (req, res) => {
     const orders = await Order.find().populate('customer publisher items.book');
     res.json({ success: true, data: orders });
   };
   
 
   // POST /orders
-createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
     const { customer, publisher, items } = req.body;
   
     const order = new Order({ customer, publisher, items });
@@ -23,7 +23,7 @@ createOrder = async (req, res) => {
   
 
   // PUT /orders/:id
-updateOrder = async (req, res) => {
+const updateOrder = async (req, res) => {
     const { customer, publisher, items } = req.body;
 
     const order = await Order.findById(req.params.id);
@@ -47,14 +47,19 @@ updateOrder = async (req, res) => {
 
 
 // DELETE /orders/:id
-deleteOrder = async (req, res) => {
-    const order = await Order.findByIdAndDelete(req.params.id);
+const deleteOrder = async (req, res) => {
+    try{
+        const order = await Order.findByIdAndDelete(req.params.id);
 
-    if (!order) {
-        return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+        if (!order) {
+            return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+        }
+    
+        res.json({ success: true, data: {message:'Order deleted successfully'} });
+    }catch(err){
+        res.json({ success: true, data: {message:'Error', err} });
+
     }
-
-    res.json({ success: true, data: {} });
     };
 
 
