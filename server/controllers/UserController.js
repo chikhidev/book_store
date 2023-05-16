@@ -18,18 +18,18 @@ const findById = async (req, res) => {
         const userFound = await User.findById(id).select('username email avatar bio createdAt');
       if (!userFound) {
         return res.status(404).json({
-          sucess:false,
+          success:false,
           data:{message:`User with id ${id} not found`}
         });
       }
         res.status(200).json({
-          sucess : true,
+          success : true,
           data: userFound
         })
     }
     catch (err) {
       res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }
@@ -42,26 +42,25 @@ const getUserByToken = async (req, res) => {
     //hard coded email to test with
     const id = req.user.id;
     try {
-        const userFound = await User.findById(id).select('username email avatar bio createdAt');
+        const userFound = await User.findById(id).select('username email avatar bio createdAt isAdmin');
       if (!userFound) {
         return res.status(404).json({
-          sucess:false,
+          success:false,
           data:{message:`User with id ${id} not found`}
         });
       }
         res.status(200).json({
-          sucess : true,
+          success : true,
           data: userFound
         })
     }
     catch (err) {
       res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }
 }
-
 
 const makeAdmin = async (req, res) => {
     //hard coded email to test with
@@ -71,7 +70,7 @@ const makeAdmin = async (req, res) => {
         const userFound = await User.findById(id).select('username email isAdmin');
       if (!userFound) {
         return res.status(404).json({
-          sucess:false,
+          success:false,
           data:{message:`User with id ${id} not found`}
         });
       }
@@ -94,7 +93,7 @@ const makeAdmin = async (req, res) => {
           }catch(err){
 
             return res.json({
-              sucess : false,
+              success : false,
               data: {
                 message: 'There was an error',
                 err
@@ -104,7 +103,7 @@ const makeAdmin = async (req, res) => {
           }
 
           return res.status(200).json({
-            sucess : true,
+            success : true,
             data: {
               message: 'User is an admin now'
             }
@@ -113,7 +112,7 @@ const makeAdmin = async (req, res) => {
        }
         catch(err){
           return res.json({
-            sucess : false,
+            success : false,
             data: err
           });
        }
@@ -121,7 +120,7 @@ const makeAdmin = async (req, res) => {
     }
     catch (err) {
       return res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }
@@ -180,13 +179,13 @@ const findFullById = async (req, res) => {
         return res.json(`User with email ${id} not found`);
       }
         res.json({
-          sucess : true,
+          success : true,
           data: userFound
         })
     }
     catch (err) {
       res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }
@@ -204,13 +203,13 @@ const findStoreById = async (req, res) => {
         return res.json(`User with email ${id} not found`);
       }
         res.json({
-          sucess : true,
+          success : true,
           data: userFound
         })
     }
     catch (err) {
       res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }
@@ -228,13 +227,13 @@ const findCardByID = async (req, res) => {
         return res.json(`User with email ${id} not found`);
       }
         res.json({
-          sucess : true,
+          success : true,
           data: userFound
         })
     }
     catch (err) {
       res.json({
-        sucess : false,
+        success : false,
         data: err
       });
     }

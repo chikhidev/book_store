@@ -3,6 +3,6 @@ module.exports = {
     AuthRouter: require("./AuthRoutes"),
     BookRouter: require('./BookRoutes'),
     ImagesRouter: require('./ImagesRoutes'),
-    CategoryRouter: require('./CategoryRoutes'),
-    OrderRouter: require('./OrderRoutes')
+    OrderRouter: require('./OrderRoutes'),
+    CategoryRouter: require('./CategoryRoutes')
 }

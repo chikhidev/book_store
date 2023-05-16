@@ -2,7 +2,15 @@ let initialState = {
     books : [],
     favBooks : [],
     loginStatus : false,
-    token: ""
+    token: "",
+    userDetails : {
+      avatar : "",
+      _id : "",
+      email : "",
+      username : "",
+      isAdmin : false,
+      createdAt : ""
+    }
 }
 
 const reducer = (state = initialState, action) => {
@@ -17,8 +25,27 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           token: "",
-          loginStatus: false
+          loginStatus: false,
+          userDetails : {
+            avatar : "",
+            bio : "",
+            createdAt : "",
+            email : "",
+            isAdmin : false,
+            username : "",
+            _id : "",
+          }
         };
+      case 'SET_FEATURED_BOOKS':
+        return {
+          ...state,
+          books: action.payload.books,
+        };
+        case 'SET_USER_DETAILS':
+          return {
+            ...state,
+            userDetails: action.payload
+          };
       case 'ADD_FAV_BOOK' :
         return {
           ...state,

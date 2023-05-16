@@ -2,9 +2,8 @@ import "../css/forms.css";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Link } from "react-router-dom";
-import { LoginContext } from "../App";
 import store from '../redux/store';
-import { login, logout } from '../redux/actions';
+import { LOGIN, LOGOUT } from '../redux/actions';
 
 const Login = () => {
     const [error, setError] = useState(false);
@@ -51,14 +50,11 @@ const Login = () => {
             if (data.success)
             {
                 localStorage.setItem('token', data.data.token)
-                console.log("store before => ");
-                console.log(store.getState())
-                store.dispatch(login(data.data.token))
-                console.log("store after => ");
+                store.dispatch(LOGIN(data.data.token))
                 console.log(store.getState())
                 setLogged(true)
                 navigate("/")
-                store.dispatch(login(data.data.token))
+                store.dispatch(LOGIN(data.data.token))
                 setTimeout(function() {
                     localStorage.removeItem('token');
                   }, 1000 * 60 * 5); // after 5 min

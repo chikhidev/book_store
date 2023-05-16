@@ -2,10 +2,8 @@ const fs = require('fs')
 
 const BookImage = (req, res) => {
     const { id } = req.params;
-    const imageUrl = `/images/books/${id}`; // Example URL for a PNG image
+    const imageUrl = `/images/books/${id}`;
 
-
-    // check if the file exists
     if (!fs.existsSync(path.join(__dirname, '..', imageUrl))) {
         return res.status(404).json({
         success: false,

@@ -7,15 +7,13 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-ro
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
-import FeaturedSection from './components/FeaturedSection';
-const LoginContext = createContext();
+import FeaturedSlider from './components/FeaturedSlider';
+import CategorySlider from './components/CategorySlider';
 import store from './redux/store';
 
 function App() {
   const [isLogged, setIsLogged] = useState(store.getState().loginStatus);
-  setInterval(() => {
-    
-  }, 1000)
+  
   const checkAlreadyLogged = () => {
     if (localStorage.getItem("token")) {
       setIsLogged(true);
@@ -54,7 +52,9 @@ function App() {
 function Home() {
   return (
     <div className="hero featured">
-      <FeaturedSection />
+           <FeaturedSlider />
+           <CategorySlider category={"fiction"} />
+           <CategorySlider category={"manga"} />
     </div>
   );
 }
@@ -78,4 +78,4 @@ function Contact() {
 }
 
 
-export {App, LoginContext};
+export {App};

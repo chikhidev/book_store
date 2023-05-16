@@ -5,24 +5,49 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../css/navbar.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { LoginContext } from '../App';
 import store from "../redux/store"
-import { logout } from "../redux/actions"
+import { LOGOUT } from "../redux/actions"
+import { SET_USER_DETAILS } from "../redux/actions"
 
 function Navbar() {
       const [logged, setLogged] = useState(false);
-
+      const [userDetails, setUserDetails] = useState(null);
+      
+      const updateUserDetails = async (token) => {
+          let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+              },
+          });
+          let res = await userDetailsResponse.json();
+          if (res.success) {
+              setUserDetails(res.data);
+              store.dispatch(SET_USER_DETAILS(res.data));
+          }
+      };
+      
       const loginStatus = useSelector(state => state.loginStatus);
 
       useEffect(() => {
-        setLogged(loginStatus);
+        const unsubscribe = store.subscribe(() => {
+          setLogged(store.getState().loginStatus);
+        });
+        if (logged)
+        {
+          let token = store.getState().token;
+          updateUserDetails(token)
+        }
+        return unsubscribe;
       }, [loginStatus]);
 
       const handleLogout = (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        store.dispatch(logout())
+        store.dispatch(LOGOUT())
       };
+
       return (
         <nav>
             <div className="nav-left links">
