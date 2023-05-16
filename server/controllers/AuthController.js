@@ -107,7 +107,7 @@ const updatePassword = async (req, res) => {
       },
     });
   }
-};
+}
 
 const drop = async (req, res) => {
     // req.body = {email: "chikhi.dev@gmail.com", password:"test123"}
@@ -211,6 +211,7 @@ const register = async (req, res)=>{
         
 }
 
+//
 const logout = async (req, res) => {
   const userId = req.userId;
 
@@ -227,7 +228,7 @@ const logout = async (req, res) => {
       data:{message: "Logout failed"},
     });
   }
-};
+}
 
 module.exports = {
     login, register, drop, logout, updatePassword

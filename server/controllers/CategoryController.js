@@ -1,6 +1,7 @@
 const Model = require("../models/Model");
 const Category = Model.categoryModel
 
+
 const getAllCategories = async (req, res) => {
     var { name } = req.query;
     var page = parseInt(req.query.page) || 1
@@ -137,7 +138,7 @@ const updateCategoryById = async (req, res) => {
         .status(500)
         .json({ success: false, data: { message: 'Failed to update category' } });
     }
-  };
+};
   
 
 module.exports = {

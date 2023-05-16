@@ -5,6 +5,14 @@ const MiddleWare = require('../middlewares/MiddleWare')
 
 const CategoryRouter = express.Router();
 
+/*
+GET /categories - get a list of all categories
+GET /categories/:id - get the details of a specific category by ID
+POST /categories - create a new category
+PUT /categories/:id - update an existing category by ID
+*/
+
+
 //getting categories by query: 
 //"/category?name=manga"
 CategoryRouter.get('/',Controller.Category.getAllCategories)
