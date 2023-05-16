@@ -2,23 +2,32 @@ const Order = require('../models/OrderModel');
 
 // GET /orders
 const getOrders = async (req, res) => {
-    const orders = await Order.find().populate('customer publisher items.book');
-    res.json({ success: true, data: orders });
+    try{
+        const orders = await Order.find().populate('customer publisher items.book');
+        res.json({ success: true, data: orders }); 
+    }catch(err){
+        res.json({ success: false, data: {message:'Error'} });
+    }
   };
   
 
   // POST /orders
 const createOrder = async (req, res) => {
     const { customer, publisher, items } = req.body;
+    try{
+        const order = new Order({ customer, publisher, items });
   
-    const order = new Order({ customer, publisher, items });
-  
-    // Calculate the total amount
-    order.total = items.reduce((total, item) => total + item.quantity * item.price, 0);
-  
-    await order.save();
-  
-    res.json({ success: true, data: order });
+        // Calculate the total amount
+        order.total = items.reduce((total, item) => total + item.quantity * item.price, 0);
+      
+        await order.save();
+      
+        res.json({ success: true, data: {message:'Order created', order}  });
+    }catch(err){
+        res.json({ success: false, data: {message:'Error', err} });
+        
+    }
+   
   };
   
 
@@ -26,22 +35,29 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
     const { customer, publisher, items } = req.body;
 
-    const order = await Order.findById(req.params.id);
+    try{
+            
+        const order = await Order.findById(req.params.id);
 
-    if (!order) {
-        return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+        if (!order) {
+            return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+        }
+
+        order.customer = customer;
+        order.publisher = publisher;
+        order.items = items;
+
+        // Calculate the total amount
+        order.total = items.reduce((total, item) => total + item.quantity * item.price, 0);
+
+        await order.save();
+
+        res.json({ success: true, data:{message: 'Order updated', order} });
+    }catch(err){
+        res.json({ success: true, data: {message:'Error', err} });
+
     }
 
-    order.customer = customer;
-    order.publisher = publisher;
-    order.items = items;
-
-    // Calculate the total amount
-    order.total = items.reduce((total, item) => total + item.quantity * item.price, 0);
-
-    await order.save();
-
-    res.json({ success: true, data: order });
     };
 
 
