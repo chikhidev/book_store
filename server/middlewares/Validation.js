@@ -211,6 +211,43 @@ const updateCategory = async (req, res, next) => {
 };
 
 
+
+
+//orders
+
+const createOrder = async (req, res, next) =>{
+  const query = Joi.object({
+    note: Joi.string().allow('').optional(),
+    shippingAddress: Joi.object({
+      addressLine1: Joi.string().required().label('adress line 1'),
+      addressLine2: Joi.string().allow('').optional(),
+      city: Joi.string().required(),
+      state: Joi.string().required(),
+      postalCode: Joi.string().required().label('postal code'),
+      country: Joi.string().required()
+    }).required()
+  });
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        },
+      });
+    }
+    next()
+}
+
+
+
+
+
+
+
   module.exports = {
-    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers, createCategory, updateCategory
+    validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers,
+    createCategory, updateCategory,
+    createOrder
   }

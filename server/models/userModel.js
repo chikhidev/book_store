@@ -23,9 +23,17 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    avatar: {
+    cover: {
       type: String, default: 'https://icons8.com/icon/98957/user'
     },
+    banner: {
+      type: String, default: 'https://icons8.com/icon/98957/user'
+    },
+    premuim: {
+        type: Boolean,
+        default: false
+    }
+    ,
     bio: {
       type: String, default: ''
     },
@@ -41,13 +49,10 @@ const UserSchema = new mongoose.Schema({
     age: {
       type: Number
     },
-    store: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
-    },
+    // store: {
+    //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
+    // },
     saved:{
-      type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
-    },
-    shoppingCard:{
       type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
     },
     orders: {

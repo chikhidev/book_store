@@ -7,17 +7,14 @@ const getAllCategories = async (req, res) => {
     var page = parseInt(req.query.page) || 1
     var pageSize = parseInt(req.query.pageSize) || 10
   
-    if (pageSize < 1 || pageSize > 100) {
+    if (pageSize < 1 || pageSize > 100)
       return res.status(400).json({ success: false, data: { message: 'Invalid pageSize' } });
-    }
   
     try {
       if (!name) name = '';
       const skip = (page - 1) * pageSize;
       const categories = await Category.find({ name: { $regex: name, $options: 'i' } })
-          .populate({
-            path: 'books'
-        })
+        .populate('books')
         .skip(skip)
         .limit(parseInt(pageSize));
   

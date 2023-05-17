@@ -26,7 +26,7 @@ app.use('/auth', Route.AuthRouter );
 app.use('/user', Route.UserRouter );
 app.use('/book', Route.BookRouter );
 app.use('/category', Route.CategoryRouter );
-// app.use('/order', Route.OrderRouter )
+app.use('/order', Route.OrderRouter )
 app.use('/images', Route.ImagesRouter )
 
 
