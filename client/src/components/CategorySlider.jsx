@@ -8,25 +8,9 @@ import Card from './Card'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
+import { display } from '../js/index.js';
 
 
-const display = (text, n) => {
-    let len = text.length;
-    let long = false;
-    if (len > n)
-    {
-      long = true
-      len = n;
-    }
-    else {
-    }
-    let processed = "";
-    for (let i = 0; i < len; i++)
-    {
-      processed += text[i];
-    }
-    return (long ? processed + "..." : processed);
-}
 
 function SlideNextButton() {
     const swiper = useSwiper();
@@ -66,21 +50,18 @@ const remBookFav = () => {
 
 
 const CategorySlider = ({category}) => {
-    console.log(category);
-    let page = 1;
     const [categoryBooks, setCategoryBooks] = useState([]) 
     const fetchBooksByCategory = async (category) => {
-        let books = await fetch(`http://localhost:4000/book?category=${category}`, {
+        let books = await fetch(`http://localhost:4000/category?name=${category}`, {
             method : "GET",
             headers : {
                 "Content-Type" : "application/json",
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTNjMmE4Mjk4ZDQ2N2ZiNTQ4YjBiYSIsImlzQWRtaW4iOnRydWUsInVzZXJuYW1lIjoidGVzdDEyMyIsImVtYWlsIjoiZ291emkuZGV2QGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4NTI5NSwiZXhwIjoxNjgzNjU4MDk1fQ.Df8saqtW7_LIvcYbIgljryvTjtie_4-Kp5krJGyx4c0",
+                "Authorization" : `Bearer ${localStorage.getItem("token")}`,
             },
         })
         let res = await books.json();
-        console.log(res.data);
-        
-        setCategoryBooks(res.data.books)
+        // first cat only, cause may find more ..
+        setCategoryBooks(res.data.categories[0].books)
     }
     useEffect(() => {
         fetchBooksByCategory(category)

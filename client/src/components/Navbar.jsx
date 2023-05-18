@@ -1,52 +1,33 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector , useDispatch } from 'react-redux';
+
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../css/navbar.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import store from "../redux/store"
-import { LOGOUT } from "../redux/actions"
+import { LOGIN, LOGOUT } from "../redux/actions"
 import { SET_USER_DETAILS } from "../redux/actions"
 
 function Navbar() {
-      const [logged, setLogged] = useState(false);
-      const [userDetails, setUserDetails] = useState(null);
-      
-      const updateUserDetails = async (token) => {
-          let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-              },
-          });
-          let res = await userDetailsResponse.json();
-          if (res.success) {
-              setUserDetails(res.data);
-              store.dispatch(SET_USER_DETAILS(res.data));
-          }
-      };
-      
-      const loginStatus = useSelector(state => state.loginStatus);
+  
+  const loginStatus = useSelector(state => state.loginStatus);
 
-      useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-          setLogged(store.getState().loginStatus);
-        });
-        if (logged)
-        {
-          let token = store.getState().token;
-          updateUserDetails(token)
-        }
-        return unsubscribe;
-      }, [loginStatus]);
+  const [logged, setLogged] = useState(loginStatus);
 
-      const handleLogout = (e) => {
-        e.preventDefault();
-        localStorage.removeItem('token');
-        store.dispatch(LOGOUT())
-      };
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      setLogged(store.getState().loginStatus);
+    });
+    return unsubscribe;
+  }, [loginStatus]);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    store.dispatch(LOGOUT());
+  };
 
       return (
         <nav>
@@ -72,46 +53,47 @@ function Navbar() {
             <div className="empty_el">
             </div>
             <div className="nav-right">
-                {!logged ? 
-                  <>
-                  <Link to="/login">
-                      <button
-                        className="nav-btn sign-in">
-                        Sign in
-                      </button>
-                  </Link>
-                  <Link to="/register">
-                      <button
-                        className="nav-btn sign-in">
-                        Register
-                      </button>
-                  </Link>
-                  </>
-                  : 
-                  <>
-                      {/* user icon */}
-                      <div className="dropdown">
-                        <div className="dropdown-hover user-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>  
+                {logged ? 
+                    <>
+                        {/* user icon */}
+                        <div className="dropdown">
+                          <div className="dropdown-hover user-icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>  
+                          </div>
+                          <div className="dropdown-menu">
+                            <div className="dropdown-item">account</div>
+                            <div className="dropdown-item"> favorite</div>
+                            <div
+                              onClick={handleLogout}
+                              className="dropdown-item logout">Logout</div>
+                          </div>
                         </div>
-                        <div className="dropdown-menu">
-                          <div className="dropdown-item">account</div>
-                          <div className="dropdown-item"> favorite</div>
-                          <div
-                            onClick={handleLogout}
-                            className="dropdown-item logout">Logout</div>
-                        </div>
-                      </div>
-                      {/* cart icon */}
-                      <button
-                      className="nav-btn cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                        </svg>
-                      </button>
-                  </>
+                        {/* cart icon */}
+                        <button
+                        className="nav-btn cart">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                          </svg>
+                        </button>
+                    </>
+                    // else (not logged)
+                    :
+                    <>
+                    <Link to="/login">
+                        <button
+                          className="nav-btn sign-in">
+                          Sign in
+                        </button>
+                    </Link>
+                    <Link to="/register">
+                        <button
+                          className="nav-btn sign-in">
+                          Register
+                        </button>
+                    </Link>
+                    </>
                 }
   
             </div>

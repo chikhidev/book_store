@@ -3,17 +3,17 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Link } from "react-router-dom";
 import store from '../redux/store';
-import { LOGIN, LOGOUT } from '../redux/actions';
+import { LOGIN, LOGOUT, SET_USER_DETAILS } from '../redux/actions';
 
 const Login = () => {
+    console.log(`login status is => ${store.getState().loginStatus}`);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-      const [logged, setLogged] = useState(store.getState().loginStatus);
-  // will come from jwt
+    // will come from jwt
     const verifyUserInput = (e) => {
         e.preventDefault()
         if (!email.trim())
@@ -27,40 +27,57 @@ const Login = () => {
             return false;
         }
         handleLogin(e)
-  }
-    const handleLogin = (e) => {
+    }
+    const fetchAndSetUserDetails = async (token) => {
+        let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+        });
+        let res = await userDetailsResponse.json();
+        if (res.success) {
+            store.dispatch(SET_USER_DETAILS(res.data));
+        }
+        else {
+            console.warn("error setting user details...")
+        }
+    };
+    const handleLogin = async (e) => {
         e.preventDefault();
-        setLoading(true)
-        fetch('http://127.0.0.1:4000/auth/login', {
-          method: 'POST',
-          headers: {
+        setLoading(true);
+    
+        try {
+        const response = await fetch('http://127.0.0.1:4000/auth/login', {
+            method: 'POST',
+            headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+            },
+            body: JSON.stringify({
             email,
             password
-          })
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setError(!data.success)
-            setMessage(data.data.message ? data.data.message : data.data[0].message)
-            setLoading(false)
-            console.log(data);
-            if (data.success)
-            {
-                localStorage.setItem('token', data.data.token)
-                store.dispatch(LOGIN(data.data.token))
-                console.log(store.getState())
-                setLogged(true)
-                navigate("/")
-                store.dispatch(LOGIN(data.data.token))
-                setTimeout(function() {
-                    localStorage.removeItem('token');
-                  }, 1000 * 60 * 5); // after 5 min
-            }
-          });
-      };
+            })
+        });
+        const data = await response.json();
+        setError(!data.success);
+        setMessage(data.data.message ? data.data.message : data.data[0].message);
+        setLoading(false);
+    
+        if (data.success) {
+            localStorage.setItem('token', data.data.token);
+            store.dispatch(LOGIN(data.data.token));
+            fetchAndSetUserDetails(data.data.token)
+            navigate("/");
+            setTimeout(function() {
+            localStorage.removeItem('token');
+            }, 1000 * 60 * 5); // after 5 min
+        }
+        } catch (error) {
+        // Handle any error that occurred during the fetch request
+            console.error(error);
+        }
+    };
     return (
         <div className="login popup">
             <form onSubmit={verifyUserInput} className="form-popup">
