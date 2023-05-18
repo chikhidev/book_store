@@ -46,16 +46,35 @@ const reducer = (state = initialState, action) => {
             ...state,
             userDetails: action.payload
           };
-      case 'ADD_FAV_BOOK' :
-        return {
-          ...state,
-          books : [...state.books, book]
-        }
-      case 'REM_FAV_BOOK' :
-        return {
-          ...state,
-          books : state.books.filter((book) => book.id != action.payload)
-        }
+        case 'ADD_BOOK_FAV':
+          return {
+            ...state,
+            favBooks: [...state.favBooks, action.payload]
+          };
+        case 'REM_BOOK_FAV' :
+          return {
+            ...state,
+            favBooks : state.favBooks.filter((book) => book._id != action.payload)
+          }
+          case 'TOGGLE_BOOK_FAV':
+            const bookIndex = state.favBooks.indexOf(action.payload);
+            let updatedFavBooks;
+            if (bookIndex !== -1) {
+              // Book exists in favBooks, remove it
+              updatedFavBooks = [...state.favBooks.slice(0, bookIndex), ...state.favBooks.slice(bookIndex + 1)];
+            } else {
+              // Book doesn't exist in favBooks, add it
+              updatedFavBooks = [...state.favBooks, action.payload];
+            }
+            return {
+              ...state,
+              favBooks: updatedFavBooks
+            };
+          
+          return {
+            ...state,
+            favBooks: updatedFavBooks
+          }
       default:
         return state;
     }

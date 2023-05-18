@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-
+import { TOGGLE_BOOK_FAV } from "../redux/actions";
+import { useDispatch } from "react-redux";
+import store from "../redux/store";
 const display = (text, n) => {
     let len = text.length;
     let long = false;
@@ -20,11 +22,16 @@ const display = (text, n) => {
 
 const Card = ({book}) => {
     return (
-        <Link to={`/book/${book._id}`}>
             <div key={book._id} className="book-card">
                 {/* i still dont know how the icons should appear lol  */}
                 <div className="book-icons">
-                    <div className="book-heart-icon">
+                    <div
+                        onClick={
+                            () => {
+                                store.dispatch(TOGGLE_BOOK_FAV(book._id))
+                            }
+                        }
+                        className="book-heart-icon">
                         <svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 24 24" >
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                         </svg>
@@ -47,7 +54,6 @@ const Card = ({book}) => {
                     <div className="book-price">${book.price}</div>
                 </div>
             </div>
-        </Link>
     )
 }
 export default Card

@@ -10,16 +10,35 @@ import Register from './components/Register';
 import FeaturedSlider from './components/FeaturedSlider';
 import CategorySlider from './components/CategorySlider';
 import CreateBookForm from './components/CreateBookForm';
+import Favorite from './components/Favorite';
+import Account from './components/Account';
 import SingleBook from './components/SingleBook';
 import store from './redux/store';
-import { LOGIN, LOGOUT } from './redux/actions';
+import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
 function App() {
   const [isLogged, setIsLogged] = useState(false);
 
+  const fetchAndSetUserDetails = async (token) => {
+    let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+    });
+    let res = await userDetailsResponse.json();
+    if (res.success) {
+        store.dispatch(SET_USER_DETAILS(res.data));
+    }
+    else {
+        console.warn("error setting user details...")
+    }
+};
   const checkAlreadyLogged = () => {
     if (localStorage.getItem("token")) {
       setIsLogged(true);
       store.dispatch(LOGIN(localStorage.getItem("token")))
+      fetchAndSetUserDetails(localStorage.getItem("token"))
     } else {
       setIsLogged(false);
       store.dispatch(LOGOUT())
@@ -36,6 +55,7 @@ function App() {
     });
     return unsubscribe;
   }, []);
+  setInterval(() => console.log(store.getState()), 5000)
 
     return (
       <Router>
@@ -43,8 +63,10 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/categories" element={<About/>} />
+            <Route path="/categories" element={<Categories/>} />
             <Route path="/new" element={<Contact/>} />
+            <Route path="/account" element={<Account/>} />
+            <Route path="/favorite" element={<Favorite/>} />
             <Route path="/book/:id" element={<SingleBook/>} />
             <Route path="/book/create" element={<CreateBookForm/>} />
             <Route path="/login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
@@ -65,13 +87,33 @@ function Home() {
   );
 }
 
-function About() {
+function Categories() {
+  const [fetchedCategories, setFetchedCategories] = useState([]) 
+  const getCategories = async () => {
+      let books = await fetch(`http://localhost:4000/category`, {
+          method : "GET",
+          headers : {
+              "Content-Type" : "application/json",
+              "Authorization" : `Bearer ${localStorage.getItem("token")}`,
+          },
+      })
+      let res = await books.json();
+      // first cat only, cause may find more ..
+      setFetchedCategories(res.data.categories)
+  }
+  useEffect(() => {
+    getCategories()
+  }, [])
+
   return (
-    <section>
-      <h2>About</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </section>
-  );
+      <div className="hero featured">
+        {fetchedCategories.length > 0 ? 
+        fetchedCategories.map(cat => {
+          return <CategorySlider category={cat.name} />
+        })
+        : <h1>LOADING</h1>}
+      </div>
+  )
 }
 
 function Contact() {

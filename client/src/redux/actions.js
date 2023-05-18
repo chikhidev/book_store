@@ -12,18 +12,24 @@ export const LOGOUT = () => {
       }
 }
 
-export const ADD_BOOK_FAV = (book) => {
+export const ADD_BOOK_FAV = (bookId) => {
     return {
       type: "ADD_BOOK_FAV",
-      payload: book
+      payload: bookId
     }
   }
 
-export const REM_BOOK_FAV = (bookId) => {
+  export const REM_BOOK_FAV = (bookId) => {
     return {
         type: "REM_BOOK_FAV",
         payload: bookId
     }
+}
+export const TOGGLE_BOOK_FAV = (bookId) => {
+  return {
+      type: "TOGGLE_BOOK_FAV",
+      payload: bookId
+  }
 }
 
 export const SET_USER_DETAILS = (userDetails) => {

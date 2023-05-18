@@ -1,7 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 
-
+let heartedBooks = [
+  {
+    _id : "646621698b5800b2a92c569964",
+    name : "Harry Potter",
+  },
+  {
+    _id : "646621698b5800b2a92c569878",
+    name : "Attack On Titan",
+  },
+  {
+    _id : "846621698b5800b2a92c569878",
+    name : "Story Teller",
+  },
+]
 import 'bootstrap/dist/css/bootstrap.css';
 import '../css/navbar.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
@@ -30,6 +43,16 @@ function Navbar() {
   };
 
       return (
+        <>
+        <div className='cart-content'>
+          {store.getState().favBooks.length > 0 ?
+            store.getState().favBooks.map(fav => {
+              return (<span>{fav}</span>)
+            })
+          :
+          ""
+          }
+        </div>
         <nav>
             <div className="nav-left links">
                 <div className="link">
@@ -63,8 +86,12 @@ function Navbar() {
                               </svg>  
                           </div>
                           <div className="dropdown-menu">
-                            <div className="dropdown-item">account</div>
+                            <Link to="account">
+                                <div className="dropdown-item">account</div>
+                            </Link>
+                            <Link to="favorite">
                             <div className="dropdown-item"> favorite</div>
+                            </Link>
                             <div
                               onClick={handleLogout}
                               className="dropdown-item logout">Logout</div>
@@ -97,7 +124,8 @@ function Navbar() {
                 }
   
             </div>
-              </nav>
+        </nav>
+        </>
       );
   }
   

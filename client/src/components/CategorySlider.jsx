@@ -8,9 +8,7 @@ import Card from './Card'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
-import { display } from '../js/index.js';
-
-
+import { display, capitalize } from '../js/index.js';
 
 function SlideNextButton() {
     const swiper = useSwiper();
@@ -48,7 +46,6 @@ const remBookFav = () => {
     store.dispatch({type : "REM_BOOK_FAV"})
 }
 
-
 const CategorySlider = ({category}) => {
     const [categoryBooks, setCategoryBooks] = useState([]) 
     const fetchBooksByCategory = async (category) => {
@@ -71,7 +68,7 @@ const CategorySlider = ({category}) => {
         <section className="featured-book-section book-section">
             <div className="featured-header">
                 <div className="featured-title">
-                    {category.toUpperCase()} :
+                    {capitalize(category)} :
                 </div>
             </div>
             <Swiper

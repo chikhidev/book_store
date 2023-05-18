@@ -16,7 +16,13 @@ const display = (text, n) => {
     return (long ? processed + "..." : processed);
 }
 
+const capitalize = (str) => {
+  if ( str.length != 1 ) 
+    return str[0].toUpperCase() + str.slice(1)
+  return str.toUpperCase();
+}
 
 
-export {display}
+
+export {display, capitalize}
 

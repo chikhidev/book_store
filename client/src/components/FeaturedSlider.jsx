@@ -3,6 +3,7 @@ import { useSwiper } from 'swiper/react';
 import 'swiper/css';
 import store from '../redux/store';
 import { useState, useEffect } from "react"
+import { TOGGLE_BOOK_FAV } from '../redux/actions';
 import data from "../data.json"
 import Card from './Card'
 import '../css/index.css';
@@ -56,17 +57,10 @@ function SlidePrevButton() {
     );
 }
 
-const addBookFav = () => {
-    store.dispatch({type : "ADD_BOOK_FAV"})
-}
 
-const remBookFav = () => {
-    store.dispatch({type : "REM_BOOK_FAV"})
-}
 
 
 const FeaturedSlider = () => {
-    let page = 1;
     const [featuredBooks, setFeaturedBooks] = useState([]) 
     const fetchBooksByPage = async (page) => {
         let books = await fetch(`http://localhost:4000/book?page=${page}`, {
