@@ -32,7 +32,7 @@ const Card = ({ book }) => {
   };
 
     return (
-            <Link  to={`book/${book._id}`} >
+            <Link to={`book/${book._id}`} >
                <div key={book._id} className="book-card" onClick={handleClick}>
                     <div className="book-icons">
                         <div

@@ -10,6 +10,7 @@ import Register from './components/Register';
 import FeaturedSlider from './components/FeaturedSlider';
 import CategorySlider from './components/CategorySlider';
 import CreateBookForm from './components/CreateBookForm';
+import Search from './components/Search';
 import Favorite from './components/Favorite';
 import Account from './components/Account';
 import SingleBook from './components/SingleBook';
@@ -55,7 +56,7 @@ function App() {
     });
     return unsubscribe;
   }, []);
-  setInterval(() => console.log(store.getState()), 5000)
+  // setInterval(() => console.log(store.getState()), 5000)
 
     return (
       <Router>
@@ -66,10 +67,12 @@ function App() {
             <Route path="/categories" element={<Categories/>} />
             <Route path="/new" element={<Contact/>} />
             <Route path="/account" element={<Account/>} />
-            <Route path="/favorite" element={<Favorite/>} />
+            <Route path="/favorite" element={isLogged ? <Favorite/> : <Navigate to="/login" />} />
             <Route path="/book/:id" element={<SingleBook/>} />
-            <Route path="/book/create" element={<CreateBookForm/>} />
+            <Route path="/store/book/create" element={isLogged ? <CreateBookForm/> : <Navigate to="/login" /> } />
             <Route path="/login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+            <Route path="/search" element={<Search />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+            <Route path="/search/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
             <Route path="/register" element={isLogged ? <Navigate to="/"/> : <Register />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
           </Routes>
         </div>
