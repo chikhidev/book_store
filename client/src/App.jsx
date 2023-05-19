@@ -14,6 +14,7 @@ import Search from './components/Search';
 import Favorite from './components/Favorite';
 import Account from './components/Account';
 import SingleBook from './components/SingleBook';
+import NewBooks from './components/NewBooks';
 import store from './redux/store';
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
 function App() {
@@ -65,7 +66,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/categories" element={<Categories/>} />
-            <Route path="/new" element={<Contact/>} />
+            <Route path="/new" element={<NewBooks/>} />
             <Route path="/account" element={<Account/>} />
             <Route path="/favorite" element={isLogged ? <Favorite/> : <Navigate to="/login" />} />
             <Route path="/book/:id" element={<SingleBook/>} />

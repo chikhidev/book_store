@@ -28,7 +28,6 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState("")
   const loginStatus = useSelector(state => state.loginStatus);
   const adminStatus = useSelector(state => state.userDetails.isAdmin);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);

@@ -13,6 +13,8 @@ BookRoute.use(express.urlencoded({ extended: true }));
         //book?category=manga
 BookRoute.get('/', Controller.Book.getBooks);
 
+BookRoute.get('/latest', Controller.Book.getLatestBooks);
+
 // get a book by ID
 BookRoute.get(
         '/:id',
