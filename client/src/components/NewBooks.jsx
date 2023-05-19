@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN, LOGOUT, TOGGLE_BOOK_FAV } from '../redux/actions';
 import Card from './Card';
 
 const NewBooks = () => {
-    const [sortType, setSortType] = useState("asc")
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [sortType, setSortType] = useState(searchParams.get("sort") || "asc")
     const [loading, setLoading] = useState(false)
     const handleClick = (e) => {
         setSortType(e.target.value);
@@ -36,9 +38,9 @@ return (
         :
         <>
             asc :
-            <input name="sort" type='radio' onClick={handleClick} value="asc" />
+            <input name="sort" checked={sortType == "asc" ? true : false} type='radio' onClick={handleClick} value="asc" />
             desc :
-            <input name="sort" type='radio' onClick={handleClick} value="desc" />
+            <input name="sort" checked={sortType == "desc" ? true : false} type='radio' onClick={handleClick} value="desc" />
         {fetchedNewBooks.length > 0 ? (
             fetchedNewBooks.map((book) => <Card book={book} key={book._id} />)
         ) : (
