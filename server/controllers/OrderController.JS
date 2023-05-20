@@ -114,7 +114,6 @@ const updateOrder = async (req, res) => {
     };
 
 
-
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
     try{

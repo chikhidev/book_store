@@ -21,7 +21,7 @@ const authenticateToken = (req, res, next) => {
     }
     // Verify the JWT token
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      if (err) return res.status(403).json({success:false, data:{ message: 'Your session has expired, Please login!' }});
+      if (err) return res.status(403).json({success:false, data:{ message: 'Your session has expired, Please login!', err }});
       req.user = payload
 
       next()

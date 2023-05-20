@@ -3,7 +3,151 @@
         [
           {
             "_id": {
-              "$oid": "6456e6ca7731d7486c5358b2"
+              "$oid": "6456e6ca7731df7486c5358b2"
+            },
+            "title": "Lovely Sumlop Groceris",
+            "author": "Sonilia K. James",
+            "description": "This is the book desc22 lol i dont key one ce ce ceop",
+            "publisher": "Production2",
+            "publicationDate": {
+              "$date": {
+                "$numberLong": "1335916800000"
+              }
+            },
+            "language": "AR",
+            "price": 13.99,
+            "categories": [
+              {
+                "$oid": "6456e625f3dc0aaf4cd5df887"
+              }
+            ],
+            "stock": 45,
+            "imageUrl": "../src/assets/books/book9.jpg",
+            "createdBy": {
+              "$oid": "6452e6d81226a1sdsd14ead9ec0e"
+            },
+            "createdAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "updatedAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "__v": 0
+          },         {
+            "_id": {
+              "$oid": "6456e6ca7731d74d86c5358b2"
+            },
+            "title": "Lovely Sumlop Groceris",
+            "author": "Sonilia K. James",
+            "description": "This is the book desc22 lol i dont key one ce ce ceop",
+            "publisher": "Production2",
+            "publicationDate": {
+              "$date": {
+                "$numberLong": "1335916800000"
+              }
+            },
+            "language": "AR",
+            "price": 13.99,
+            "categories": [
+              {
+                "$oid": "6456e6253dc0sdaaf4cd5df887"
+              }
+            ],
+            "stock": 45,
+            "imageUrl": "../src/assets/books/book9.jpg",
+            "createdBy": {
+              "$oid": "6452e6d81226a114sdead9ec0e"
+            },
+            "createdAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "updatedAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "__v": 0
+          },         {
+            "_id": {
+              "$oid": "6456de6ca7731d7d486c5358b2"
+            },
+            "title": "Lovely Sumlop Groceris",
+            "author": "Sonilia K. James",
+            "description": "This is the book desc22 lol i dont key one ce ce ceop",
+            "publisher": "Production2",
+            "publicationDate": {
+              "$date": {
+                "$numberLong": "1335916800000"
+              }
+            },
+            "language": "AR",
+            "price": 13.99,
+            "categories": [
+              {
+                "$oid": "6456e6253dc0aaf4cd5dfff887"
+              }
+            ],
+            "stock": 45,
+            "imageUrl": "../src/assets/books/book9.jpg",
+            "createdBy": {
+              "$oid": "6452e6d812s26a114ead9ec0e"
+            },
+            "createdAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "updatedAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "__v": 0
+          },         {
+            "_id": {
+              "$oid": "6456e6cda7731d7486c5358b2"
+            },
+            "title": "Lovely Sumlop Groceris",
+            "author": "Sonilia K. James",
+            "description": "This is the book desc22 lol i dont key one ce ce ceop",
+            "publisher": "Production2",
+            "publicationDate": {
+              "$date": {
+                "$numberLong": "1335916800000"
+              }
+            },
+            "language": "AR",
+            "price": 13.99,
+            "categories": [
+              {
+                "$oid": "6456e6aq253dc0aaf4cd5df887"
+              }
+            ],
+            "stock": 45,
+            "imageUrl": "../src/assets/books/book9.jpg",
+            "createdBy": {
+              "$oid": "6452e6d81226a11ds4ead9ec0e"
+            },
+            "createdAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "updatedAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "__v": 0
+          },         {
+            "_id": {
+              "$oid": "64d56e6ca7731d7486c5358b2"
             },
             "title": "Lovely Sumlop Groceris",
             "author": "Sonilia K. James",
@@ -37,10 +181,46 @@
               }
             },
             "__v": 0
+          },         {
+            "_id": {
+              "$oid": "6456e6ca7731d7486c535d8b2"
+            },
+            "title": "Lovely Sumlop Groceris",
+            "author": "Sonilia K. James",
+            "description": "This is the book desc22 lol i dont key one ce ce ceop",
+            "publisher": "Production2",
+            "publicationDate": {
+              "$date": {
+                "$numberLong": "1335916800000"
+              }
+            },
+            "language": "AR",
+            "price": 13.99,
+            "categories": [
+              {
+                "$oid": "6456e6253dc0aaf4cdd5df887"
+              }
+            ],
+            "stock": 45,
+            "imageUrl": "../src/assets/books/book9.jpg",
+            "createdBy": {
+              "$oid": "6452e6d81226a114ead9fsdec0e"
+            },
+            "createdAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "updatedAt": {
+              "$date": {
+                "$numberLong": "1683416778094"
+              }
+            },
+            "__v": 0
           },
           {
             "_id": {
-                "$oid": "6452e8cd7218f5cf24fbaee4"
+                "$oid": "6452ed8cd721dd8f5cf24fbaee4"
               },
               "title": "The Great Gatsby",
               "author": "F. Scott Fitzgerald",

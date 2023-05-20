@@ -68,8 +68,46 @@ const getBooks = async (req, res) => {
       .json({ success: false, data: { message: 'Failed to get books' } });
   }
 };
+const getLatestBooks =  async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 10;
+  const sort = req.query.sort;
 
-// find a book by its ID
+  const sortQuery = {};
+
+  if (sort == "asc") 
+    sortQuery["createdAt"] = -1;
+    else if (sort == "desc")
+    sortQuery["createdAt"] = 1;
+
+    try {
+      const books = await Book.find().select('-description -createdAt -updatedAt -author')
+        .skip((page - 1) * pageSize)
+        .limit(pageSize)
+        .sort(sortQuery)
+        .exec();
+
+      const totalBooksCount = await Book.countDocuments(sortQuery).exec();
+      const totalPages = Math.ceil(totalBooksCount / pageSize);
+
+      return res.status(200).json({
+        success: true,
+        data: { books },
+        page,
+        pageSize,
+        totalPages,
+        totalBooksCount,
+      });
+    }
+    catch (error) {
+      console.error(error);
+    }
+  
+  return res
+  .status(500)
+  .json({ success: false, data: { message: 'Failed to get latest books' } });
+}
+  // find a book by its ID
 const getBookById = async (req, res) => {
   const id = req.params.id;
   try {
@@ -180,11 +218,12 @@ const deleteBook = async (req, res) => {
       console.error(error);
       return res.status(500).json({ success: false, data: { message: 'Failed to delete book' } });
     }
-  };
+};
 
 
   module.exports = {
     getBooks,
+    getLatestBooks,
     getBookById,
     createBook,
     updateBook,

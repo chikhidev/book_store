@@ -58,7 +58,7 @@ const Register = () => {
         setError(!data.success)
         setMessage(data.data.message ? data.data.message : data.data[0].message)
         setLoading(false)
-        console.log(data.data);
+        console.log(data);
       });
   };
 
