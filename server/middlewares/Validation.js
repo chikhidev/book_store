@@ -217,14 +217,16 @@ const updateCategory = async (req, res, next) => {
 
 const createOrder = async (req, res, next) =>{
   const query = Joi.object({
+    book: Joi.string().required(),
     note: Joi.string().allow('').optional(),
-    shippingAddress: Joi.object({
+    qte: Joi.number().required(),
+    shippingAddress: Joi.object({ 
       addressLine1: Joi.string().required().label('adress line 1'),
-      addressLine2: Joi.string().allow('').optional(),
-      city: Joi.string().required(),
-      state: Joi.string().required(),
+      addressLine2: Joi.string().allow('').optional().label('adress line 2'),
+      city: Joi.string().required().label('city'),
+      state: Joi.string().required().label('state'),
       postalCode: Joi.string().required().label('postal code'),
-      country: Joi.string().required()
+      country: Joi.string().required().label('country')
     }).required()
   });
 
@@ -234,7 +236,7 @@ const createOrder = async (req, res, next) =>{
         success: false,
         data: {
           message: error.details[0].message,
-        },
+        }
       });
     }
     next()

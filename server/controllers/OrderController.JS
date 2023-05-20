@@ -1,5 +1,6 @@
 const Order = require('../models/OrderModel').orderModel;
 const User = require('../models/userModel');
+const Book = require('../models/bookModel').bookModel
 
 // GET /orders
 const getOrders = async (req, res) => {
@@ -10,9 +11,10 @@ const getOrders = async (req, res) => {
 
         let orders;
         if (Object.keys(query).length === 0)
-            orders = await Order.find().populate('buyer books');
+          orders = await Order.find({customer: req.user.id});
+
         else
-            orders = await Order.find(query).populate('buyer books');
+            orders = await Order.find({...query, customer: req.user.id});
 
         res.json({ success: true, data: orders }); 
     }catch(err){
@@ -20,6 +22,17 @@ const getOrders = async (req, res) => {
     }
   };
   
+const getCurrentUserOrders = async (req, res) => {
+  try{
+      let orders = await Order.find({customer: req.user.id});
+      res.json({ success: true, data: orders }); 
+
+  }catch(err){
+      res.json({ success: false, data: {message:'Error'} });
+  }
+};
+  
+
 //GET /order/:id
 const getOrder = async (req, res) => {
     try {
@@ -38,26 +51,32 @@ const getOrder = async (req, res) => {
   };
   
 
-  // POST /orders
-  const createOrder = async (req, res) => {
+// POST /order
+const createOrder = async (req, res) => {
     try {
-      const { note, shippingAddress } = req.body;
+      const { book, note, shippingAddress, qte } = req.body;
 
-      const buyer = await User.findById(req.user.id);
-    //   const books = await Book.find({ _id: { $in: bookId } });
+      const customer_id = req.user.id
+      const customer = await User.findById(customer_id).select('username');
+      if (!customer)
+        return res.json({ success: false, data: { message: 'You can\'t make an order' } });
+
+      const book_found = await Book.findById(book);
+      if (!book_found)
+        return res.json({ success: false, data: { message: 'Book not found' } });
   
-      const order = new Order({ buyer, note, shippingAddress, totalAmount:0 });
+      const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
   
-      // Calculate the total amount based on the books
-    //   const totalAmount = books.reduce((total, book) => total + book.price, 0);
-    //   order.totalAmount = totalAmount;
+      try{
+        await order.save();
+        return res.json({ success: true, data: { message: 'Your order sent' , order } });
+      }catch(err){
+        return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
+      }
   
-      await order.save();
-  
-      res.json({ success: true, data: { message: 'Order added for ' + buyer.username , order } });
     } catch (err) {
       console.error(err);
-      res.json({ success: false, data: { message: 'Error', err } });
+      return res.json({ success: false, data: { message: 'Error', err } });
     }
   };
   
@@ -65,22 +84,24 @@ const getOrder = async (req, res) => {
 
   // PUT /orders/:id
 const updateOrder = async (req, res) => {
-    const { customer, publisher, items } = req.body;
+    const { book, qte, shippingAddress } = req.body;
 
     try{
             
-        const order = await Order.findById(req.params.id);
+        const order = await Order.find({customer: req.params.id});
 
         if (!order) {
             return res.status(404).json({ success: false, data: { message: 'Order not found' }});
         }
 
-        order.customer = customer;
-        order.publisher = publisher;
-        order.items = items;
-
-        // Calculate the total amount
-        order.total = items.reduce((total, item) => total + item.quantity * item.price, 0);
+        (book != order.book) && ( order.book = book)
+        (qte != order.qte) && ( order.qte = qte)
+        (note != order.note) &&( order.note = note)
+        
+        for (var key in order.shippingAddress){
+          if (shippingAddress[key] && (shippingAddress[key] != order.shippingAddress[key]))
+            order.shippingAddress[key] = shippingAddress[key]
+        }
 
         await order.save();
 
@@ -112,5 +133,6 @@ const deleteOrder = async (req, res) => {
 
 
 module.exports = {
-    getOrders, createOrder, updateOrder, deleteOrder, getOrder
+    getOrders, createOrder, updateOrder, deleteOrder, getOrder,
+    getCurrentUserOrders
 }

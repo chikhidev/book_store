@@ -23,9 +23,6 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    cover: {
-      type: String, default: 'https://icons8.com/icon/98957/user'
-    },
     banner: {
       type: String, default: 'https://icons8.com/icon/98957/user'
     },
