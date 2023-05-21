@@ -70,11 +70,13 @@ const createOrder = async (req, res) => {
       try{
         await order.save();
         return res.json({ success: true, data: { message: 'Your order sent' , order } });
-      }catch(err){
+      }
+      catch(err){
         return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
       }
   
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
       return res.json({ success: false, data: { message: 'Error', err } });
     }
