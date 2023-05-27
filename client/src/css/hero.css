@@ -1,0 +1,53 @@
+.hero {
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+}
+.book-section {
+}
+.book-section .featured-header {
+    font-weight: 600;
+    width: 100%;
+    letter-spacing: -0.5px;
+    font-size: 28px;
+}
+.book-section  .featured-arrows {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-basis: 12%;
+}
+ .left-arrow,
+ .right-arrow {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    stroke-width: 1.5;
+    stroke :rgb(32, 32, 32);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 0px 2px 0.5px rgba(57, 57, 57, 0.48);
+    transition: 0.3s;
+}
+ .right-arrow svg,
+ .left-arrow svg {
+    width: 25px;
+    height: 25px;
+}
+ .right-arrow:hover,
+ .left-arrow:hover {
+    stroke :rgb(255,255,255);
+    background: rgb(32, 32, 32);
+}
+.book-section .swiper {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 25px;
+    height: 100%;
+}

@@ -1,0 +1,211 @@
+nav {
+	display: flex;
+	flex-direction: row;
+	padding-left: 5%;
+	padding-right: 5%;
+	height: 80px;
+	align-items: center;
+	justify-content: space-between;
+    z-index: 110;
+	border-bottom: 1px solid #e3e3e38d;
+
+}
+.nav-left + .empty_el {
+	flex-basis: 10%;
+	background-color: rgb(108, 97, 97);
+}
+nav .nav-left {
+	flex-basis: 35%;
+	display: flex;
+	font-size: 15px;
+	justify-content: space-around;
+}
+nav .nav-left .link a {
+	color: #111;
+}
+nav .nav-center {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	
+}
+nav .nav-center .search-field{
+	background-color: #eee;
+	border-radius: 8px;
+	flex-basis: 33%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.2s all;
+}
+.fade-in {
+	animation: fadeIn 0.7s ease-in;
+  }
+  
+  
+  @keyframes shake2 {
+	0% {
+	  transform: translate(0px, 0px) rotate(0deg);
+	}
+	10% {
+	  transform: translate(-0px, -0.5px) rotate(-0.1deg);
+	}
+	20% {
+	  transform: translate(-1.5px, 0px) rotate(0.1deg);
+	}
+	30% {
+	  transform: translate(1.5px, 0.5px) rotate(0deg);
+	}
+	40% {
+	  transform: translate(0px, -0.5px) rotate(0.1deg);
+	}
+	50% {
+	  transform: translate(0px, 1.5px) rotate(-0.1deg);
+	}
+	60% {
+	  transform: translate(-1.5px, 0px) rotate(0deg);
+	}
+	70% {
+	  transform: translate(0.5px, 0.5px) rotate(-0.1deg);
+	}
+	80% {
+	  transform: translate(-0.5px, 0px) rotate(0.1deg);
+	}
+	90% {
+	  transform: translate(0px, 0.5px) rotate(0deg);
+	}
+	100% {
+	  transform: translate(0px, 0px) rotate(-1deg);
+	}
+  }
+  
+ 
+nav .nav-center .search-field.search-error {
+	border: 3px solid red ;
+	animation: shake2 0.5s ease-in-out 0s 2;
+	transition: 0.2s all;
+}
+nav .nav-center input.search {
+	width: 100%;
+	border-end-end-radius: 20px;
+	border-start-end-radius: 20px;
+	border: none;
+	padding-left: 10px;
+	height: 35px;
+	background: none;
+	font-size: 15px;
+}
+
+nav .nav-center input.search:focus {
+	border: none;
+	outline: none;
+}
+
+nav .nav-center button {
+	padding-left: 8px;
+	padding-right: 5px;
+	background: none;
+	border: 0px none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+nav .nav-center button > svg {
+	width: 20px;
+}
+
+.nav-center + .empty_el {
+	flex-basis: 25%;
+}
+
+nav .nav-right {
+	display: flex;
+	flex-basis: 20%;
+	align-items: center;
+	justify-content: space-evenly;
+}
+nav .nav-right button.sign-in {
+	height: 20px;
+	font-size: 15px;
+	display: flex;
+	justify-content: center;
+	border: none;
+	background: none;
+	color: #111;
+	padding-left:5px;
+	padding-right:5px;
+}
+nav .nav-right button.cart {
+	border: none;
+	background: none;
+	color: #111;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 32px;
+	height: 32px;
+	stroke-width: 1.5;
+	stroke: #151515;
+}
+
+.user-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	stroke: #151515;
+	width: 35px;
+}
+.dropdown{
+	position: relative;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+}
+.dropdown-hover{
+	display: inline-block;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.dropdown-hover:hover{
+	color: black;
+	border-radius: 50%;
+}
+.dropdown-menu {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #323b40;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+  min-width: 30px;
+  left: -100%;
+  top: 100%;
+  padding: 0;
+}
+.dropdown:hover .dropdown-menu {
+	display: flex;
+	transition: 0.3 all;
+}
+.dropdown-menu .dropdown-item{
+	font-size: 13px;
+	text-decoration: none;
+	border-width: 0;
+	transition: 0.1s;
+}
+.dropdown-menu .dropdown-item:hover:not(.logout) {
+	background: #323b40;
+	color: white;
+}
+.dropdown-menu .dropdown-item:not(:first-of-type){
+	border-top: 1px solid #e0e0e0;
+}
+.logout {
+	color: rgb(219, 11, 11);
+	cursor: pointer;
+	transition: 0.1s;
+}
+.logout:hover {
+	background: rgb(219, 11, 11);
+	color: white;
+}
