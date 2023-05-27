@@ -22,21 +22,10 @@ const getOrders = async (req, res) => {
     }
   };
   
-const getCurrentUserOrders = async (req, res) => {
-  try{
-      let orders = await Order.find({customer: req.user.id});
-      res.json({ success: true, data: orders }); 
-
-  }catch(err){
-      res.json({ success: false, data: {message:'Error'} });
-  }
-};
-  
-
 //GET /order/:id
 const getOrder = async (req, res) => {
     try {
-      const orderId = req.params.id; // Assuming the order ID is passed as a URL parameter
+      const orderId = req.params.id;
       const order = await Order.findById(orderId).populate('customer publisher items.book');
       
       if (!order) {
@@ -65,11 +54,17 @@ const createOrder = async (req, res) => {
       if (!book_found)
         return res.json({ success: false, data: { message: 'Book not found' } });
   
+      if (book_found.stock == 0)
+        return res.json({ success: false, data: { message: 'This book is not in stock' } });
+
+      if (book_found.stock < qte)
+        return res.json({ success: false, data: { message: `Cannot order this quantity, there is only ${book_found.stock} left` } });
+
       const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
   
       try{
         await order.save();
-        return res.json({ success: true, data: { message: 'Your order sent' , order } });
+        return res.json({ success: true, data: { message: 'Your created sucessfully' , order } });
       }
       catch(err){
         return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
@@ -92,9 +87,8 @@ const updateOrder = async (req, res) => {
             
         const order = await Order.find({customer: req.params.id});
 
-        if (!order) {
+        if (!order)
             return res.status(404).json({ success: false, data: { message: 'Order not found' }});
-        }
 
         (book != order.book) && ( order.book = book)
         (qte != order.qte) && ( order.qte = qte)
