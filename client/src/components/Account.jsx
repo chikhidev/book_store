@@ -11,6 +11,7 @@ const Account  = () => {
             <div>strength : {isAdmin ? "admin" : "user"}</div>
             <div>createdAt : {createdAt}</div>
             <div>bio : {bio}</div>
+            <div>(token, tho soon will be  removeed) : {localStorage.getItem("token")}</div>
             <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" />
         </div>
     )

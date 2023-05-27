@@ -28,6 +28,7 @@ app.use('/book', Route.BookRouter );
 app.use('/category', Route.CategoryRouter );
 app.use('/order', Route.OrderRouter );
 app.use('/images', Route.ImagesRouter );
+app.use('/fav', Route.FavouriteRouter );
 
 //Server listening
 app.listen(process.env.PORT, ()=>
