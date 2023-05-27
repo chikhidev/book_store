@@ -80,54 +80,96 @@ const createOrder = async (req, res) => {
   
 
   // PUT /orders/:id
-const updateOrder = async (req, res) => {
-    const { book, qte, shippingAddress } = req.body;
+  const updateOrder = async (req, res) => {
+    const { book, qte, note, shippingAddress } = req.body;
 
-    try{
-            
-        const order = await Order.find({customer: req.params.id});
+    try {
+        const order = await Order.findById(req.params.id);
+
+        if(order.customer == req.user.id)
+          return res.status(404).json({ success: false, data: { message: "It's not your order to update it" } });
 
         if (!order)
-            return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+            return res.status(404).json({ success: false, data: { message: 'Order not found' } });
 
-        (book != order.book) && ( order.book = book)
-        (qte != order.qte) && ( order.qte = qte)
-        (note != order.note) &&( order.note = note)
-        
-        for (var key in order.shippingAddress){
-          if (shippingAddress[key] && (shippingAddress[key] != order.shippingAddress[key]))
-            order.shippingAddress[key] = shippingAddress[key]
+        order.book = book || order.book;
+        order.qte = qte || order.qte;
+        order.note = note || order.note;
+
+        for (const key in shippingAddress) {
+            if (shippingAddress[key] && shippingAddress[key] !== order.shippingAddress[key])
+                order.shippingAddress[key] = shippingAddress[key];
         }
 
         await order.save();
 
-        res.json({ success: true, data:{message: 'Order updated', order} });
-    }catch(err){
-        res.json({ success: true, data: {message:'Error', err} });
-
+        res.json({ success: true, data: { message: 'Order updated', order } });
+    } catch (err) {
+        res.status(500).json({ success: false, data: { message: 'Error', error: err } });
     }
+};
 
-    };
 
 
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
+  try {
+      const order = await Order.findById(req.params.id);
+
+      if (!order)
+          return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+
+      if (req.user.id !== order.customer)
+          return res.status(403).json({ success: false, data: { message: "It's not your order to cancel" }});
+
+      try{
+        await order.remove();
+        res.json({ success: true, data: { message: 'Order deleted successfully' } });
+      }catch{
+        res.json({ success: false, data: { message: 'There was an error while cancelling the order' } });
+      }
+  } catch(err) {
+      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+  }
+};
+
+
+
+const submitOrder = async (req, res) => {
+  try{
+    const id = req.params.id;
+
+    const order = await Order.findById(id).select('customer book qte status').populate('book')
+    if(!order)
+      return res.json({success:false, data:{message:"Order not found"}})
+
+    if (order.book.createdBy !== req.user.id)
+      return res.json({success:false, data:{message:"This book is not attached to you, can't submit this request"}})
+
     try{
-        const order = await Order.findByIdAndDelete(req.params.id);
-
-        if (!order) {
-            return res.status(404).json({ success: false, data: { message: 'Order not found' }});
-        }
-    
-        res.json({ success: true, data: {message:'Order deleted successfully'} });
-    }catch(err){
-        res.json({ success: true, data: {message:'Error', err} });
-
+      switch(order.status){
+        case "pending":
+          order.status = "confirmed";
+          await order.save();
+          break;
+        case "confirmed":
+          return res.json({success:false, data:{message:"This order is already confirmed"}})
+        case "delivered":
+          return res.json({success:false, data:{message:"This order is already delivered"}})
+        default:
+          return res.json({success:false, data:{message:"There was an error processing"}})
+      }
+    }catch{
+      return res.json({success:false, data:{message:"Please try again later"}})
     }
-    };
+
+  }catch(err) {
+      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+  }
+}
 
 
 module.exports = {
     getOrders, createOrder, updateOrder, deleteOrder, getOrder,
-    getCurrentUserOrders
+    submitOrder
 }
