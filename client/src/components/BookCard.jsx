@@ -70,10 +70,10 @@ const Card = ({ book }) => {
       store.dispatch(TOGGLE_BOOK_FAV(book._id))
       toggleFavBook(userToken, book._id)
       let favs = store.getState().favBooks
-      // console.log("fav books are ");
-      // console.log(favs);
-      // console.log("id => ");
-      // console.log(book._id);
+      console.log("fav books are ");
+      console.log(favs);
+      console.log("id => ");
+      console.log(book._id);
       
       e.currentTarget.classList.toggle("heart-active")
     }
@@ -82,7 +82,7 @@ const Card = ({ book }) => {
     }
   }
     useEffect(() => {
-    // fetchIsBookFav(userToken, book._id);
+    fetchIsBookFav(userToken, book._id);
   }, [userToken, book._id, isBookFav]);
   
     return (
