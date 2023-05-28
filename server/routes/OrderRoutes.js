@@ -26,7 +26,13 @@ OrderRoute.post(
 OrderRoute.put("/:id",  Middleware.auth.authenticateToken, Controller.Order.updateOrder);
 
 // // DELETE an order by ID
-// OrderRoute.delete("/:id",  Middleware.auth.authenticateToken, Controller.Order.deleteOrder);
+OrderRoute.post("/submit/:id", Middleware.auth.authenticateToken, Controller.Order.submitOrder)
 
+OrderRoute.delete(
+    "/:id", 
+    Middleware.auth.authenticateToken,
+    Middleware.auth.isAdmin,
+    Controller.Order.deleteOrder
+    );
 
 module.exports = OrderRoute
