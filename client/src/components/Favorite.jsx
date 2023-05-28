@@ -1,33 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN, LOGOUT, TOGGLE_BOOK_FAV } from '../redux/actions';
-import Card from './Card';
+import Card from './BookCard';
 
 const Favorite = () => {
-  const [fetchedBooks, setFetchedBooks] = useState([]);
-  const favBooks = useSelector((state) => state.favBooks); // Accessing favBooks from Redux store
+  const [favs, setFavs] = useState([]); // Accessing favBooks from Redux store
+
+  const userToken = useSelector((state) => state.token)
   const dispatch = useDispatch();
 
-  const fetchBooks = async () => {
-    const promises = favBooks.map(async (id) => {
-      const response = await fetch(`http://localhost:4000/book/${id}`);
-      const data = await response.json();
-      const book = data.data.book;
-      return book;
-    });
-
-    const books = await Promise.all(promises);
-    setFetchedBooks(books);
-  };
-
+  const fetchFavBooks = async (token) => {
+    let books = await fetch(`http://localhost:4000/fav`, {
+        method : "GET",
+        headers : {
+            "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${userToken}`,
+        },
+    })
+    let res = await books.json();
+    setFavs(res.data)
+  }
+  
   useEffect(() => {
-    fetchBooks();
-  }, [favBooks]); // Re-fetch books when favBooks changes in the Redux store
+    fetchFavBooks();
+  }, [favs, userToken]); // Re-fetch books when favBooks changes in the Redux store
+
 
   return (
     <div className='favorite-books'>
-      {fetchedBooks.length > 0 ? (
-        fetchedBooks.map((book) => <Card book={book} key={book._id} />)
+      {favs.length > 0 ? (
+        favs.map((fav) => <Card book={fav.book} key={fav.book._id} />)
       ) : (
         <h1>Loading Books</h1>
       )}

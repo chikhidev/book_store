@@ -4,5 +4,6 @@ module.exports = {
     BookRouter: require('./BookRoutes'),
     ImagesRouter: require('./ImagesRoutes'),
     OrderRouter: require('./OrderRoutes'),
-    CategoryRouter: require('./CategoryRoutes')
+    CategoryRouter: require('./CategoryRoutes'),
+    FavouriteRouter: require('./FavouritesRoutes')
 }

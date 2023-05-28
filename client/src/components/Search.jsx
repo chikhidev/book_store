@@ -1,6 +1,8 @@
 import {useSearchParams} from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Card from './Card'
+import { motion } from "framer-motion"
+import ThreeDotsWave from './FramerMotion/ThreeDotWave'
+import Card from './BookCard'
 const Search = () => {
     const [foundBooks, setFoundBooks] = useState([])
     const [searchParams, setSearchParams] = useSearchParams();
@@ -16,16 +18,20 @@ const Search = () => {
     }
     useEffect( () => { getBookByTitle() }, [bookTitle] )
     return (
-        <h1>
+        <motion.h1
+            initial={{opacity : 0}}
+            animate={{opacity : 1}}
+            exit={{opacity : 0}}
+        >
             {
                 foundBooks.length > 0 ? 
                     foundBooks.map(
                         book => {
                             return (<Card book={book} />)
                     } )
-                : ""
+                : <ThreeDotsWave />
             }
-        </h1>
+        </motion.h1>
     )
 }
 export default Search

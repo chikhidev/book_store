@@ -4,8 +4,9 @@ import 'swiper/css';
 import store from '../redux/store';
 import { useState, useEffect } from "react"
 import { TOGGLE_BOOK_FAV } from '../redux/actions';
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import data from "../data.json"
-import Card from './Card'
+import Card from './BookCard'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
@@ -58,19 +59,15 @@ function SlidePrevButton() {
 }
 
 
-
-
 const FeaturedSlider = () => {
     const [featuredBooks, setFeaturedBooks] = useState([]) 
+
     const fetchBooksByPage = async (page) => {
         let books = await fetch(`http://localhost:4000/book?page=${page}`, {
             method : "GET",
-            headers : {
-                "Content-Type" : "application/json",
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTNjMmE4Mjk4ZDQ2N2ZiNTQ4YjBiYSIsImlzQWRtaW4iOnRydWUsInVzZXJuYW1lIjoidGVzdDEyMyIsImVtYWlsIjoiZ291emkuZGV2QGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4NTI5NSwiZXhwIjoxNjgzNjU4MDk1fQ.Df8saqtW7_LIvcYbIgljryvTjtie_4-Kp5krJGyx4c0",
-            },
         })
-        let res = await books.json();
+    console.log("run fetch  books");
+    let res = await books.json();
         setFeaturedBooks(res.data.books)
     }
     useEffect(() => {
@@ -122,12 +119,11 @@ const FeaturedSlider = () => {
                 (book) => {
                     return (
                         <SwiperSlide key={book._id} >
-                            {/* i still dont know how the icons should appear lol  */}
                             <Card book={book} />
                         </SwiperSlide>
                     )
                 }
-                ): <h1>LOADING</h1>}
+                ): <ThreeDotsWave />}
             </div>
             </Swiper>
         </section>

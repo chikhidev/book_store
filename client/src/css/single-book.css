@@ -1,0 +1,103 @@
+.book-single-container {
+    display: flex;
+    height: 650px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.book-single-container .book-single-row-one {
+    display: flex;
+    width: 70%;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3%;
+}
+.book-single-container .book-single-row-two {
+    width: 70%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.book-single-container .book-single-row-two .book-single-details-title {
+    font-weight: 600;
+}
+.book-single-container .book-single-row-two .book-single-details-description {
+    font-weight: 600;
+}
+.book-single-container .book-single-row-one .book-single-col-one {
+    width: 20%;
+}
+.book-single-container .book-single-row-one .book-single-col-two {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 250px;
+}
+.book-single-container .book-single-title {
+    font-weight: 600;
+    font-size: 24px;
+}
+.book-single-container .book-single-author {
+    font-weight: 600;
+    font-size: 16px;
+}
+.book-single-container .book-single-author::before{
+    content : "By "
+}
+.book-single-container .book-single-category{
+    font-weight: 600;
+}
+.book-single-container .book-single-cta{
+    background: #fefefe;
+    display: flex;
+    width: 60%;
+    padding: 2%;
+    height: 35%;
+    box-shadow: 0px 1px 2px 1px rgba(48, 48, 48, 0.5);
+}
+.book-single-container .cta-section-1 {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+}
+.book-single-container .cta-section-1 .book-single-publish-details {
+}
+.book-single-container .cta-section-1 .book-single-cta-publication-date {
+    font-weight: 600;
+    font-size: 13px;
+}
+.book-single-container .cta-section-1 .book-single-cta-book-type {
+    display: inline;
+}
+.book-single-container .cta-section-1 .book-single-cta-book-type::after {
+    content: " - ";
+}
+.book-single-container .cta-section-1 .book-single-cta-publisher {
+    font-weight: 600;
+    display: inline;
+}
+.book-single-container .cta-section-2 {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+}
+.book-single-container .cta-section-2 .book-single-cta-buy-btn{
+    font-size: 12px;
+    width: 90%;
+    background: #272727;
+    color: white;
+    height: 50%;
+    border-radius: 3px;
+    box-shadow: 0px 2px 5px 0.5px rgba(153, 101, 232, 0.09);
+}
+.book-single-container .cta-section-2 .book-single-cta-buy-price{
+    text-align: end;
+    font-size: 15px;
+    margin-right: 5px;
+}

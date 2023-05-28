@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import store from '../redux/store';
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from '../redux/actions';
+import { motion } from "framer-motion"
 
 const Login = () => {
-    console.log(`login status is => ${store.getState().loginStatus}`);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState();
@@ -79,7 +79,11 @@ const Login = () => {
         }
     };
     return (
-        <div className="login popup">
+        <motion.div className="login popup"
+            initial={{opacity : 0}}
+            animate={{opacity : 1}}
+            exit={{opacity : 0}}
+        >
             <form onSubmit={verifyUserInput} className="form-popup">
                 <div className="form-header">
                     <div className="welcome-msg">
@@ -174,7 +178,7 @@ const Login = () => {
                     </Link>
                 </div>
             </form>
-        </div>
+        </motion.div>
     )
 }
 

@@ -9,25 +9,12 @@ import { LOGIN, LOGOUT } from "../redux/actions"
 import { SET_USER_DETAILS } from "../redux/actions"
 import { useSearchParams } from "react-router-dom";
 
-let heartedBooks = [
-  {
-    _id : "646621698b5800b2a92c569964",
-    name : "Harry Potter",
-  },
-  {
-    _id : "646621698b5800b2a92c569878",
-    name : "Attack On Titan",
-  },
-  {
-    _id : "846621698b5800b2a92c569878",
-    name : "Story Teller",
-  },
-]
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("")
   const loginStatus = useSelector(state => state.loginStatus);
   const adminStatus = useSelector(state => state.userDetails.isAdmin);
+  const [isSearchError, setIsSearchError] = useState(false)
 
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);
@@ -44,7 +31,17 @@ function Navbar() {
     localStorage.removeItem('token');
     store.dispatch(LOGOUT());
   };
-  const handleSearch = (searchQuery.length > 2) ? (`/search?name=${searchQuery}`) : (`/register`)
+  const handleSearchClick = (e) => {
+    if (searchQuery.length < 3)
+    {
+      setIsSearchError(true)
+    }
+    else {
+      setIsSearchError(false)
+    }
+    setTimeout(() => setIsSearchError(false), 1000)
+  }
+  const handleSearchQuery = (searchQuery.length > 2) ? (`/search?name=${searchQuery}`) : (`/`)
       return (
         <nav>
             <div className="nav-left links">
@@ -61,16 +58,19 @@ function Navbar() {
             <div className="empty_el">
             </div>
             <div className="nav-center">
-                <input
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    value={searchQuery} 
-                    className="search" placeholder='search for a book'/>
-                <Link to={handleSearch}>
-                    <button>
-                        < SearchRoundedIcon sx={{ color :'#444' }} />
-                    </button>
-                </Link>
+                <div className={`search-field ${isSearchError ? "search-error" : ""}`}>
+                    <input
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery} 
+                        className="search " placeholder='search for a book'/>
+                    <Link to={handleSearchQuery}>
+                        <button onClick={handleSearchClick}>
+                            < SearchRoundedIcon sx={{ color :'#444' }} />
+                        </button>
+                    </Link>
+                </div>
             </div>
+
             <div className="empty_el">
             </div>
             <div className="nav-right">

@@ -1,0 +1,110 @@
+.book-card {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+    z-index: 100;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.book-card:hover {
+    z-index: 300;
+    transform: scale(103%, 103%);
+    box-shadow: 2px 2px 25px 1px rgba(0, 0, 0, 0.15);
+}
+.book-card .book-icons {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+.book-card .book-icons .book-cart-icon {
+    fill : white;
+    margin-right: 25px;
+    stroke:rgb(32, 32, 32);
+    stroke-width: 1.5;
+    transition: 0.2s;
+    cursor: pointer;
+    width: 20px;
+}
+.book-card .book-icons .book-heart-icon:not(.heart-active) {
+    fill : white;
+    margin-right: 20px;
+    stroke:rgb(32, 32, 32);
+    transition: 0.2s;
+    stroke-width: 1.5;
+    cursor: pointer;
+    width: 20px;
+}
+.book-card .book-icons .book-heart-icon.heart-active {
+    fill : rgb(32, 32, 32);;
+    margin-right: 20px;
+    stroke:rgb(32, 32, 32);
+    transition: 0.2s;
+    stroke-width: 1.5;
+    cursor: pointer;
+    width: 20px;
+
+}
+
+.book-card .book-icons .book-heart-icon:hover {
+    fill: rgb(32, 32, 32);
+    transform: scale(110%, 110%);
+}
+.book-card .book-icons .book-cart-icon:hover {
+    transform: scale(110%, 110%);
+}
+
+.book-imageUrl {
+        max-width: 100%;
+        height: 280px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        padding-left: 30px;
+        padding-right: 30px;
+}
+.book-title {
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    height: 35px;
+    justify-content: flex-end;
+    align-self: start;
+    letter-spacing: -0.2px;
+}
+.author-label-call-to-action-container {    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 10px;
+    color: #333333c2;
+    font-weight: 500;
+}
+hr.line
+{
+    margin: 10px;
+    width: 100%;
+}
+.author-label {
+
+}
+.call-to-action {
+
+}
+.author-price-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+.book-author {
+    font-size: 14px;
+    font-weight: 700;
+}
+.book-price {
+    font-size: 14px;
+    font-weight: 700;
+}
+

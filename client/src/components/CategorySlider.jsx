@@ -4,12 +4,12 @@ import 'swiper/css';
 import store from '../redux/store';
 import { useState, useEffect } from "react"
 import data from "../data.json"
-import Card from './Card'
+import Card from './BookCard'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
 import { display, capitalize } from '../js/index.js';
-
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 function SlideNextButton() {
     const swiper = useSwiper();
     return (
@@ -57,7 +57,7 @@ const CategorySlider = ({category}) => {
             },
         })
         let res = await books.json();
-        // first cat only, cause may find more ..
+        console.log(res);
         setCategoryBooks(res.data.categories[0].books)
     }
     useEffect(() => {
@@ -114,7 +114,7 @@ const CategorySlider = ({category}) => {
                         </SwiperSlide>
                     )
                 }
-                ): <h1>LOADING</h1>}
+                ) : <ThreeDotsWave />}
             </div>
             </Swiper>
         </section>
