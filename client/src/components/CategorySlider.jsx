@@ -9,7 +9,7 @@ import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
 import { display, capitalize } from '../js/index.js';
-
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 function SlideNextButton() {
     const swiper = useSwiper();
     return (
@@ -114,7 +114,7 @@ const CategorySlider = ({category}) => {
                         </SwiperSlide>
                     )
                 }
-                ): <h1>LOADING</h1>}
+                ) : <ThreeDotsWave />}
             </div>
             </Swiper>
         </section>

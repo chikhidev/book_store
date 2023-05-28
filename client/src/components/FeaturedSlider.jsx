@@ -4,6 +4,7 @@ import 'swiper/css';
 import store from '../redux/store';
 import { useState, useEffect } from "react"
 import { TOGGLE_BOOK_FAV } from '../redux/actions';
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import data from "../data.json"
 import Card from './BookCard'
 import '../css/index.css';
@@ -122,7 +123,7 @@ const FeaturedSlider = () => {
                         </SwiperSlide>
                     )
                 }
-                ): <h1>LOADING</h1>}
+                ): <ThreeDotsWave />}
             </div>
             </Swiper>
         </section>

@@ -1,22 +1,29 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/index.css';
 import './css/card.css';
 import './js/index.js';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useParams } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './components/Login';
-import Register from './components/Register';
 import FeaturedSlider from './components/FeaturedSlider';
 import CategorySlider from './components/CategorySlider';
-import CreateBookForm from './components/CreateBookForm';
-import Search from './components/Search';
-import Favorite from './components/Favorite';
-import Account from './components/Account';
-import SingleBook from './components/SingleBook';
-import NewBooks from './components/NewBooks';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import store from './redux/store';
+import AnimatedRoutes from './components/FramerMotion/AnimatedRoutes';
+import { motion } from "framer-motion"
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
+import ThreeDotsWave from './components/FramerMotion/ThreeDotWave';
+const motionDiv = (child) => {
+  return (
+    <motion.div
+      initial={{opacity : 0}}
+      animate={{opacity : 1}}
+      exit={{opacity : 0}}
+    >
+      <child />
+    </motion.div>
+  )
+}
+
 function App() {
   const [isLogged, setIsLogged] = useState(false);
 
@@ -63,19 +70,7 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/categories" element={<Categories/>} />
-            <Route path="/new" element={<NewBooks/>} />
-            <Route path="/account" element={<Account/>} />
-            <Route path="/favorite" element={isLogged ? <Favorite/> : <Navigate to="/login" />} />
-            <Route path="/book/:id" element={<SingleBook/>} />
-            <Route path="/store/book/create" element={isLogged ? <CreateBookForm/> : <Navigate to="/login" /> } />
-            <Route path="/login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
-            <Route path="/search" element={<Search />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
-            <Route path="/search/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
-            <Route path="/register" element={isLogged ? <Navigate to="/"/> : <Register />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
-          </Routes>
+          <AnimatedRoutes isLogged={isLogged} />
         </div>
       </Router>
   );
@@ -83,11 +78,15 @@ function App() {
 
 function Home() {
   return (
-    <div className="hero featured">
+    <motion.div className="hero featured"
+      initial={{opacity : 0}}
+      animate={{opacity : 1}}
+      exit={{opacity : 0}}
+    >
            <FeaturedSlider />
            <CategorySlider category={"mystery"} />
            <CategorySlider category={"fiction"} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -110,14 +109,18 @@ function Categories() {
   }, [])
 
   return (
-      <div className="hero featured">
+      <motion.div className="hero featured"
+        initial={{opacity : 0}}
+        animate={{opacity : 1}}
+        exit={{opacity : 0}}
+      >
         {fetchedCategories.length > 0 ? 
         fetchedCategories.map(cat => {
           return <CategorySlider category={cat.name} />
         })
-        : <h1>LOADING</h1>}
-      </div>
+        : <ThreeDotsWave />}
+      </motion.div>
   )
 }
 
-export {App};
+export {App, Home, Categories};

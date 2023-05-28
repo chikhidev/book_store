@@ -26,3 +26,5 @@ const capitalize = (str) => {
 
 export {display, capitalize}
 
+
+

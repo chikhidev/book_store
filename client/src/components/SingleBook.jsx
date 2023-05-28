@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { display } from '../js/index.js';
 import '../css/single-book.css';
 const ENDPOINT = "http://localhost:4000"
+import Register from './Register.jsx';
+import ThreeDotsWave from './FramerMotion/ThreeDotWave.jsx';
 
 const SingleBook = () => {
     const { id } = useParams();
@@ -11,6 +13,7 @@ const SingleBook = () => {
     const [isBookFetched, setIsBookFetched] = useState(false);
     const [gotCats, setGotCats] = useState(false);
     const [cats, setCats] = useState([]);
+    console.log("HELLO");
 
     const getHumanDate = (dateStr) => {
       const date = new Date(dateStr);
@@ -139,7 +142,8 @@ const SingleBook = () => {
                     <span>Book doesn't exist</span>
                 )
             ) : (
-                <h1>Loading...</h1>
+                <ThreeDotsWave />
+                
             )}
         </>
     );
