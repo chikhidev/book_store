@@ -1,6 +1,8 @@
 const Order = require('../models/OrderModel').orderModel;
 const User = require('../models/userModel');
 const Book = require('../models/bookModel').bookModel
+const Message = require('../models/MessageModel');
+const Inbox = require('../models/InboxModel');
 
 // GET /orders
 const getOrders = async (req, res) => {
@@ -20,7 +22,7 @@ const getOrders = async (req, res) => {
     }catch(err){
         res.json({ success: false, data: {message:'Error'} });
     }
-  };
+};
   
 //GET /order/:id
 const getOrder = async (req, res) => {
@@ -37,7 +39,7 @@ const getOrder = async (req, res) => {
       console.error(err);
       res.status(500).json({ success: false, data:{message: 'Internal server error'} });
     }
-  };
+};
   
 
 // POST /order
@@ -61,12 +63,34 @@ const createOrder = async (req, res) => {
         return res.json({ success: false, data: { message: `Cannot order this quantity, there is only ${book_found.stock} left` } });
 
       const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
-  
+      const messageOfCustomer = new Message({ 
+        sender: req.user.id, 
+        content: `${req.user.username} requested an order from you`,
+        order: order._id
+      });
+      
+      const seller = book_found.createdBy
+      const inbox_found = Inbox.find({owner: seller})
+      
+
       try{
+        if (!inbox_found){
+          const inboxOfSeller = new Inbox({
+            owner: seller,
+            messages: [messageOfCustomer._id]
+          });
+          await inboxOfSeller.save()
+        }else{
+          inbox_found.messages.push(messageOfCustomer._id)
+          await inbox_found.save()
+        }
+        await messageOfCustomer.save()
         await order.save();
+        //----------------------------------------------------------------on sucess:
         return res.json({ success: true, data: { message: 'Your created sucessfully' , order } });
       }
       catch(err){
+        //----------------------------------------------------------------on failing:
         return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
       }
   
@@ -75,16 +99,16 @@ const createOrder = async (req, res) => {
       console.error(err);
       return res.json({ success: false, data: { message: 'Error', err } });
     }
-  };
+};
   
   
 
   // PUT /orders/:id
-  const updateOrder = async (req, res) => {
+const updateOrder = async (req, res) => {
     const { book, qte, note, shippingAddress } = req.body;
 
     try {
-        const order = await Order.findById(req.params.id);
+        const order = await Order.findById(req.params.id).populate('book');
 
         if(order.customer == req.user.id)
           return res.status(404).json({ success: false, data: { message: "It's not your order to update it" } });
@@ -101,7 +125,38 @@ const createOrder = async (req, res) => {
                 order.shippingAddress[key] = shippingAddress[key];
         }
 
-        await order.save();
+        const seller = order.book.createdBy
+
+        const messageOfCustomer = new Message({ 
+          sender: req.user.id, 
+          content: `${req.user.username} updated their order`,
+          order: order._id
+        });
+        
+        const inbox_found = Inbox.find({owner: seller})
+
+        try{
+          if (!inbox_found){
+            const inboxOfSeller = new Inbox({
+              owner: seller,
+              messages: [messageOfCustomer._id]
+            });
+            await inboxOfSeller.save()
+          }else{
+            inbox_found.messages.push(messageOfCustomer._id)
+            await inbox_found.save()
+          }
+          await messageOfCustomer.save()
+
+          await order.save();
+          
+        }catch(err) {
+          return res.json({
+            success: false, data: {
+              message: `there was an error while updating the order`
+            }
+          })
+        }
 
         res.json({ success: true, data: { message: 'Order updated', order } });
     } catch (err) {
@@ -114,7 +169,7 @@ const createOrder = async (req, res) => {
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
   try {
-      const order = await Order.findById(req.params.id);
+      const order = await Order.findById(req.params.id).populate('book');
 
       if (!order)
           return res.status(404).json({ success: false, data: { message: 'Order not found' }});
@@ -122,7 +177,28 @@ const deleteOrder = async (req, res) => {
       if (req.user.id !== order.customer)
           return res.status(403).json({ success: false, data: { message: "It's not your order to cancel" }});
 
+      const seller = order.book.createdBy
+
+      const messageOfCustomer = new Message({ 
+        sender: req.user.id, 
+        content: `${req.user.username} canceled their order`,
+        order: order._id
+      });
+      
+      const inbox_found = Inbox.find({owner: seller})
+
       try{
+        if (!inbox_found){
+          const inboxOfSeller = new Inbox({
+            owner: seller,
+            messages: [messageOfCustomer._id]
+          });
+          await inboxOfSeller.save(messageOfCustomer)
+        }else{
+          inbox_found.messages.push(messageOfCustomer._id)
+          await inbox_found.save()
+        }
+        await messageOfCustomer.save()
         await order.remove();
         res.json({ success: true, data: { message: 'Order deleted successfully' } });
       }catch{
@@ -147,10 +223,36 @@ const submitOrder = async (req, res) => {
       return res.json({success:false, data:{message:"This book is not attached to you, can't submit this request"}})
 
     try{
+
+      const messageToCustomer = new Message({ 
+        sender: req.user.id, 
+        content: `${req.user.username} accepted your order`,
+        order: order._id
+      });
+      
+      const inbox_found = Inbox.find({owner: order.customer})
+
       switch(order.status){
         case "pending":
-          order.status = "confirmed";
-          await order.save();
+          try{
+            order.status = "confirmed";
+
+            if (!inbox_found){
+              const inboxOfSCustomer = new Inbox({
+                owner: order.customer,
+                messages: [messageOfCustomer._id]
+              });
+              await inboxOfSCustomer.save()
+            }else{
+              inbox_found.messages.push(messageOfCustomer._id)
+              await inbox_found.save()
+            }
+            await messageToCustomer.save()
+
+            await order.save();
+          }catch{
+            return res.json({success:false, data:{message:"there was an error while submitting this order"}})
+          }
           break;
         case "confirmed":
           return res.json({success:false, data:{message:"This order is already confirmed"}})
