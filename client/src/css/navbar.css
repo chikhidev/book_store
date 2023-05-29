@@ -10,6 +10,9 @@ nav {
 	border-bottom: 1px solid #e3e3e38d;
 
 }
+.hamburger {
+	display: none;
+}
 .nav-left + .empty_el {
 	flex-basis: 10%;
 	background-color: rgb(108, 97, 97);
@@ -43,7 +46,7 @@ nav .nav-center .search-field{
   }
   
   
-  @keyframes shake2 {
+  @keyframes shake {
 	0% {
 	  transform: translate(0px, 0px) rotate(0deg);
 	}
@@ -82,7 +85,7 @@ nav .nav-center .search-field{
  
 nav .nav-center .search-field.search-error {
 	border: 3px solid red ;
-	animation: shake2 0.5s ease-in-out 0s 2;
+	animation: shake 0.5s ease-in-out 0s 2;
 	transition: 0.2s all;
 }
 nav .nav-center input.search {
@@ -119,7 +122,7 @@ nav .nav-center button > svg {
 
 nav .nav-right {
 	display: flex;
-	flex-basis: 20%;
+	min-width: 20%;
 	align-items: center;
 	justify-content: space-evenly;
 }
@@ -207,4 +210,103 @@ nav .nav-right button.cart {
 .logout:hover {
 	background: rgb(219, 11, 11);
 	color: white;
+}
+
+@media (max-width : 300px) {
+	nav .nav-left {
+		background: #555;
+		flex-basis: 65%;
+		font-size: 13px;
+
+	}
+	nav .nav-right {
+		flex-basis: 55%;
+		display: flex;
+
+	}
+	.empty_el {
+		display: none;
+	}
+	nav .nav-center .search-field{
+		display: none;
+	}
+	
+	.user-icon {
+		width: 25px;
+	}
+	.dropdown{
+	position: relative;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+}
+.dropdown-hover{
+	display: inline-block;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.dropdown-hover:hover{
+	color: black;
+	border-radius: 50%;
+}
+.dropdown-menu {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #323b40;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+  min-width: 30px;
+  left: -100%;
+  top: 100%;
+  padding: 0;
+}
+.dropdown:hover .dropdown-menu {
+	display: flex;
+	transition: 0.3 all;
+	width: 250%;
+}
+.dropdown-menu .dropdown-item{
+	text-decoration: none;
+	font-size: 10px;
+	display: flex;
+	justify-content: center;
+	border-width: 0;
+	transition: 0.1s;
+}
+.dropdown-menu .dropdown-item:hover:not(.logout) {
+	background: #323b40;
+	color: white;
+}
+.dropdown-menu .dropdown-item:not(:first-of-type){
+	border-top: 1px solid #e0e0e0;
+}
+nav .nav-right button.sign-in {
+	font-size: 13px;
+}
+}
+@media (max-width: 500px) {
+	nav {
+	}
+	nav .nav-left {
+		display: none;
+	}
+	.hamburger {
+		display: block;
+	}
+}
+@media (max-width : 848px) {
+
+	.nav-left + .empty_el {
+		display: none;
+	}
+	.nav-center + .empty_el {
+		display: none;
+	}
+	.nav-center  {
+		max-width: 40%;
+		padding: 0%;
+	}
+
 }

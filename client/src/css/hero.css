@@ -15,8 +15,8 @@
 .book-section  .featured-arrows {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    flex-basis: 12%;
+    justify-content: space-between;
+    flex-basis: 90%;
 }
  .left-arrow,
  .right-arrow {
@@ -50,4 +50,16 @@
     flex-wrap: wrap;
     padding: 25px;
     height: 100%;
+}
+
+@media (max-width : 323px) {
+    .hero {
+        width: 90%;
+        margin: 30px auto;
+        display: flex;
+        flex-direction: column;
+    }
+   .book-section .featured-header  {
+        font-size: 10px;
+    }
 }

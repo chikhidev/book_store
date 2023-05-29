@@ -1,5 +1,6 @@
 .new-books-container {
     display: flex;
+    /* justify-content: center; */
     flex-direction: row;
     /* align-items: center; */
     margin-top: 2%;
@@ -30,10 +31,18 @@ input[type='radio'] {
     background: #333;
   }
 
-.new-books {
+  .new-books {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    /* align-items: center; */
+    gap: 10px;
+    width: 80%;
+}
+.new-books.center-loading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     /* align-items: center; */
     gap: 10px;
     width: 80%;

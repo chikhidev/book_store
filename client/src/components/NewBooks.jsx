@@ -61,7 +61,7 @@ return (
                 id="desc"/>
             </div>
         </div>
-        <div className='new-books'>
+        <div className={`new-books ${loading ? "center-loading" : ""}`}>
             {loading ?
                 <h2><ThreeDotsWave /></h2>
                 :
@@ -69,7 +69,7 @@ return (
                 {fetchedNewBooks.length > 0 ? (
                     fetchedNewBooks.map((book) => <NewBookCard book={book} key={book._id} />)
                     ) : (
-                    <h2><ThreeDotsWave /></h2>
+                    <h2><ThreeDotsWave centerInScreen={true} /></h2>
                     )}
             </>
             }

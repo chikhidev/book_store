@@ -10,7 +10,7 @@ import Card from './BookCard'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
-
+import { swiperBreakPoints } from '../js/index.js';
 
 const display = (text, n) => {
     let len = text.length;
@@ -76,7 +76,7 @@ const FeaturedSlider = () => {
 
     return (
         <section className="featured-book-section book-section">
-            <div className="featured-header">
+            <div className="featured-header section-header">
                 <div className="featured-title">
                     Suggested Books :
                 </div>
@@ -84,27 +84,7 @@ const FeaturedSlider = () => {
             <Swiper
             spaceBetween={0}
             slidesPerView={4}
-            breakpoints={{
-                2000: {
-                slidesPerView: 6,
-                },
-                1666: {
-                slidesPerView: 5,
-                },
-                1366: {
-                slidesPerView: 4,
-                },
-                1000: {
-                slidesPerView: 3,
-                },
-                768: {
-                width: 768,
-                slidesPerView: 2,
-                },
-                400: {
-                slidesPerView : 1
-                }
-            }}
+            breakpoints={swiperBreakPoints}
             // onSlideChange={() => console.log('slide change')}
             // onSwiper={(swiper) => console.log(swiper)}
             // onReachEnd={console.log("\nhi im in the end \n")}

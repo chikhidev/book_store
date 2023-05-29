@@ -24,7 +24,32 @@ const capitalize = (str) => {
 
 
 
-export {display, capitalize}
 
 
 
+let swiperBreakPoints = {
+  2000: {
+    slidesPerView: 6,
+    },
+    1666: {
+    slidesPerView: 5,
+    },
+    1366: {
+    slidesPerView: 4,
+    },
+    1000: {
+    slidesPerView: 3,
+    },
+    768: {
+    width: 768,
+    slidesPerView: 2,
+    },
+    400: {
+    slidesPerView : 1
+    },
+    200: {
+        slidesPerView : 1
+    }
+}
+
+export {display, capitalize, swiperBreakPoints}

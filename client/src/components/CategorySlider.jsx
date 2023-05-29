@@ -10,6 +10,7 @@ import '../css/hero.css';
 import '../js/index.js';
 import { display, capitalize } from '../js/index.js';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
+import { swiperBreakPoints } from '../js/index.js';
 function SlideNextButton() {
     const swiper = useSwiper();
     return (
@@ -74,27 +75,7 @@ const CategorySlider = ({category}) => {
             <Swiper
             spaceBetween={0}
             slidesPerView={4}
-            breakpoints={{
-                2000: {
-                slidesPerView: 6,
-                },
-                1666: {
-                slidesPerView: 5,
-                },
-                1366: {
-                slidesPerView: 4,
-                },
-                1000: {
-                slidesPerView: 3,
-                },
-                768: {
-                width: 768,
-                slidesPerView: 2,
-                },
-                400: {
-                slidesPerView : 1
-                }
-            }}
+            breakpoints={swiperBreakPoints}
             // onSlideChange={() => console.log('slide change')}
             // onSwiper={(swiper) => console.log(swiper)}
             // onReachEnd={console.log("\nhi im in the end \n")}

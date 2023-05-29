@@ -1,6 +1,6 @@
 div.popup {
     width: 100%;
-    height: 530px;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,6 +92,7 @@ form.form-popup .form-footer {
     justify-content: space-between;
     flex-basis: 70%;
 }
+
 .register .form-hero .form-grp {
     width: 100%;
     display: flex;
@@ -106,16 +107,15 @@ form.form-popup .form-footer {
     width: 100%;
     padding: 10px;
 }
-.register .form-hero .first-name  ,
-.register .form-hero .last-name
- {
-    width: 49%;
+.register .form-hero .form-grp {
+    gap: 1.5%;
 }
+
 .register .form-hero .age {
-    flex-basis: 30%;
+    flex : 3
 }
 .register .form-hero .username {
-    flex-basis: 68%;
+    flex: 5;
 }
 .register .form-hero .form-grp .input-grp input{
     border: 1px solid rgba(128, 128, 128, 0.301); 
@@ -136,4 +136,111 @@ form.form-popup .form-footer {
     color: rgb(248, 28, 28);
     font-size: 14px;
     height: 8%;
+}
+
+.register .form-hero .password {
+    flex: 4;
+}
+.register .form-hero .confirm {
+    flex: 5;
+}
+@media (max-width : 1100px) {
+
+	
+    .popup .form-popup {
+        flex-basis: 80%;
+    }
+
+}
+@media (max-width : 700px) {
+    form .form-header .welcome-msg {
+        font-size: 30px;
+    }
+    .popup.login form .form-header .welcome-msg .line-break {
+        display: inline;
+        content:  " "; 
+        margin-left: 1.5%;
+    }
+    .popup.login form .form-header .welcome-msg .primary-color {
+    }
+}
+@media (max-width : 600px) {
+    .popup.register  {
+    }
+    .popup form .form-hero {
+
+    }
+    .popup form .form-hero .form-grp {
+        flex-direction: column;
+        margin-bottom: 2%;
+    }
+    .popup form .form-header {
+        justify-content: space-evenly;
+    }
+    form .form-header .welcome-msg {
+        line-height: 28px;
+        font-size: 24px;
+        margin-bottom: 2%;
+    }
+    form .form-header .sign-in-msg {
+        display: none;
+    }
+
+    form.form-popup .form-hero .btn-grp .sign-in-btn {
+        font-weight: 300;
+        padding: 12px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background: #1243F0;
+    }
+    form .sign-in-msg {
+        font-size: 15px;
+    }
+    .popup form .form-hero  {
+        display: flex;
+        flex-basis: 75%;
+    }
+   
+    .popup form .form-hero .form-grp > :nth-child(2)  {
+        margin-top: 2%;
+    }
+    .popup form .form-hero  input {
+        padding: 6px;
+    }
+    .register form .form-hero .btn-grp .register-btn {
+        padding-left: 13px;
+        padding-right: 13px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        font-size: 15px;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+    .register form .form-hero .btn-grp .register-btn span
+    {
+        
+    }
+    .register form.form-popup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 80%;
+        z-index: 100;
+    }
+}
+@media (max-width : 400px) {
+    .register .form-popup .form-header .primary-color {
+        display: block;
+    }
+    .login form.form-popup {
+        width: 100%;
+        padding: 0;
+    }
+    .login.popup form .form-hero  input + span {
+        display: none;
+    }
+    .login.popup form .form-hero  input {
+        
+    }
 }

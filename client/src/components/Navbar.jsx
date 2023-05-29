@@ -44,6 +44,12 @@ function Navbar() {
   const handleSearchQuery = (searchQuery.length > 2) ? (`/search?name=${searchQuery}`) : (`/`)
       return (
         <nav>
+          <div className="hamburger">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+          </div>
+
             <div className="nav-left links">
                 <div className="link">
                     <Link to="/">Home</Link>
