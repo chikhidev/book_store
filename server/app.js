@@ -29,6 +29,7 @@ app.use('/category', Route.CategoryRouter );
 app.use('/order', Route.OrderRouter );
 app.use('/images', Route.ImagesRouter );
 app.use('/fav', Route.FavouriteRouter );
+app.use('/inbox', Route.InboxesRouter );
 
 //Server listening
 app.listen(process.env.PORT, ()=>

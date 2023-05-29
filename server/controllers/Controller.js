@@ -6,5 +6,6 @@ module.exports = {
     Order: require('./OrderController'),
     Image: require('./ImagesController'),
     Fav: require('./FavouritesController'),
-    Category: require('./CategoryController')
+    Category: require('./CategoryController'),
+    Inbox: require('./InboxesController'),
 }
