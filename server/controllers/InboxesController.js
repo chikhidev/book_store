@@ -18,5 +18,5 @@ const getInbox = async (req, res) => {
 }
 
 module.exports = {
-    getInbox, getMessage
+    getInbox
 }

@@ -14,11 +14,11 @@ InboxRouter.get(
     )
 
 //get message: 
-InboxRouter.get(
-    '/message/:id',
-    Middleware.auth.authenticateToken,
-    Controller.Inbox.getMessage
-    )
+// InboxRouter.get(
+//     '/message/:id',
+//     Middleware.auth.authenticateToken,
+//     Controller.Inbox.getMessage
+//     )
 
 
 

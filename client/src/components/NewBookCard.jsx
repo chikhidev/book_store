@@ -105,7 +105,7 @@ const NewBookCard = ({ book }) => {
                         </div>
                         <img className="new-book-imageUrl" src={"http://localhost:4000" + book.imageUrl}/>
                     </div>
-                    <div className="new-book-title">{display(book.title, 20)}</div>
+                    <div className="new-book-title">{display(book.title, 17)}</div>
                     <hr className="line"></hr>
                     <div className="author-label-call-to-action-container">
                         <div className="author-label">Writer</div>
