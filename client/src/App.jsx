@@ -5,6 +5,7 @@ import './css/card.css';
 import './js/index.js';
 import FeaturedSlider from './components/FeaturedSlider';
 import CategorySlider from './components/CategorySlider';
+import Describe from './components/Describe';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import store from './redux/store';
@@ -83,6 +84,7 @@ function Home() {
       animate={{opacity : 1}}
       exit={{opacity : 0}}
     >
+          <Describe/>
            <FeaturedSlider />
            <CategorySlider category={"mystery"} />
            <CategorySlider category={"fiction"} />

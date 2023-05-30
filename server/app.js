@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the 'images/books' directory
 app.use('/images/books', express.static('images/books'));
+app.use('/images/users', express.static('images/users'));
 
 //group routing for user
 app.use('/auth', Route.AuthRouter );

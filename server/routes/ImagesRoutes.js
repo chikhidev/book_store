@@ -6,5 +6,6 @@ const Controller = require('../controllers/Controller');
 const ImagesRouter = express.Router();
 
 ImagesRouter.get('/images/books/:id', Controller.Image.BookImage);
+ImagesRouter.get('/images/book/:id', Controller.Image.UserImage);
 
 module.exports = ImagesRouter

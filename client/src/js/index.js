@@ -28,24 +28,21 @@ const capitalize = (str) => {
 
 
 let swiperBreakPoints = {
-  2000: {
+    1666: {
     slidesPerView: 6,
     },
-    1666: {
+    1366: {
     slidesPerView: 5,
     },
-    1366: {
-    slidesPerView: 4,
-    },
     1000: {
-    slidesPerView: 3,
+    slidesPerView: 4,
     },
     768: {
     width: 768,
-    slidesPerView: 2,
+    slidesPerView: 3,
     },
     400: {
-    slidesPerView : 1
+    slidesPerView : 2
     },
     200: {
         slidesPerView : 1
