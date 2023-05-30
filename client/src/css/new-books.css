@@ -11,6 +11,7 @@
 .new-books-options {
     margin-top: 2%;
     width: 10%;
+    font-size: 1.8vw;
 }
 .new-books-options .options-grp {
 }
@@ -21,10 +22,10 @@ input[type='radio'] {
     box-sizing: border-box;
     appearance: none;
     background: white;
-    outline: 2px solid #333;
-    border: 2px solid white;
-    width: 12px;
-    height: 12px;
+    outline: 0.3vw solid #333;
+    border: 0.3vw solid white;
+    width: 1.2vw;
+    height: 1.2vw;
   }
   
 input[type='radio']:checked {
@@ -47,18 +48,16 @@ input[type='radio']:checked {
     gap: 10px;
     width: 80%;
 }
-.new-book-single-link
-{
+.new-book-single-link {
     width: calc((100% - 30px) / 4); /* Calculate the width dynamically based on 4 cards with a gap of 10px */
 }
-.new-book-card:hover .new-book-icons{
+.new-book-img-container {
+    width: 100%;
     display: flex;
-    background: #fff;
-    height: 15%;
-    opacity: 1;
-
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
 .new-book-card {
     z-index: 100;
     transition: 0.3s;
@@ -81,6 +80,13 @@ input[type='radio']:checked {
     transform: scale(103%, 103%);
     box-shadow: 2px 2px 25px 1px rgba(0, 0, 0, 0.15);
 }
+.new-book-card:hover .new-book-icons{
+    display: flex;
+    background: #fff;
+    height: 15%;
+    opacity: 1;
+    width: 105%;
+}
 .new-book-card .new-book-icons {
     position: absolute;
     display: flex;
@@ -90,6 +96,7 @@ input[type='radio']:checked {
     justify-content: flex-end;
     align-items: center;
     padding-right: 5%;
+    width: 105%;
     transition: 0.2s;
 }
 .new-book-card .new-book-icons .new-book-cart-icon {
@@ -98,20 +105,20 @@ input[type='radio']:checked {
     stroke-width: 1.5;
     transition: 0.2s;
     cursor: pointer;
-    width: 20px;
+    width: 12%;
 }
 .new-book-card .new-book-icons .new-book-heart-icon:not(.heart-active) {
     fill : white;
-    margin-right: 20px;
+    margin-right: 10%;
     stroke:rgb(32, 32, 32);
     transition: 0.2s;
     stroke-width: 1.5;
     cursor: pointer;
-    width: 20px;
+    width: 12%;
 }
 .new-book-card .new-book-icons .new-book-heart-icon.heart-active {
     fill : rgb(32, 32, 32);;
-    margin-right: 20px;
+    margin-right: 10%;
     stroke:rgb(32, 32, 32);
     transition: 0.2s;
     stroke-width: 1.5;
