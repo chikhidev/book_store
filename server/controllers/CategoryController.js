@@ -7,7 +7,7 @@ const getCategoryWithBooksByName = async (req, res) => {
   var pageSize = parseInt(req.query.pageSize) || 10
 
   if (pageSize < 1 || pageSize > 100)
-    return res.status(400).json({ success: false, data: { message: 'Invalid pageSize' } });
+    return res.status(400).json({ success: false, data: { message: 'Taille de page non valide' } });
 
   try {
     if (!name) name = '';
@@ -30,7 +30,7 @@ const getCategoryWithBooksByName = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to retrieve categories' } });
+    return res.status(500).json({ success: false, data: { message: 'Impossible de récupérer les catégories' } });
   }
 }
 const getAllCategories = async (req, res) => {
@@ -39,7 +39,7 @@ const getAllCategories = async (req, res) => {
     var pageSize = parseInt(req.query.pageSize) || 10
   
     if (pageSize < 1 || pageSize > 100)
-      return res.status(400).json({ success: false, data: { message: 'Invalid pageSize' } });
+      return res.status(400).json({ success: false, data: { message: 'Taille de page non valide' } });
   
     try {
       if (!name) name = '';
@@ -62,7 +62,7 @@ const getAllCategories = async (req, res) => {
   
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ success: false, data: { message: 'Failed to retrieve categories' } });
+      return res.status(500).json({ success: false, data: { message: 'Impossible de récupérer les catégories' } });
     }
 };
 
@@ -87,7 +87,7 @@ try {
     return res.status(404).json({
         success: false,
         data: {
-        message: 'Category not found',
+        message: 'Catégorie introuvable',
         },
     });
     }
@@ -112,7 +112,7 @@ try {
     return res.status(500).json({
     success: false,
     data: {
-        message: 'Failed to get category',
+        message: `Impossible d'obtenir la catégorie`,
     },
     });
 }
@@ -125,7 +125,7 @@ const makeCategory = async (req, res) => {
       // Check if category with same name already exists
       const existingCategory = await Category.findOne({ name });
       if (existingCategory) {
-        return res.status(400).json({ success: false, message: 'Category with same name already exists' });
+        return res.status(400).json({ success: false, message: 'La catégorie avec le même nom existe déjà' });
       }
   
       const category = await Category.create({ name, description });
@@ -142,7 +142,7 @@ const makeCategory = async (req, res) => {
       return res.status(500).json({
         success: false,
         data: {
-          message: 'Failed to create category',
+          message: 'Échec de la création de la catégorie',
         },
       });
     }
@@ -166,7 +166,7 @@ const updateCategoryById = async (req, res) => {
       console.error(error);
       return res
         .status(500)
-        .json({ success: false, data: { message: 'Failed to update category' } });
+        .json({ success: false, data: { message: 'Échec de la mise à jour de la catégorie' } });
     }
 };
   
