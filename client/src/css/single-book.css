@@ -197,4 +197,14 @@
     margin-top: 2%;
     width: 90%;
     margin: 0 auto;
+    padding: 2%;
+}
+.more-books-slider {
+
+}
+.more-books-arrows {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+
 }

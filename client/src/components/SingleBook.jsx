@@ -45,7 +45,6 @@ const SingleBook = () => {
             setFetchedBook(bookRes.data.book);
             setIsBookFetched(bookRes.success);
             setIsFetchRunned(true);
-            console.log(bookRes.data.book);
 
             if (!gotCats) {
                 const categoryPromises = categoriesIds.map((catId) => getCategory(catId));
@@ -137,7 +136,9 @@ const SingleBook = () => {
                 <ThreeDotsWave />
                 
             )}
+            
             <div className="more-books-container">
+            <span>more like <i><b>{fetchedBook.title}</b></i></span>
                     <MoreLikeThis cats={cats} />
             </div>
         </>
