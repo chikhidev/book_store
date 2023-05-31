@@ -26,8 +26,7 @@ input[type='radio'] {
     border: 0.3vw solid white;
     width: 1.2vw;
     height: 1.2vw;
-  }
-  
+}
 input[type='radio']:checked {
     background: #333;
 }

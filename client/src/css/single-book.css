@@ -15,7 +15,7 @@
 }
 .book-single-container .book-single-row-two {
     width: 70%;
-    height: 40vh;
+    height: 25vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -35,17 +35,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 2px solid red;
-    height: 60%;
+    height: 18vw;
+    font-size: 1vw;
 
 }
 .book-single-container .book-single-title {
     font-weight: 600;
-    font-size: 24px;
+    /* font-size: 24px; */
+    font-size: 2vw;
 }
 .book-single-container .book-single-author {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1.5vw;
 }
 .book-single-container .book-single-author::before{
     content : "By "
@@ -66,13 +67,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 20px;
+    padding-left: 0.8vw;
 }
 .book-single-container .cta-section-1 .book-single-publish-details {
+    font-size: 1.1vw;
 }
 .book-single-container .cta-section-1 .book-single-cta-publication-date {
     font-weight: 600;
-    font-size: 13px;
+    /* font-size: 13px; */
+    font-size: 0.9vw;
 }
 .book-single-container .cta-section-1 .book-single-cta-book-type {
     display: inline;
@@ -92,7 +95,7 @@
 
 }
 .book-single-container .cta-section-2 .book-single-cta-buy-btn{
-    font-size: 12px;
+    font-size: 0.9vw;
     width: 90%;
     background: #272727;
     color: white;
@@ -102,6 +105,56 @@
 }
 .book-single-container .cta-section-2 .book-single-cta-buy-price{
     text-align: end;
-    font-size: 15px;
+    font-size: 0.9vw;
+
     margin-right: 5px;
+}
+
+@media (max-width: 1280px) {
+    .book-single-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: max-content;
+        gap: 5%;
+    }
+    .book-single-container .book-single-row-one {
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+        justify-content: center;
+        flex-wrap: nowrap;
+        border: 3px solid green;
+        gap: 2%;
+        height: max-content;
+    }
+
+    .book-single-container .book-single-row-two {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .book-single-container .book-single-row-two .book-single-details-title {
+        font-size: 3vw;
+    }
+    .book-single-container .book-single-row-two .book-single-details-description {
+        font-size: 2vw;
+    }
+    .book-single-container .book-single-row-one .book-single-col-one {
+        border: 3px solid blue;
+        max-height: 100%;
+    }
+    .book-single-container .book-single-row-one .book-single-col-two {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid red;
+        height: 18vw;
+        font-size: 1vw;
+    }
+    
 }
