@@ -69,7 +69,7 @@ function App() {
 
     return (
       <Router>
-        <div className="App">
+        <div className="App bg-white">
           <Navbar />
           <AnimatedRoutes isLogged={isLogged} />
         </div>

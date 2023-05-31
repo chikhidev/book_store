@@ -65,9 +65,10 @@ const getBooks = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ success: false, data: { message: 'Failed to get books' } });
+      .json({ success: false, data: { message: 'Échec de la récupération des livres'  } });
   }
 };
+
 const getLatestBooks =  async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
@@ -105,18 +106,18 @@ const getLatestBooks =  async (req, res) => {
   
   return res
   .status(500)
-  .json({ success: false, data: { message: 'Failed to get latest books' } });
+  .json({ success: false, data: { message: 'Échec de la récupération des derniers livres' } });
 }
   // find a book by its ID
 const getBookById = async (req, res) => {
   const id = req.params.id;
   try {
     const book = await Book.findById(id);
-    if (!book) return res.status(404).json({ success: false, data: { message: 'Book not found' } });
+    if (!book) return res.status(404).json({ success: false, data: { message: 'Livre introuvable' } });
     return res.status(200).json({ success: true, data: { book } });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to get book' } });
+    return res.status(500).json({ success: false, data: { message: 'Échec de la récupération du livre' } });
   }
 };
 
@@ -124,7 +125,7 @@ const getBookById = async (req, res) => {
 const createBook = async (req, res) => {
 
   if (!req.file) {
-    return res.status(400).json({ success:false, data:{message: 'No file uploaded'} });
+    return res.status(400).json({ success:false, data:{message: 'Aucun fichier téléchargé'} });
   }
 
   const { title, author,
@@ -142,7 +143,7 @@ const createBook = async (req, res) => {
       return res.status(400).json({
         success: false,
         data: {
-          message: "There's already a book with the same title",
+          message: "Il y a déjà un livre avec le même titre",
         },
       });
     }
@@ -182,12 +183,12 @@ const createBook = async (req, res) => {
     await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
 
 
-    return res.status(201).json({ success: true, data: {...book, message:'Book created successfully' } });
+    return res.status(201).json({ success: true, data: {...book, message:'Livre créé avec succès' } });
 
   } catch (error) {
     console.error(error);
     fs.unlinkSync(req.imagePath);
-    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+    return res.status(500).json({ success: false, data: { message: 'Échec de la création du livre' } });
   }
 };
 
@@ -197,11 +198,11 @@ const updateBook = async (req, res) => {
   const updates = req.body;
   try {
     const book = await Book.findByIdAndUpdate(id, updates, { new: true });
-    if (!book) return res.status(404).json({ success: false, data: { message: 'Book not found' } });
+    if (!book) return res.status(404).json({ success: false, data: { message: 'Livre introuvable' } });
     return res.status(200).json({ success: true, data: { book } });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to update book' } });
+    return res.status(500).json({ success: false, data: { message: 'Échec de la mise à jour du livre' } });
   }
 };
 
@@ -211,12 +212,12 @@ const deleteBook = async (req, res) => {
     try {
       const book = await Book.findByIdAndDelete(id);
       if (!book) {
-        return res.status(404).json({ success: false, data: { message: 'Book not found' } });
+        return res.status(404).json({ success: false, data: { message: 'Livre introuvable' } });
       }
-      return res.status(200).json({ success: true, data: { message: 'Book deleted successfully' } });
+      return res.status(200).json({ success: true, data: { message: 'Livre supprimé avec succès' } });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ success: false, data: { message: 'Failed to delete book' } });
+      return res.status(500).json({ success: false, data: { message: 'Échec de la suppression du livre' } });
     }
 };
 
