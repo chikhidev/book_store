@@ -38,3 +38,10 @@ export const SET_USER_DETAILS = (userDetails) => {
       payload: userDetails
     };
   };
+  export const SET_CATEGORIES = (categories) => {
+    return {
+      type: "SET_CATEGORIES",
+      payload: { categories }, // Wrap categories in an object
+    };
+  };
+  

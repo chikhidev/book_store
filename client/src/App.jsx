@@ -13,6 +13,8 @@ import AnimatedRoutes from './components/FramerMotion/AnimatedRoutes';
 import { motion } from "framer-motion"
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
 import ThreeDotsWave from './components/FramerMotion/ThreeDotWave';
+import { getCategories } from './js/index.js';
+
 const motionDiv = (child) => {
   return (
     <motion.div
@@ -65,7 +67,6 @@ function App() {
     });
     return unsubscribe;
   }, []);
-  // setInterval(() => console.log(store.getState()), 5000)
 
     return (
       <Router>
@@ -93,21 +94,13 @@ function Home() {
 }
 
 function Categories() {
-  const [fetchedCategories, setFetchedCategories] = useState([]) 
-  const getCategories = async () => {
-      let books = await fetch(`http://localhost:4000/category`, {
-          method : "GET",
-          headers : {
-              "Content-Type" : "application/json",
-              "Authorization" : `Bearer ${localStorage.getItem("token")}`,
-          },
-      })
-      let res = await books.json();
-      // first cat only, cause may find more ..
-      setFetchedCategories(res.data.categories)
-  }
+  const [fetchedCategories, setFetchedCategories] = useState(store.getState().categories) 
+  
   useEffect(() => {
-    getCategories()
+    // if ure reading this, this next line is so cool
+    // cause now u only fetch if there was no fetched categories
+    // which improves the performance alot  
+    fetchedCategories.length == 0 ? getCategories(setFetchedCategories) : "" 
   }, [])
 
   return (

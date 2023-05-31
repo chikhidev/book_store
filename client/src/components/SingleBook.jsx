@@ -5,7 +5,12 @@ import '../css/single-book.css';
 const ENDPOINT = "http://localhost:4000"
 import Register from './Register.jsx';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave.jsx';
-
+import { getCategory } from '../js/index.js';
+import { Navigate } from 'react-router-dom';
+import { mergeArraysRandomly } from '../js/index.js';
+import CategorySlider from './CategorySlider.jsx';
+import BookCard from './BookCard.jsx';
+import MoreLikeThis from "./MoreLikeThis"
 const SingleBook = () => {
     const { id } = useParams();
     const [isFetchRunned, setIsFetchRunned] = useState(false);
@@ -13,7 +18,6 @@ const SingleBook = () => {
     const [isBookFetched, setIsBookFetched] = useState(false);
     const [gotCats, setGotCats] = useState(false);
     const [cats, setCats] = useState([]);
-    console.log("HELLO");
 
     const getHumanDate = (dateStr) => {
       const date = new Date(dateStr);
@@ -24,24 +28,7 @@ const SingleBook = () => {
       });
       return formattedDate
     }
-    const getCategory = async (categoryId) => {
-        try {
-            const category = await fetch(`http://localhost:4000/category/${categoryId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-            const res = await category.json();
-            let cat = await res.data.category;
-            return cat;
-        } catch (error) {
-            console.log("Error retrieving category:", error);
-            return null;
-        }
-    };
-
+  
     const getBook = async () => {
         setGotCats(false);
         try {
@@ -85,9 +72,11 @@ const SingleBook = () => {
                     <div key={fetchedBook._id} 
                     className="book-single-container">
                         <div className="book-single-row-one">
+                            {/* img */}
                             <div className="book-single-col-one">
                                 <img className="book-single-imageUrl" src={"http://localhost:4000" + fetchedBook.imageUrl} />
                             </div>
+                            {/* book details */}
                             <div className="book-single-col-two">
                                 <div className="book-single-title">{fetchedBook.title}</div>
                                 <div className="book-single-author">{fetchedBook.author}</div>
@@ -98,7 +87,7 @@ const SingleBook = () => {
                                       gotCats ? 
                                           cats.length > 0 ? (
                                             cats.map((category) => 
-                                                <span className='book-single-category'>
+                                                <span onClick={() => <Navigate to={"to"} />} className='book-single-category'>
                                                       {(category.name + " ")}
                                                 </span>
                                             )
@@ -137,6 +126,9 @@ const SingleBook = () => {
                             <div className="book-single-details-title">About <i>{fetchedBook.title}</i></div>
                             <div className="book-single-details-description">{fetchedBook.description}</div>
                         </div>
+                        <div className="book-single-row-three">
+                        
+                        </div>
                     </div>
                 ) : (
                     <span>Book doesn't exist</span>
@@ -145,6 +137,9 @@ const SingleBook = () => {
                 <ThreeDotsWave />
                 
             )}
+            <div className="more-books-container">
+                    <MoreLikeThis cats={cats} />
+            </div>
         </>
     );
 };

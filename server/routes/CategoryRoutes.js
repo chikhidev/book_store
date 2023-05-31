@@ -17,6 +17,8 @@ PUT /categories/:id - update an existing category by ID
 //"/category?name=manga"
 CategoryRouter.get('/',Controller.Category.getAllCategories)
 
+CategoryRouter.get('/name',Controller.Category.getCategoryWithBooksByName)
+
 //get category by ID
 //example : /category/{id}?page=2
 CategoryRouter.get('/:id',Controller.Category.getCategoryById)

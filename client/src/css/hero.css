@@ -11,6 +11,7 @@
     width: 100%;
     letter-spacing: -0.5px;
     font-size: 22px;
+    cursor: pointer;
 }
 .book-section  .featured-arrows {
     display: flex;

@@ -1,7 +1,38 @@
 const Model = require("../models/Model");
 const Category = Model.categoryModel
 
+const getCategoryWithBooksByName = async (req, res) => {
+  var name = req.query.name;
+  var page = parseInt(req.query.page) || 1
+  var pageSize = parseInt(req.query.pageSize) || 10
 
+  if (pageSize < 1 || pageSize > 100)
+    return res.status(400).json({ success: false, data: { message: 'Invalid pageSize' } });
+
+  try {
+    if (!name) name = '';
+    const skip = (page - 1) * pageSize;
+    const categories = await Category.findOne({ name: { $regex: `${name}`, $options: 'i' } })
+      .populate('books')
+      .skip(skip)
+      .limit(parseInt(pageSize));
+
+    const totalCategories = await Category.countDocuments({ name: { $regex: name, $options: 'i' } });
+    const totalPages = Math.ceil(totalCategories / pageSize);
+
+    return res.status(200).json({ success: true, data: {
+      categories,
+      page,
+      pageSize,
+      totalCategories,
+      totalPages
+    } });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: 'Failed to retrieve categories' } });
+  }
+}
 const getAllCategories = async (req, res) => {
     var { name } = req.query;
     var page = parseInt(req.query.page) || 1
@@ -33,9 +64,8 @@ const getAllCategories = async (req, res) => {
       console.error(error);
       return res.status(500).json({ success: false, data: { message: 'Failed to retrieve categories' } });
     }
-  };
-  
-   
+};
+
 const getCategoryById = async (req, res) => {
 try {
     const id = req.params.id;
@@ -142,5 +172,5 @@ const updateCategoryById = async (req, res) => {
   
 
 module.exports = {
-    getAllCategories, getCategoryById, makeCategory, updateCategoryById
+    getAllCategories, getCategoryWithBooksByName, getCategoryById, makeCategory, updateCategoryById
 }

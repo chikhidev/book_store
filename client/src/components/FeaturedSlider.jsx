@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { TOGGLE_BOOK_FAV } from '../redux/actions';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import data from "../data.json"
-import Card from './BookCard'
+import BookCard from './BookCard'
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
@@ -66,7 +66,6 @@ const FeaturedSlider = () => {
         let books = await fetch(`http://localhost:4000/book?page=${page}`, {
             method : "GET",
         })
-    console.log("run fetch  books");
     let res = await books.json();
         setFeaturedBooks(res.data.books)
     }
@@ -99,7 +98,7 @@ const FeaturedSlider = () => {
                 (book) => {
                     return (
                         <SwiperSlide key={book._id} >
-                            <Card book={book} />
+                            <BookCard book={book} />
                         </SwiperSlide>
                     )
                 }

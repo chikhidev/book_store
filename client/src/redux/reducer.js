@@ -1,6 +1,7 @@
 let initialState = {
     books : [],
     favBooks : [],
+    categories: [],
     loginStatus : false,
     token: "",
     userDetails : {
@@ -23,7 +24,9 @@ const reducer = (state = initialState, action) => {
         };
       case 'LOGOUT':
         return {
-          ...state,
+          books : [],
+          favBooks : [],
+          categories: [],
           token: "",
           loginStatus: false,
           userDetails : {
@@ -35,6 +38,11 @@ const reducer = (state = initialState, action) => {
             username : "",
             _id : "",
           }
+        };
+      case 'SET_CATEGORIES':
+        return {
+          ...state,
+          categories: action.payload.categories,
         };
       case 'SET_FEATURED_BOOKS':
         return {
@@ -70,11 +78,6 @@ const reducer = (state = initialState, action) => {
               ...state,
               favBooks: updatedFavBooks
             };
-          
-          return {
-            ...state,
-            favBooks: updatedFavBooks
-          }
       default:
         return state;
     }

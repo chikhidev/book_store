@@ -3,16 +3,33 @@ import { useSwiper } from 'swiper/react';
 import 'swiper/css';
 import store from '../redux/store';
 import { useState, useEffect } from "react"
+import { TOGGLE_BOOK_FAV } from '../redux/actions';
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import data from "../data.json"
 import BookCard from './BookCard'
+import { mergeArraysRandomly } from '../js/index.js';
 import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
-import { display, capitalize } from '../js/index.js';
-import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import { swiperBreakPoints } from '../js/index.js';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+
+const display = (text, n) => {
+    let len = text.length;
+    let long = false;
+    if (len > n)
+    {
+      long = true
+      len = n;
+    }
+    else {
+    }
+    let processed = "";
+    for (let i = 0; i < len; i++)
+    {
+      processed += text[i];
+    }
+    return (long ? processed + "..." : processed);
+}
 
 function SlideNextButton() {
     const swiper = useSwiper();
@@ -42,39 +59,10 @@ function SlidePrevButton() {
     );
 }
 
-const addBookFav = () => {
-    store.dispatch({type : "ADD_BOOK_FAV"})
-}
 
-const remBookFav = () => {
-    store.dispatch({type : "REM_BOOK_FAV"})
-}
-
-const CategorySlider = ({category}) => {
-    const navigate = useNavigate()
-    const [categoryBooks, setCategoryBooks] = useState([]) 
-    const fetchBooksByCategory = async (category) => {
-        let books = await fetch(`http://localhost:4000/category?name=${category}`, {
-            method : "GET",
-            headers : {
-                "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${localStorage.getItem("token")}`,
-            },
-        })
-        let res = await books.json();
-        setCategoryBooks(res.data.categories[0].books)
-    }
-    useEffect(() => {
-        fetchBooksByCategory(category)
-    }, [])
-
+const MoreLikeThis = ({cats}) => {
+    let books = mergeArraysRandomly(...cats.map(cat => cat.books))
     return (
-        <section className="featured-book-section book-section">
-            <div className="featured-header">
-                <div onClick={() => navigate(`${`category?name=${category}`}`)} className="featured-title">
-                    {capitalize(category)}
-                </div>
-            </div>
             <Swiper
             spaceBetween={0}
             slidesPerView={4}
@@ -83,26 +71,24 @@ const CategorySlider = ({category}) => {
             // onSwiper={(swiper) => console.log(swiper)}
             // onReachEnd={console.log("\nhi im in the end \n")}
             >
-            <div className="featured-arrows">
+            <div className="more-books-arrows">
                 <SlidePrevButton/>
                 <SlideNextButton/>
             </div>
-            <div className="book-cards">
-                {categoryBooks.length > 0 ?
-                categoryBooks.map(
-                (book) => {
+            <div className="more-books-slider">
+            {books.length > 0 ?
+                books.map(book => {
                     return (
-                        <SwiperSlide key={book._id} >
-                            {/* i still dont know how the icons should appear lol  */}
+                        <SwiperSlide>
                             <BookCard book={book} />
                         </SwiperSlide>
                     )
-                }
-                ) : <ThreeDotsWave />}
+                })
+
+                : <ThreeDotsWave />}
             </div>
             </Swiper>
-        </section>
     )
 } 
 
-export default CategorySlider
+export default MoreLikeThis

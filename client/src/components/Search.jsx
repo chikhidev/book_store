@@ -2,7 +2,7 @@ import {useSearchParams} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
 import ThreeDotsWave from './FramerMotion/ThreeDotWave'
-import Card from './BookCard'
+import BookCard from './BookCard'
 import "../css/search.css"
 const Search = () => {
     const [currSearchPage, setCurrSearchPage] = useState(1)
@@ -55,7 +55,7 @@ const Search = () => {
                     foundBooks.length > 0 ? 
                         foundBooks.map(
                             book => {
-                                return (<Card book={book} />)
+                                return (<BookCard book={book} />)
                         } )
                         
                     : <ThreeDotsWave />

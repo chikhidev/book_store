@@ -3,7 +3,7 @@ import { TOGGLE_BOOK_FAV } from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../redux/store";
 import { useState, useEffect } from "react";
-
+import "../css/single-book.css"
 const display = (text, n) => {
   let len = text.length;
   let long = false;
@@ -18,7 +18,7 @@ const display = (text, n) => {
   return long ? processed + "..." : processed;
 };
 
-const Card = ({ book }) => {
+const BookCard = ({ book }) => {
   const navigate = useNavigate()
   const userToken = useSelector(state => state.token)
 
@@ -70,10 +70,6 @@ const Card = ({ book }) => {
       store.dispatch(TOGGLE_BOOK_FAV(book._id))
       toggleFavBook(userToken, book._id)
       let favs = store.getState().favBooks
-      console.log("fav books are ");
-      console.log(favs);
-      console.log("id => ");
-      console.log(book._id);
       
       e.currentTarget.classList.toggle("heart-active")
     }
@@ -117,4 +113,4 @@ const Card = ({ book }) => {
             </Link>
     )
 }
-export default Card
+export default BookCard

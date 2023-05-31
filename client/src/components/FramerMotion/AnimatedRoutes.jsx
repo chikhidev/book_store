@@ -3,6 +3,7 @@ import { Route, Routes, Navigate, useLocation} from "react-router-dom";
 import { Home, Categories } from "../../App";
 import FeaturedSlider from '../FeaturedSlider';
 import CategorySlider from '../CategorySlider';
+import CategoryPage from "../CategoryPage";
 import Login from '../Login';
 import Register from '../Register';
 import CreateBookForm from '../CreateBookForm';
@@ -19,9 +20,12 @@ const AnimatedRoutes = ({isLogged}) => {
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Home/>} />
                 <Route path="/categories" element={<Categories/>} />
+                <Route path="/categories/category/" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+                <Route path="/categories/category/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/new" element={<NewBooks/>} />
                 <Route path="/new/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+                <Route path="/new/category" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/account" element={<Account/>} />
                 <Route path="/favorite" element={isLogged ? <Favorite/> : <Navigate to="/login" />} />
                 <Route path="/fav/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
