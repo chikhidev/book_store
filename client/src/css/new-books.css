@@ -11,7 +11,7 @@
 .new-books-options {
     margin-top: 2%;
     width: 10%;
-    font-size: 1.8vw;
+    font-size: 1.2vw;
 }
 .new-books-options .options-grp {
 }
@@ -22,12 +22,11 @@ input[type='radio'] {
     box-sizing: border-box;
     appearance: none;
     background: white;
-    outline: 0.3vw solid #333;
-    border: 0.3vw solid white;
-    width: 1.2vw;
-    height: 1.2vw;
-  }
-  
+    outline: 0.2vw solid #333;
+    border: 0.2vw solid white;
+    width: 0.8vw;
+    height: 0.8vw;
+}
 input[type='radio']:checked {
     background: #333;
 }
@@ -73,12 +72,14 @@ input[type='radio']:checked {
     position: relative;
     background: #000;
 }
-.new-book-imageUrl {
-}
+
 .new-book-card:hover {
     z-index: 300;
     transform: scale(103%, 103%);
     box-shadow: 2px 2px 25px 1px rgba(0, 0, 0, 0.15);
+}
+.new-book-card:hover .new-book-imageUrl {
+    box-shadow: 0 0 0.5px .5px rgb(0, 0, 0);
 }
 .new-book-card:hover .new-book-icons{
     display: flex;
@@ -92,7 +93,7 @@ input[type='radio']:checked {
     display: flex;
     height: 0%;
     opacity: 0;
-    top: -1px;
+    top: -2px;
     justify-content: flex-end;
     align-items: center;
     padding-right: 5%;

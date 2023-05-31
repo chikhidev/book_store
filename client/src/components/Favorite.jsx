@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Card from './BookCard';
+import BookCard from './BookCard';
 
 const Favorite = () => {
   const [favs, setFavs] = useState([]); // Accessing favBooks from Redux store
@@ -8,7 +8,7 @@ const Favorite = () => {
   const userToken = useSelector((state) => state.token)
   const dispatch = useDispatch();
 
-  const fetchFavBooks = async (token) => {
+  const fetchFavBooks = async () => {
     let books = await fetch(`http://localhost:4000/fav`, {
         method : "GET",
         headers : {
@@ -26,9 +26,9 @@ const Favorite = () => {
 
 
   return (
-    <div className='favorite-books'>
+    <div className='new-books'>
       {favs.length > 0 ? (
-        favs.map((fav) => <Card book={fav.book} key={fav.book._id} />)
+        favs.map((fav) => <BookCard book={fav.book} key={fav.book._id} />)
       ) : (
         <h1>Loading Books</h1>
       )}

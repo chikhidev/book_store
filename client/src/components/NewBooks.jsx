@@ -5,17 +5,22 @@ import { LOGIN, LOGOUT, TOGGLE_BOOK_FAV } from '../redux/actions';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import NewBookCard from './NewBookCard';
 import { motion } from "framer-motion"
-
+import store from '../redux/store';
 import "../css/new-books.css"
-
+import { useNavigate } from 'react-router-dom';
 const NewBooks = () => {
+    const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
     const [sortType, setSortType] = useState(searchParams.get("sort") || "asc")
     const [loading, setLoading] = useState(false)
+    const [categories, setCategories] = useState([])
+    const [fetchedNewBooks, setFetchedNewBooks] = useState([]);
+    const handleCategoryClick = (e, name) => {
+        navigate(`${`category?name=${name}`}`)
+    }
     const handleClick = (e) => {
         setSortType(e.target.value);
     }
-    const [fetchedNewBooks, setFetchedNewBooks] = useState([]);
     
     const fetchNewBooks = async () => {
         setLoading(true)
@@ -30,7 +35,16 @@ const NewBooks = () => {
 
   useEffect(() => {
     fetchNewBooks();
+    const unsubscribe = store.subscribe( () => {
+    })
+    return () => {
+        unsubscribe();
+    }
 }, [sortType]); // Re-fetch books when favBooks changes in the Redux store
+
+useEffect(() => {
+   setCategories(store.getState().categories)
+}, []); // Re-fetch books when favBooks changes in the Redux store
 
  
 
@@ -60,6 +74,35 @@ return (
                 value="desc"
                 id="desc"/>
             </div>
+            Availibility : 
+            <div className="options-grp">
+                <label htmlFor="in-stock">in stock</label>
+                <input
+                name="in-stock" 
+                defaultChecked={sortType == "desc" ? true : false} 
+                type='radio' onClick={handleClick} 
+                value="in-stock"
+                id="in-stock"/>
+            </div>
+            <div className="options-grp">
+                <label htmlFor="out-stock">out stock</label>
+                <input
+                name="out-stock" 
+                defaultChecked={sortType == "desc" ? true : false} 
+                type='radio' onClick={handleClick} 
+                value="out-stock"
+                id="out-stock"/>
+            </div>
+            Price : 
+            <input className='price-from' />
+            <input className='price-to' />
+            {store.getState().categories.length > 0 ? 
+            <div>
+                {categories.map(cat =>  <div onClick={(e) => handleCategoryClick(e, cat.name)}>{cat.name} ({cat.books.length})</div>)}
+            </div>
+            : ""
+            }
+
         </div>
         <div className={`new-books ${loading ? "center-loading" : ""}`}>
             {loading ?
