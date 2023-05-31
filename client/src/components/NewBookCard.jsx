@@ -86,7 +86,7 @@ const NewBookCard = ({ book }) => {
   }, [userToken, book._id, isBookFav]);
   
     return (
-            <Link to={`book/${book._id}`} className="new-book-single-link">
+            <div onClick={() => navigate(`/book/${book._id}`)} className="new-book-single-link">
                <div key={book._id} className="new-book-card" onClick={handleCardClick}>
                     <div className="new-book-img-container">
                         <div className="new-book-icons">
@@ -116,7 +116,7 @@ const NewBookCard = ({ book }) => {
                         <div className="new-book-price">${book.price}</div>
                     </div>
                 </div>
-            </Link>
+            </div>
     )
 }
 export default NewBookCard

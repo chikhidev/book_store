@@ -7,7 +7,7 @@ import "../css/search.css"
 
 const CategoryPage = () => {
     const [currSearchPage, setCurrSearchPage] = useState(1)
-    const [categoryName, setCategoryName] = useState(0)
+    const [categoryName, setCategoryName] = useState("")
     const [searchResCount, setSearchResCount] = useState(0)
     const [totalBooksCount, setTotalBooksCount] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
@@ -40,7 +40,7 @@ const CategoryPage = () => {
    
     return (
         <div className='search-container'>
-            <div className="search-count"> {categoryName} :</div>
+            <div className="search-count"> {categoryName.length > 0 ? `${categoryName} : ` : <ThreeDotsWave />}</div>
             <motion.div className='search-result'
                 initial={{opacity : 0}}
                 animate={{opacity : 1}}

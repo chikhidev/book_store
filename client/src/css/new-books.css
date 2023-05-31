@@ -72,12 +72,14 @@ input[type='radio']:checked {
     position: relative;
     background: #000;
 }
-.new-book-imageUrl {
-}
+
 .new-book-card:hover {
     z-index: 300;
     transform: scale(103%, 103%);
     box-shadow: 2px 2px 25px 1px rgba(0, 0, 0, 0.15);
+}
+.new-book-card:hover .new-book-imageUrl {
+    box-shadow: 0 0 0.5px .5px rgb(0, 0, 0);
 }
 .new-book-card:hover .new-book-icons{
     display: flex;
@@ -91,7 +93,7 @@ input[type='radio']:checked {
     display: flex;
     height: 0%;
     opacity: 0;
-    top: -1px;
+    top: -2px;
     justify-content: flex-end;
     align-items: center;
     padding-right: 5%;

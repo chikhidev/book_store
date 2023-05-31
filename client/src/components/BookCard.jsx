@@ -3,6 +3,7 @@ import { TOGGLE_BOOK_FAV } from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../redux/store";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../css/single-book.css"
 const display = (text, n) => {
   let len = text.length;
@@ -19,6 +20,7 @@ const display = (text, n) => {
 };
 
 const BookCard = ({ book }) => {
+  const loc = useLocation()
   const navigate = useNavigate()
   const userToken = useSelector(state => state.token)
 
@@ -82,7 +84,7 @@ const BookCard = ({ book }) => {
   }, [userToken, book._id, isBookFav]);
   
     return (
-            <Link to={`book/${book._id}`} className="book-single-link">
+            <div onClick={() => navigate(`/book/${book._id}`)} className="book-single-link">
                <div key={book._id} className="book-card" onClick={handleCardClick}>
                     <div className="book-icons">
                         <div
@@ -110,7 +112,7 @@ const BookCard = ({ book }) => {
                         <div className="book-price">${book.price}</div>
                     </div>
                 </div>
-            </Link>
+            </div>
     )
 }
 export default BookCard
