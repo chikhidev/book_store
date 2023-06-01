@@ -28,14 +28,6 @@ UserRouter.post(
             Controller.User.makeAdmin
             )
 UserRouter.get("/:id/full", Controller.User.findFullById) //this route for tacking full information about user
-UserRouter.get("/:id/store", Controller.User.findStoreById) //this route for showing store of a user
-UserRouter.get(
-                "/:id/card",
-                Middleware.auth.authenticateToken,
-                Controller.User.findCardByID
-                ) //this route for showing user card it requires login
                 
-// UserRouter.get("/:id/saved", Controller.User.findCardByID) //this a private route it requires a password
-
 
 module.exports = UserRouter

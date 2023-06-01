@@ -85,7 +85,7 @@ const validateEmailPass = (req, res, next) =>{
 
 
 
-
+///bokss
 
 const createBook = async (req, res, next) => {
 
@@ -242,7 +242,41 @@ const createOrder = async (req, res, next) =>{
     next()
 }
 
+// sotres:
 
+const createStore = async (req, res, next) => {
+  const query = Joi.object({
+    description: Joi.string().optional()
+  });
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        }
+      });
+    }
+    next()
+}
+
+const getStore = async (req, res, next) => {
+  const query = Joi.object({
+    id: Joi.string().required()
+  });
+
+    const { error, value } = query.validate(req.params);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        }
+      });
+    }
+    next()
+}
 
 
 
@@ -251,5 +285,6 @@ const createOrder = async (req, res, next) =>{
   module.exports = {
     validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers,
     createCategory, updateCategory,
-    createOrder
+    createOrder,
+    createStore, getStore
   }

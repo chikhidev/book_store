@@ -3,6 +3,7 @@ const {mongoose} = require('../server.imports')
 const fs = require('fs')
 const Category = require('../models/CategoryModel').categoryModel
 const Book = require('../models/Model').bookModel;
+const Store = require('../models/StoreModel')
 
 const getBooks = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -123,28 +124,33 @@ const getBookById = async (req, res) => {
 
 // create a new book
 const createBook = async (req, res) => {
-
   if (!req.file) {
-    return res.status(400).json({ success:false, data:{message: 'Aucun fichier téléchargé'} });
+    return res.status(400).json({
+      success: false,
+      data: { message: 'Aucun fichier téléchargé' }
+    });
   }
 
-  const { title, author,
-    description, publisher,
-    publicationDate, language,
-    price, categories,
-    stock } = req.body;
+  const {
+    title,
+    author,
+    description,
+    publisher,
+    publicationDate,
+    language,
+    price,
+    categories,
+    stock
+  } = req.body;
 
   try {
-
     // Check if a book with the same title already exists
     const bookCount = await Book.countDocuments({ title: title });
     if (bookCount > 0) {
-      fs.unlinkSync(req.imagePath);
+      fs.unlinkSync(req.file.path);
       return res.status(400).json({
         success: false,
-        data: {
-          message: "Il y a déjà un livre avec le même titre",
-        },
+        data: { message: 'Il y a déjà un livre avec le même titre' }
       });
     }
 
@@ -164,33 +170,51 @@ const createBook = async (req, res) => {
     for (const category of categories.split(' ')) {
       const cat = await Category.findOne({ name: category });
       if (!cat) {
-        const new_cat = new Category({
-          name: category
-        });
+        const new_cat = new Category({ name: category });
         book.categories.push(new_cat._id);
-        new_cat.books.push(book._id)
+        new_cat.books.push(book._id);
         await new_cat.save();
       } else {
         book.categories.push(cat._id);
-        cat.books.push(book._id) 
+        cat.books.push(book._id);
         await cat.save();
       }
     }
 
-    await book.save();
+    const store = await Store.findOne({ owner: req.user.id });
+    if (store) {
+      store.books.push(book._id);
+      await store.save();
 
-    // Update the store array of the user with the ID of the created book
-    await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
+      await book.save();
 
+      // Update the store array of the user with the ID of the created book
+      await User.findByIdAndUpdate(req.user.id, { $push: { store: book._id } });
 
-    return res.status(201).json({ success: true, data: {...book, message:'Livre créé avec succès' } });
+      return res.status(201).json({
+        success: true,
+        data: { message: 'Livre créé avec succès', book }
+      });
+      
+    } else {
+      fs.unlinkSync(req.file.path);
+      return res.json({
+        success: false,
+        data: { message: "Votre boutique n'existe pas" }
+      });
+    }
 
+    
   } catch (error) {
     console.error(error);
-    fs.unlinkSync(req.imagePath);
-    return res.status(500).json({ success: false, data: { message: 'Échec de la création du livre' } });
+    fs.unlinkSync(req.file.path);
+    return res.status(500).json({
+      success: false,
+      data: { message: 'Échec de la création du livre' }
+    });
   }
 };
+
 
 // update a book's information
 const updateBook = async (req, res) => {

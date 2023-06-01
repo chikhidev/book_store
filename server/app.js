@@ -11,7 +11,8 @@ connectDB()
 
 //allow app use only client url
 app.use(cors({
-   origin: process.env.CLIENT
+   origin: 'http://localhost:5173',
+   optionsSuccessStatus: 200 || 204 // Some legacy browsers (e.g., IE 11) choke on 204
  }));
 
 //use body-parser
@@ -31,6 +32,7 @@ app.use('/order', Route.OrderRouter );
 app.use('/images', Route.ImagesRouter );
 app.use('/fav', Route.FavouriteRouter );
 app.use('/inbox', Route.InboxesRouter );
+app.use('/store', Route.StoreRouter );
 
 //Server listening
 app.listen(process.env.PORT, ()=>

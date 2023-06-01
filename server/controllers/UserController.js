@@ -205,7 +205,7 @@ const searchUsers = async (req, res) => {
 
 
 module.exports = {
-    findById, findStoreById, findFullById, 
-    findByEmail, findCardByID, test, searchUsers, makeAdmin,
+    findById, findFullById, 
+    findByEmail, searchUsers, makeAdmin,
     getUserByToken
 }

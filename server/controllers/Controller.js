@@ -8,4 +8,5 @@ module.exports = {
     Fav: require('./FavouritesController'),
     Category: require('./CategoryController'),
     Inbox: require('./InboxesController'),
+    Store: require('./StoreController'),
 }
