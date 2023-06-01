@@ -1,14 +1,6 @@
 //User model
 const User = require("../models/userModel");
 
-const test = (req, res)=>{
-  return res.json(
-    req.body
-  )
-}
-
-
-
 
 // function for getting a user by email
 const findById = async (req, res) => {
@@ -19,7 +11,7 @@ const findById = async (req, res) => {
       if (!userFound) {
         return res.status(404).json({
           success:false,
-          data:{message:`User with id ${id} not found`}
+          data:{message:`Utilisateur avec l'identifiant ${id} introuvable`}
         });
       }
         res.status(200).json({
@@ -30,12 +22,11 @@ const findById = async (req, res) => {
     catch (err) {
       res.json({
         success : false,
+        message: "Erreur",
         data: err
       });
     }
 }
-
-
 
 // find user by passing token
 const getUserByToken = async (req, res) => {
@@ -46,7 +37,7 @@ const getUserByToken = async (req, res) => {
       if (!userFound) {
         return res.status(404).json({
           success:false,
-          data:{message:`User with id ${id} not found`}
+          data:{message:`Utilisateur avec l'identifiant ${id} introuvable`}
         });
       }
         res.status(200).json({
@@ -71,7 +62,7 @@ const makeAdmin = async (req, res) => {
       if (!userFound) {
         return res.status(404).json({
           success:false,
-          data:{message:`User with id ${id} not found`}
+          data:{message:`Utilisateur avec l'identifiant ${id} introuvable`}
         });
       }
 
@@ -79,7 +70,7 @@ const makeAdmin = async (req, res) => {
         return res.json({
           success: false,
           data:{
-            message: 'This user is already an admin'
+            message: 'Cet utilisateur est déjà administrateur'
           }
         })
       }
@@ -95,7 +86,7 @@ const makeAdmin = async (req, res) => {
             return res.json({
               success : false,
               data: {
-                message: 'There was an error',
+                message: 'Il y avait une erreur',
                 err
               }
             })
@@ -105,7 +96,7 @@ const makeAdmin = async (req, res) => {
           return res.status(200).json({
             success : true,
             data: {
-              message: 'User is an admin now'
+              message: "L'utilisateur est un administrateur maintenant"
             }
           })
 
@@ -126,23 +117,19 @@ const makeAdmin = async (req, res) => {
     }
 }
 
-
-
-
 const findByEmail = async (req, res) => {
-  req.body = {email:"chikhi.dev@gmail.com"}
 
   try{
     const { email } = req.body;
     try {
 
       const userFound = await User.findOne({ email: email }).select(
-        "username email avatar bio createdAt"
+        "nom d'utilisateur e-mail avatar bio créé à"
       );
 
       if (!userFound) return res.json({
         success: false,
-        data: `User with this email not found`
+        data: `Utilisateur avec cet e-mail introuvable`
       })
   
       res.json({
@@ -152,7 +139,7 @@ const findByEmail = async (req, res) => {
     } catch (err) {
       res.json({
         success: false,
-        data: `there was an Error!`
+        data: `Il y avait une erreur!`
       });
     }
 
@@ -160,7 +147,7 @@ const findByEmail = async (req, res) => {
   catch{
     return res.json({
       success: false,
-      data: {message:"Please enter an email"}
+      data: {message:"Il y avait une erreur!"}
     })
   }
 
@@ -176,7 +163,7 @@ const findFullById = async (req, res) => {
     try {
         const userFound = await User.findById(id).select('-password');
       if (!userFound) {
-        return res.json(`User with email ${id} not found`);
+        return res.json(`Utilisateur avec e-mail ${id} introuvable`);
       }
         res.json({
           success : true,
@@ -190,55 +177,6 @@ const findFullById = async (req, res) => {
       });
     }
 }
-  
-
-
-
-const findStoreById = async (req, res) => {
-    //hard coded email to test with
-    const id = req.params.id;
-    try {
-        const userFound = await User.findById(id).select('username avatar store');
-      if (!userFound) {
-        return res.json(`User with email ${id} not found`);
-      }
-        res.json({
-          success : true,
-          data: userFound
-        })
-    }
-    catch (err) {
-      res.json({
-        success : false,
-        data: err
-      });
-    }
-}
-
-
-
-
-const findCardByID = async (req, res) => {
-    //hard coded email to test with
-    const id = req.params.id;
-    try {
-        const userFound = await User.findById(id).select('username avatar shoppingCard');
-      if (!userFound) {
-        return res.json(`User with email ${id} not found`);
-      }
-        res.json({
-          success : true,
-          data: userFound
-        })
-    }
-    catch (err) {
-      res.json({
-        success : false,
-        data: err
-      });
-    }
-}
-
 
 
 const searchUsers = async (req, res) => {

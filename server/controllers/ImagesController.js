@@ -8,7 +8,7 @@ const BookImage = (req, res) => {
         return res.status(404).json({
         success: false,
         data: {
-            message: 'Image not found'
+            message: 'Image non trouvée'
         }
         });
     }
@@ -25,7 +25,7 @@ const UserImage = (req, res) => {
         return res.status(404).json({
         success: false,
         data: {
-            message: 'Image not found'
+            message: 'Image non trouvée'
         }
         });
     }
