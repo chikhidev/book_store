@@ -202,6 +202,10 @@ const searchUsers = async (req, res) => {
 };
 
 
+//upload profile:
+const uploadProfile = (req, res) => {
+  
+}
 
 
 module.exports = {

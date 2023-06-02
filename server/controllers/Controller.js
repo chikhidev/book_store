@@ -9,4 +9,5 @@ module.exports = {
     Category: require('./CategoryController'),
     Inbox: require('./InboxesController'),
     Store: require('./StoreController'),
+    Offer: require('./OffersController'),
 }
