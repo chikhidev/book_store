@@ -60,7 +60,6 @@ const createOffer = async (req, res) => {
     }
   };
   
-
 const getCurrentuserOffers = async (req, res) => {
     try{
         const store = await Store.findOne({owner: req.user.id})
@@ -85,8 +84,43 @@ const getTopOffers = async (req, res) => {
     }
 }
 
+const deleteOffer = async (req, res) => {
+    try {
+      const offerId = req.params.offerId;
+  
+      // Find the offer by its ID and remove it
+      const deletedOffer = await Offer.findByIdAndRemove(offerId);
+  
+      if (!deletedOffer) {
+        return res.status(404).json({
+          success: false,
+          data: {
+            message: 'Offre non trouvée',
+          },
+        });
+      }
+  
+      // Delete the associated banner image file
+      fs.unlinkSync(deletedOffer.banner);
 
+  
+      return res.json({
+        success: true,
+        data: {
+          message: 'Offre supprimée avec succès',
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        data: {
+          message: 'Erreur lors de la suppression de l\'offre',
+        },
+      });
+    }
+  };
+  
 
 module.exports = {
-    createOffer, getCurrentuserOffers, getTopOffers
+    createOffer, getCurrentuserOffers, getTopOffers, deleteOffer
 }

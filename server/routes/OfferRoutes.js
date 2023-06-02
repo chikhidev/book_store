@@ -24,4 +24,12 @@ OfferRouter.post(
     Controller.Offer.createOffer
 )
 
+OfferRouter.delete(
+    '/',
+    MiddleWare.auth.authenticateToken,
+    MiddleWare.auth.isAdmin,
+    Controller.Offer.deleteOffer
+)
+
+
 module.exports = OfferRouter;
