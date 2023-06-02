@@ -28,6 +28,14 @@ UserRouter.post(
             Controller.User.makeAdmin
             )
 UserRouter.get("/:id/full", Controller.User.findFullById) //this route for tacking full information about user
+
+UserRouter.post(
+    "/profile/upload", 
+    Middleware.auth.authenticateToken,
+    Middleware.file.uploadUserImage,
+    Middleware.validate.uploadUserProfile,
+    Controller.Offer.createOffer
+    )
                 
 
 module.exports = UserRouter
