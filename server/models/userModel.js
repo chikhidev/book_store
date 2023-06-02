@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     firstName: {type: String},
     lastName: {type: String},
     isAdmin:{type: Boolean, default: false},
-    avatar: { type: String, default: '/user/default'},
+    avatar: { type: String, default: '/images/users/default.jpg'},
     premuim: { type: Boolean, default: false},
     bio: {type: String, default: ''},
     address: {type: String, default: ''},

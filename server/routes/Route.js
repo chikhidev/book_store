@@ -7,4 +7,6 @@ module.exports = {
     CategoryRouter: require('./CategoryRoutes'),
     FavouriteRouter: require('./FavouritesRoutes'),
     InboxesRouter: require('./InboxesRoutes'),
+    StoreRouter: require('./StoreRoutes'),
+    OfferRouter: require('./OfferRoutes')
 }

@@ -7,7 +7,7 @@ const getFavourites = async (req, res) =>{
         if (!favourites)
             return res.json({
                 success: false, data: {
-                    message: 'No favourites attached to you'
+                    message: "Aucun favori ne vous est associé"
                 }
             })
 
@@ -19,7 +19,7 @@ const getFavourites = async (req, res) =>{
     }catch(err){
         return res.json({
             success: false, data: {
-                message: 'Error', err
+                message: 'Erreur', err
             }
         })
     }
@@ -37,7 +37,7 @@ const isBookFav = async (req, res) => {
       }
   }
   catch (err) {
-    return res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+    return res.status(500).json({ success: false, data: { message: 'Erreur', error: err } });
   }
 };
 
@@ -52,7 +52,7 @@ const toggleFavourite = async (req, res) => {
           const favourited = await Favourite.create({ book: id, user: req.user.id });
           return res.status(200).json({ success: true, fav: true, data: favourited });
         } catch (err) {
-          return res.status(500).json({ success: false, data: { message: 'Error while adding this book to favourites', error: err } });
+          return res.status(500).json({ success: false, data: { message: "Erreur lors de l'ajout de ce livre aux favoris", error: err } });
         }
       } else {
         // Book was favourited, delete the existing favourite
@@ -60,7 +60,7 @@ const toggleFavourite = async (req, res) => {
       }
     }
     catch (err) {
-      return res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+      return res.status(500).json({ success: false, data: { message: 'Erreur', error: err } });
     }
 };
 

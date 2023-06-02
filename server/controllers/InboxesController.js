@@ -11,7 +11,7 @@ const getInbox = async (req, res) => {
     }catch{
         res.json({
             success: false, data: {
-                message:'failed to get your inbox!'
+                message:"n'a pas réussi à obtenir votre boîte de réception !"
             }
         })
     }

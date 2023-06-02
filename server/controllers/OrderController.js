@@ -20,7 +20,7 @@ const getOrders = async (req, res) => {
 
         res.json({ success: true, data: orders }); 
     }catch(err){
-        res.json({ success: false, data: {message:'Error'} });
+        res.json({ success: false, data: {message:'Erreur'} });
     }
 };
   
@@ -31,13 +31,13 @@ const getOrder = async (req, res) => {
       const order = await Order.findById(orderId).populate('customer publisher items.book');
       
       if (!order) {
-        return res.status(404).json({ success: false, data:{message: 'Order not found'} });
+        return res.status(404).json({ success: false, data:{message: 'Commande introuvable'} });
       }
       
       res.json({ success: true, data: order });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ success: false, data:{message: 'Internal server error'} });
+      console.Erreur(err);
+      res.status(500).json({ success: false, data:{message: 'Erreur interne du serveur'} });
     }
 };
   
@@ -50,22 +50,22 @@ const createOrder = async (req, res) => {
       const customer_id = req.user.id
       const customer = await User.findById(customer_id).select('username');
       if (!customer)
-        return res.json({ success: false, data: { message: 'You can\'t make an order' } });
+        return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
       const book_found = await Book.findById(book);
       if (!book_found)
-        return res.json({ success: false, data: { message: 'Book not found' } });
+        return res.json({ success: false, data: { message: "Livre introuvable" } });
   
       if (book_found.stock == 0)
-        return res.json({ success: false, data: { message: 'This book is not in stock' } });
+        return res.json({ success: false, data: { message: "Ce livre n'est pas en stock" } });
 
       if (book_found.stock < qte)
-        return res.json({ success: false, data: { message: `Cannot order this quantity, there is only ${book_found.stock} left` } });
+        return res.json({ success: false, data: { message: `Impossible de commander cette quantité, il ne reste que ${book_found.stock}` } });
 
       const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
       const messageOfCustomer = new Message({ 
         sender: req.user.id, 
-        content: `${req.user.username} requested an order from you`,
+        content: `${req.user.username} vous a demandé une commande`,
         order: order._id
       });
       
@@ -87,17 +87,17 @@ const createOrder = async (req, res) => {
         await messageOfCustomer.save()
         await order.save();
         //----------------------------------------------------------------on sucess:
-        return res.json({ success: true, data: { message: 'Your created sucessfully' , order } });
+        return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès' , order } });
       }
       catch(err){
         //----------------------------------------------------------------on failing:
-        return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
+        return res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'enregistrement de votre commande, veuillez réessayer !" } });
       }
   
     }
     catch (err) {
-      console.error(err);
-      return res.json({ success: false, data: { message: 'Error', err } });
+      console.Erreur(err);
+      return res.json({ success: false, data: { message: 'Erreur', err } });
     }
 };
   
@@ -111,10 +111,10 @@ const updateOrder = async (req, res) => {
         const order = await Order.findById(req.params.id).populate('book');
 
         if(order.customer == req.user.id)
-          return res.status(404).json({ success: false, data: { message: "It's not your order to update it" } });
+          return res.status(404).json({ success: false, data: { message: "Ce n'est pas votre ordre de le mettre à jour" } });
 
         if (!order)
-            return res.status(404).json({ success: false, data: { message: 'Order not found' } });
+            return res.status(404).json({ success: false, data: { message: 'Commande introuvable' } });
 
         order.book = book || order.book;
         order.qte = qte || order.qte;
@@ -129,7 +129,7 @@ const updateOrder = async (req, res) => {
 
         const messageOfCustomer = new Message({ 
           sender: req.user.id, 
-          content: `${req.user.username} updated their order`,
+          content: `${req.user.username} a mis à jour sa commande`,
           order: order._id
         });
         
@@ -153,14 +153,14 @@ const updateOrder = async (req, res) => {
         }catch(err) {
           return res.json({
             success: false, data: {
-              message: `there was an error while updating the order`
+              message: `il y a eu une erreur lors de la mise à jour de la commande`
             }
           })
         }
 
-        res.json({ success: true, data: { message: 'Order updated', order } });
+        res.json({ success: true, data: { message: 'Commande mise à jour', order } });
     } catch (err) {
-        res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+        res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
     }
 };
 
@@ -172,16 +172,16 @@ const deleteOrder = async (req, res) => {
       const order = await Order.findById(req.params.id).populate('book');
 
       if (!order)
-          return res.status(404).json({ success: false, data: { message: 'Order not found' }});
+          return res.status(404).json({ success: false, data: { message: 'Commande introuvable' }});
 
       if (req.user.id !== order.customer)
-          return res.status(403).json({ success: false, data: { message: "It's not your order to cancel" }});
+          return res.status(403).json({ success: false, data: { message: "Ce n'est pas votre ordre d'annuler" }});
 
       const seller = order.book.createdBy
 
       const messageOfCustomer = new Message({ 
         sender: req.user.id, 
-        content: `${req.user.username} canceled their order`,
+        content: `${req.user.username} annulé sa commande`,
         order: order._id
       });
       
@@ -200,12 +200,12 @@ const deleteOrder = async (req, res) => {
         }
         await messageOfCustomer.save()
         await order.remove();
-        res.json({ success: true, data: { message: 'Order deleted successfully' } });
+        res.json({ success: true, data: { message: 'Commande annulée avec succès' } });
       }catch{
-        res.json({ success: false, data: { message: 'There was an error while cancelling the order' } });
+        res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'annulation de la commande" } });
       }
   } catch(err) {
-      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+      res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
   }
 };
 
@@ -217,16 +217,16 @@ const submitOrder = async (req, res) => {
 
     const order = await Order.findById(id).select('customer book qte status').populate('book')
     if(!order)
-      return res.json({success:false, data:{message:"Order not found"}})
+      return res.json({success:false, data:{message:"Commande introuvable"}})
 
     if (order.book.createdBy !== req.user.id)
-      return res.json({success:false, data:{message:"This book is not attached to you, can't submit this request"}})
+      return res.json({success:false, data:{message:"Ce livre ne vous est pas associé. Impossible d'envoyer cette demande."}})
 
     try{
 
       const messageToCustomer = new Message({ 
         sender: req.user.id, 
-        content: `${req.user.username} accepted your order`,
+        content: `${req.user.username} accepté votre commande`,
         order: order._id
       });
       
@@ -251,22 +251,22 @@ const submitOrder = async (req, res) => {
 
             await order.save();
           }catch{
-            return res.json({success:false, data:{message:"there was an error while submitting this order"}})
+            return res.json({success:false, data:{message:"il y a eu une erreur lors de la soumission de cette commande"}})
           }
           break;
         case "confirmed":
-          return res.json({success:false, data:{message:"This order is already confirmed"}})
+          return res.json({success:false, data:{message:"Cette commande est déjà confirmée"}})
         case "delivered":
-          return res.json({success:false, data:{message:"This order is already delivered"}})
+          return res.json({success:false, data:{message:"Cette commande est déjà livrée"}})
         default:
-          return res.json({success:false, data:{message:"There was an error processing"}})
+          return res.json({success:false, data:{message:"Il y a eu une erreur de traitement"}})
       }
     }catch{
-      return res.json({success:false, data:{message:"Please try again later"}})
+      return res.json({success:false, data:{message:"Veuillez réessayer plus tard"}})
     }
 
   }catch(err) {
-      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
+      res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
   }
 }
 

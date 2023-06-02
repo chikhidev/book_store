@@ -24,12 +24,6 @@ AuthRouter.post(
                 Controller.Auth.updatePassword
                 )
 
-AuthRouter.post(
-                "/logout",
-                Middleware.auth.authenticateToken,
-                Controller.Auth.logout
-                );
-
 //drop user route
 AuthRouter.delete(
                 "/drop",

@@ -37,7 +37,7 @@ const validateUserNameEmailPass = (req, res, next) =>{
         return res.status(400).json({
             success: false,
             data: {
-              message:"Try again! your inputs aren't correct"
+              message:"Essayer à nouveau! vos entrées ne sont pas correctes"
             }
           });
       }
@@ -75,7 +75,7 @@ const validateEmailPass = (req, res, next) =>{
       return res.status(400).json({
           success: false,
           data: {
-            message:"Try again! your inputs aren't correct",
+            message:"Essayer à nouveau! vos entrées ne sont pas correctes",
             error:err
           }
         });
@@ -85,7 +85,7 @@ const validateEmailPass = (req, res, next) =>{
 
 
 
-
+///bokss
 
 const createBook = async (req, res, next) => {
 
@@ -117,8 +117,9 @@ const createBook = async (req, res, next) => {
     // If validation passes, pass the request to the next middleware
     next();
   } catch (error) {
+    fs.unlinkSync(req.imagePath);
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Failed to create book' } });
+    return res.status(500).json({ success: false, data: { message: 'Échec de la création du livre' } });
   }
 }
 
@@ -154,7 +155,7 @@ const searchUsers = async (req, res, next) => {
     res.status(400).json({
       success:false,
       data:{
-        message:'Theres no query provided',
+        message: "Aucune requête n'est fournie",
         err: error.details[0].message
       }
     });
@@ -189,14 +190,14 @@ const updateCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        data: { message: 'Category not found' },
+        data: { message: 'Catégorie introuvable' },
       });
     }
 
     if (category.name === name && category.description === description) {
       return res.status(400).json({
         success: false,
-        data: { message: 'You have to provide changes to update the category!' },
+        data: { message: 'Vous devez fournir des modifications pour mettre à jour la catégorie !' },
       });
     } else {
       next();
@@ -242,14 +243,108 @@ const createOrder = async (req, res, next) =>{
     next()
 }
 
+// sotres:
+
+const createStore = async (req, res, next) => {
+  const query = Joi.object({
+    description: Joi.string().optional()
+  });
+
+    const { error, value } = query.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        }
+      });
+    }
+    next()
+}
+
+const getStore = async (req, res, next) => {
+  const query = Joi.object({
+    id: Joi.string().required()
+  });
+
+    const { error, value } = query.validate(req.params);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message,
+        }
+      });
+    }
+    next()
+}
+
+//offers
+
+const createOffer = async (req, res, next) => {
+  try {
+    const offerSchema = Joi.object({
+      // image: Joi.string().required(),
+      discount: Joi.number().required(),
+    });
+
+    const { error, value } = offerSchema.validate(req.body);
+
+    if (error) {
+      req.imagePath && fs.unlinkSync(req.imagePath);
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message
+        }
+      });
+    }
+
+    // If validation passes, pass the request to the next middleware
+    next();
+  } catch (error) {
+    req.imagePath && fs.unlinkSync(req.imagePath);
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: 'Échec du téléchargement de votre image' } });
+  }
+}
 
 
+//users
 
+const uploadUserProfile = async (req, res, next) => {
+  try {
+    const profileSchema = Joi.object({
+      image: Joi.file().required(),
+    });
 
+    const { error, value } = profileSchema.validate(req.body);
+
+    if (error) {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message
+        }
+      });
+    }
+
+    // If validation passes, pass the request to the next middleware
+    next();
+  } catch (error) {
+    fs.unlinkSync(req.file.path);
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: 'Échec du téléchargement de votre image' } });
+  }
+}
 
 
   module.exports = {
     validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers,
     createCategory, updateCategory,
-    createOrder
+    createOrder,
+    createStore, getStore,
+    uploadUserProfile,
+    createOffer
   }

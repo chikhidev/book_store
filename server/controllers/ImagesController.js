@@ -8,7 +8,7 @@ const BookImage = (req, res) => {
         return res.status(404).json({
         success: false,
         data: {
-            message: 'Image not found'
+            message: 'Image non trouvée'
         }
         });
     }
@@ -25,7 +25,24 @@ const UserImage = (req, res) => {
         return res.status(404).json({
         success: false,
         data: {
-            message: 'Image not found'
+            message: 'Image non trouvée'
+        }
+        });
+    }
+
+
+    res.sendFile(path.join(__dirname, '..', imageUrl));
+}
+
+const OfferImage = (req, res) => {
+    const { id } = req.params;
+    const imageUrl = `/images/offers/${id}`;
+
+    if (!fs.existsSync(path.join(__dirname, '..', imageUrl))) {
+        return res.status(404).json({
+        success: false,
+        data: {
+            message: 'Image non trouvée'
         }
         });
     }
@@ -35,5 +52,5 @@ const UserImage = (req, res) => {
 }
 
 module.exports = {
-    BookImage, UserImage
+    BookImage, UserImage, OfferImage
 }
