@@ -292,7 +292,7 @@ const uploadUserProfile = async (req, res, next) => {
     const { error, value } = profileSchema.validate(req.body);
 
     if (error) {
-      fs.unlinkSync(req.imagePath);
+      fs.unlinkSync(req.file.path);
       return res.status(400).json({
         success: false,
         data: {
@@ -304,7 +304,7 @@ const uploadUserProfile = async (req, res, next) => {
     // If validation passes, pass the request to the next middleware
     next();
   } catch (error) {
-    fs.unlinkSync(req.imagePath);
+    fs.unlinkSync(req.file.path);
     console.error(error);
     return res.status(500).json({ success: false, data: { message: 'Échec du téléchargement de votre image' } });
   }
