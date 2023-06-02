@@ -43,7 +43,7 @@ function App() {
         store.dispatch(SET_USER_DETAILS(res.data));
     }
     else {
-        console.warn("error setting user details...")
+        console.error("error setting user details...")
     }
 };
   const checkAlreadyLogged = () => {
