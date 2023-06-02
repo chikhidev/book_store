@@ -88,7 +88,7 @@ const storageUsers = multer.diskStorage({
     const extension = path.extname(file.originalname);
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const filename = file.fieldname + '-' + uniqueSuffix + extension;
-    const imagePath = path.join(__dirname, '../images/books', filename);
+    const imagePath = path.join(__dirname, '../images/users', filename);
 
     // Check if the image file already exists
     if (fs.existsSync(imagePath)) {
@@ -99,6 +99,7 @@ const storageUsers = multer.diskStorage({
 
     // Store the image path in req object
     req.imagePath = imagePath;
+    req.filename = filename;
   },
 });
 

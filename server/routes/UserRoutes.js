@@ -33,8 +33,7 @@ UserRouter.post(
     "/profile/upload", 
     Middleware.auth.authenticateToken,
     Middleware.file.uploadUserImage,
-    Middleware.validate.uploadUserProfile,
-    Controller.Offer.createOffer
+    Controller.User.uploadProfile
     )
                 
 

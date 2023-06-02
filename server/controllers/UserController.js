@@ -1,6 +1,7 @@
 //User model
 const User = require("../models/userModel");
-
+const fs = require("fs")
+const path = require("path")
 
 // function for getting a user by email
 const findById = async (req, res) => {
@@ -203,13 +204,68 @@ const searchUsers = async (req, res) => {
 
 
 //upload profile:
-const uploadProfile = (req, res) => {
-  
-}
+const uploadProfile = async (req, res) => {
+  if (!req.imagePath) {
+    return res.status(400).json({
+      success: false,
+      data: { message: 'Aucun fichier téléchargé' },
+    });
+  }
+
+  try {
+    const user = await User.findById(req.user.id).select('avatar');
+    if (!user) {
+      fs.unlinkSync(req.imagePath);
+      return res.json({
+        success: false,
+        data: {
+          message: "vous n'êtes pas connecté",
+        },
+      });
+    }
+
+    if (user.avatar && user.avatar !== "/images/users/default.jpg") {
+      const previousAvatarPath = path.join(__dirname, '..', user.avatar);
+      if (fs.existsSync(previousAvatarPath)) {
+        fs.unlinkSync(previousAvatarPath);
+      }
+    }
+
+    user.avatar = `/images/users/${req.filename}`;
+
+    try {
+      await user.save();
+      return res.json({
+        success: true,
+        data: {
+          message: 'Votre avatar a été changé avec succès',
+        },
+      });
+    } catch (error) {
+      fs.unlinkSync(req.imagePath);
+      return res.json({
+        success: false,
+        data: {
+          message: "Il y a eu un problème lors du changement d'avatar",
+        },
+      });
+    }
+  } catch (error) {
+    fs.unlinkSync(req.imagePath);
+    return res.json({
+      success: false,
+      data: {
+        message: 'Erreur',
+      },
+    });
+  }
+};
+
 
 
 module.exports = {
     findById, findFullById, 
     findByEmail, searchUsers, makeAdmin,
-    getUserByToken
+    getUserByToken,
+    uploadProfile
 }
