@@ -279,6 +279,35 @@ const getStore = async (req, res, next) => {
     next()
 }
 
+//offers
+
+const createOffer = async (req, res, next) => {
+  try {
+    const offerSchema = Joi.object({
+      // image: Joi.string().required(),
+      discount: Joi.number().required(),
+    });
+
+    const { error, value } = offerSchema.validate(req.body);
+
+    if (error) {
+      req.imagePath && fs.unlinkSync(req.imagePath);
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message
+        }
+      });
+    }
+
+    // If validation passes, pass the request to the next middleware
+    next();
+  } catch (error) {
+    req.imagePath && fs.unlinkSync(req.imagePath);
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: 'Échec du téléchargement de votre image' } });
+  }
+}
 
 
 //users
@@ -311,11 +340,11 @@ const uploadUserProfile = async (req, res, next) => {
 }
 
 
-
   module.exports = {
     validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers,
     createCategory, updateCategory,
     createOrder,
     createStore, getStore,
-    uploadUserProfile
+    uploadUserProfile,
+    createOffer
   }

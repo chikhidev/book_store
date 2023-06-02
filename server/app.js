@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the 'images/books' directory
 app.use('/images/books', express.static('images/books'));
 app.use('/images/users', express.static('images/users'));
+app.use('/images/offers', express.static('images/offers'));
 
 //group routing for user
 app.use('/auth', Route.AuthRouter );
@@ -33,6 +34,7 @@ app.use('/images', Route.ImagesRouter );
 app.use('/fav', Route.FavouriteRouter );
 app.use('/inbox', Route.InboxesRouter );
 app.use('/store', Route.StoreRouter );
+app.use('/offer', Route.OfferRouter );
 
 //Server listening
 app.listen(process.env.PORT, ()=>

@@ -8,4 +8,5 @@ module.exports = {
     FavouriteRouter: require('./FavouritesRoutes'),
     InboxesRouter: require('./InboxesRoutes'),
     StoreRouter: require('./StoreRoutes'),
+    OfferRouter: require('./OfferRoutes')
 }
