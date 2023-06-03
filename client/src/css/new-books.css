@@ -1,8 +1,8 @@
 .new-books-container {
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     flex-direction: row;
-    /* align-items: center; */
+    align-items: center;
     margin-top: 2%;
     width: 90%;
     margin: 0 auto;
@@ -34,10 +34,8 @@ input[type='radio']:checked {
 .new-books {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    /* align-items: center; */
-    gap: 10px;
-    width: 80%;
+    justify-content: center;
+    align-items: center;
 }
 .new-books.center-loading {
     display: flex;
@@ -48,7 +46,7 @@ input[type='radio']:checked {
     width: 80%;
 }
 .new-book-single-link {
-    width: calc((100% - 30px) / 4); /* Calculate the width dynamically based on 4 cards with a gap of 10px */
+    width: 270px /* Calculate the width dynamically based on 4 cards with a gap of 10px */
 }
 .new-book-img-container {
     width: 100%;
@@ -70,7 +68,6 @@ input[type='radio']:checked {
 }
 .new-book-img-container {
     position: relative;
-    background: #000;
 }
 
 .new-book-card:hover {

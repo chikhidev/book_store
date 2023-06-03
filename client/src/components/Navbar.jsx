@@ -23,7 +23,6 @@ function Navbar() {
   const [inbox, setInbox] = useState([])
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);
-  const [activeMessage, setActiveMessage] = useState("")
   const [searchParams, setSearchParams] = useSearchParams()
   
   useEffect(() => {
@@ -64,16 +63,11 @@ function Navbar() {
     }
     setTimeout(() => setIsSearchError(false), 1000)
   }
-  const handleMessageClick = (message) => {
-    setActiveMessage(message)
-  }
   
   useEffect( () => {
-    fetchInbox(), [loginStatus, adminStatus]
+    logged ? fetchInbox() : "", [loginStatus, adminStatus]
   })
-  useEffect ( () => {
-    // console.log(activeMessage)
-  }, [activeMessage])
+
 
   const handleSearchQuery = (searchQuery.length > 2) ? (`/search?name=${searchQuery}`) : (`/`)
       return (
@@ -206,7 +200,6 @@ function Navbar() {
               </ul>
             </div>
             </div>
-            {activeMessage ? <MessagePopup message={activeMessage} /> : ""}
           </nav>
       );
   }

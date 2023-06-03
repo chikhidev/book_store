@@ -23,7 +23,8 @@ const BookCard = ({ book }) => {
   const loc = useLocation()
   const navigate = useNavigate()
   const userToken = useSelector(state => state.token)
-
+  const loginStatus = useSelector(state => state.loginStatus);
+  const [logged, setLogged] = useState(loginStatus);
   const [isBookFav, setIsBookFav] = useState("");
 
   const handleCardClick = (e) => {
@@ -80,9 +81,16 @@ const BookCard = ({ book }) => {
     }
   }
     useEffect(() => {
-    fetchIsBookFav(userToken, book._id);
+      logged && fetchIsBookFav(userToken, book._id)
   }, [userToken, book._id, isBookFav]);
   
+  
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      setLogged(store.getState().loginStatus);
+    });
+    return unsubscribe;
+  }, [loginStatus]);
     return (
             <div onClick={() => navigate(`/book/${book._id}`)} className="book-single-link">
                <div key={book._id} className="book-card" onClick={handleCardClick}>
