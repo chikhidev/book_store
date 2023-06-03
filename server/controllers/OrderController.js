@@ -51,7 +51,7 @@ const createOrder = async (req, res) => {
         return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
         // salah added this line
-      const book_found = await Book.findByIdAndUpdate(book, { $inc: { stock: -qte } } );
+      const book_found = await Book.findByIdAndUpdate(book, { $inc: { stock: - qte } } );
       // instead of :
       // const book_found = await Book.findById(book);
       if (!book_found)
@@ -85,6 +85,8 @@ const createOrder = async (req, res) => {
         await inbox_found.save();
       }
       await messageOfCustomer.save()
+        
+      await order.save();
       
       return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès', order } });
     } catch (err) {

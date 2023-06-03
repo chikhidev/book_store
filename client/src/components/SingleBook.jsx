@@ -26,6 +26,39 @@ const SingleBook = () => {
     const [loading, setLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState("")
     const [orderMsg, setOrderMsg] = useState("")
+
+    const showShipping = () => {
+        Swal.fire({
+            title: 'Shipping Informations : ',
+            html: `<input type="text" id="addressLine1" class="swal2-input" placeholder="adress line 1">
+            <input type="text" id="city" class="swal2-input" placeholder="city">
+            <input type="text" id="state" class="swal2-input" placeholder="state">
+            <input type="text" id="province" class="swal2-input" placeholder="province">
+            <input type="text" id="country" class="swal2-input" placeholder="country">`,
+            confirmButtonText: 'Sign in',
+            focusConfirm: false,
+            preConfirm: () => {
+              const addressLine1 = Swal.getPopup().querySelector('#addressLine1').value
+              const city = Swal.getPopup().querySelector('#city').value
+              const state = Swal.getPopup().querySelector('#state').value
+              const province = Swal.getPopup().querySelector('#province').value
+              const country = Swal.getPopup().querySelector('#country').value
+              if (!addressLine1 || !city || !state || !province || !country) {
+                Swal.showValidationMessage(`Please enter valid shipping info`)
+              }
+              return { addressLine1: addressLine1, city: city, state: state, province: province, country: country }
+            }
+          }).then((result) => {
+            Swal.fire(`
+              AddressLine1: ${result.value.addressLine1}
+              City: ${result.value.city}
+              State: ${result.value.state}
+              Province: ${result.value.province}
+              Country: ${result.value.country}
+              Password: ${result.value.password}
+            `.trim())
+          })
+    }
     const orderBook = async () => {
         setLoading(true)
         let response = await fetch(`${ENDPOINT}/order`, {
@@ -152,7 +185,7 @@ const SingleBook = () => {
                                             <div className="qte-minus" onClick={decrementQte}>-</div>
                                         </div>
                                         <button className={`${loading ? "loading-btn" : ""} book-single-cta-buy-btn`}
-                                            onClick={orderBook}>
+                                            onClick={showShipping}>
                                             {!loading && "Buy Now"}
                                         </button>
                                     </div>
