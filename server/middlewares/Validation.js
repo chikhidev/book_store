@@ -240,7 +240,9 @@ const createOrder = async (req, res, next) =>{
         }
       });
     }
+    console.log("order validated : \n");
     next()
+
 }
 
 // sotres:

@@ -4,11 +4,8 @@ const Book = require('../models/bookModel').bookModel
 
 // GET /orders
 const getOrders = async (req, res) => {
-
-
     try{
         const query = req.query; // Assuming the query parameters are passed in the request query string
-
         let orders;
         if (Object.keys(query).length === 0)
           orders = await Order.find({customer: req.user.id});
@@ -37,14 +34,11 @@ const getOrder = async (req, res) => {
       console.error(err);
       res.status(500).json({ success: false, data:{message: 'Internal server error'} });
     }
-  };
-  
-
+};
 // POST /order
 const createOrder = async (req, res) => {
-    try {
+      try {
       const { book, note, shippingAddress, qte } = req.body;
-
       const customer_id = req.user.id
       const customer = await User.findById(customer_id).select('username');
       if (!customer)
@@ -75,10 +69,7 @@ const createOrder = async (req, res) => {
       console.error(err);
       return res.json({ success: false, data: { message: 'Error', err } });
     }
-  };
-  
-  
-
+};
   // PUT /orders/:id
   const updateOrder = async (req, res) => {
     const { book, qte, note, shippingAddress } = req.body;
@@ -108,9 +99,6 @@ const createOrder = async (req, res) => {
         res.status(500).json({ success: false, data: { message: 'Error', error: err } });
     }
 };
-
-
-
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
   try {
@@ -132,9 +120,6 @@ const deleteOrder = async (req, res) => {
       res.status(500).json({ success: false, data: { message: 'Error', error: err } });
   }
 };
-
-
-
 const submitOrder = async (req, res) => {
   try{
     const id = req.params.id;

@@ -6,8 +6,6 @@ const Inbox = require('../models/InboxModel');
 
 // GET /orders
 const getOrders = async (req, res) => {
-
-
     try{
         const query = req.query; // Assuming the query parameters are passed in the request query string
 
@@ -52,7 +50,7 @@ const createOrder = async (req, res) => {
       if (!customer)
         return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
-      const book_found = await Book.findById(book);
+      const book_found = await Book.findByIdAndUpdate(book, { $inc: { stock: -qte } } );
       if (!book_found)
         return res.json({ success: false, data: { message: "Livre introuvable" } });
   
@@ -62,43 +60,41 @@ const createOrder = async (req, res) => {
       if (book_found.stock < qte)
         return res.json({ success: false, data: { message: `Impossible de commander cette quantité, il ne reste que ${book_found.stock}` } });
 
-      const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
-      const messageOfCustomer = new Message({ 
-        sender: req.user.id, 
-        content: `${req.user.username} vous a demandé une commande`,
-        order: order._id
-      });
-      
-      const seller = book_found.createdBy
-      const inbox_found = Inbox.find({owner: seller})
+          const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
+          const messageOfCustomer = new Message({ 
+            sender: req.user.id, 
+            content: `${req.user.username} vous a demandé une commande`,
+            order: order._id
+          });
+    
+    const seller = book_found.createdBy;
+    const inbox_found = await Inbox.findOne({ owner: seller });
+
+    try {
+      if (!inbox_found) {
+        const inboxOfSeller = new Inbox({
+          owner: seller,
+          messages: [messageOfCustomer._id]
+        });
+        await inboxOfSeller.save();
+      } else {
+        inbox_found.messages.push(messageOfCustomer._id);
+        await inbox_found.save();
+      }
+      await messageOfCustomer.save()
       
 
-      try{
-        if (!inbox_found){
-          const inboxOfSeller = new Inbox({
-            owner: seller,
-            messages: [messageOfCustomer._id]
-          });
-          await inboxOfSeller.save()
-        }else{
-          inbox_found.messages.push(messageOfCustomer._id)
-          await inbox_found.save()
-        }
-        await messageOfCustomer.save()
-        await order.save();
-        //----------------------------------------------------------------on sucess:
-        return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès' , order } });
-      }
-      catch(err){
-        //----------------------------------------------------------------on failing:
-        return res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'enregistrement de votre commande, veuillez réessayer !" } });
-      }
-  
+      // ...other code
+
+      return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès', order } });
+    } catch (err) {
+      return res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'enregistrement de votre commande, veuillez réessayer !" } });
     }
-    catch (err) {
-      console.Erreur(err);
-      return res.json({ success: false, data: { message: 'Erreur', err } });
-    }
+
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, data: { message: 'Erreur', err } });
+  }
 };
   
   
