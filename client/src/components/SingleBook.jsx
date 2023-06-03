@@ -106,7 +106,7 @@ const SingleBook = () => {
                     <div className="container px-4 mx-auto">
                     <div className="flex flex-wrap justify-center ms-4">
                         <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
-                            <div className="flex -mx-4 flex-wrap items-center justify-between lg:justify-start lg:items-start xl:items-center">
+                            <div className="flex -mx-4 flex-wrap items-center justify-between lg:justify-center lg:items-start xl:items-center">
                                 <div className="w-full sm:w-9/12 px-4">
                                     <img className="mb-5" src={"http://localhost:4000" + fetchedBook.imageUrl} alt="" />
                                 </div>
@@ -117,12 +117,12 @@ const SingleBook = () => {
                             <span className="text-xs text-gray-400 tracking-wider">{fetchedBook._id}</span>
                             <h2 className="mt-6 mb-4 text-4xl md:text-5xl lg:text-7xl font-heading font-medium">{fetchedBook.title}</h2>
                             <p className="flex items-center mb-6">
-                            <span className="mr-2 text-sm text-blue-500 font-medium">$</span>
+                            <span className="mr-2 text-lg text-blue-500 font-medium">$</span>
                             <span className="text-3xl text-blue-500 font-medium">{fetchedBook.price}</span>
                             </p>
                             <p className="text-lg text-gray-400">
                                 {fetchedBook.description}
-                                {gotCats && cats.length > 0 ? "Categories : " : ""}
+                                {/* {gotCats && cats.length > 0 ? "Categories : " : ""}
                                     {gotCats && cats.length == 1 ? "Category : " : ""}
                                     {
                                         gotCats ? 
@@ -134,7 +134,7 @@ const SingleBook = () => {
                                             )
                                             ) : <p>Categories : unknown</p>
                                         : <i>Loading</i>
-                                }
+                                } */}
                             </p>
                         </div>
                         <div className="mb-10">
