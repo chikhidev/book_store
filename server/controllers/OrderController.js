@@ -51,7 +51,7 @@ const createOrder = async (req, res) => {
         return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
         // salah added this line
-      const book_found = await Book.findByIdAndUpdate(book, { $inc: { stock: - qte } } );
+      const book_found = await Book.findById(book);
       // instead of :
       // const book_found = await Book.findById(book);
       if (!book_found)
@@ -217,6 +217,8 @@ const submitOrder = async (req, res) => {
     if(!order)
       return res.json({success:false, data:{message:"Commande introuvable"}})
 
+    const book = await Book.findById(order.book)
+
     if (order.book.createdBy !== req.user.id)
       return res.json({success:false, data:{message:"Ce livre ne vous est pas associé. Impossible d'envoyer cette demande."}})
 
@@ -246,6 +248,8 @@ const submitOrder = async (req, res) => {
               await inbox_found.save()
             }
             await messageToCustomer.save()
+            book.stock = book.stock - order.stock
+            await book.save()
 
             await order.save();
           }catch{
