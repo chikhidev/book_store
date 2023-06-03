@@ -1,8 +1,6 @@
 const Order = require('../models/OrderModel').orderModel;
 const User = require('../models/userModel');
 const Book = require('../models/bookModel').bookModel
-const Message = require('../models/MessageModel');
-const Inbox = require('../models/InboxModel');
 
 // GET /orders
 const getOrders = async (req, res) => {
@@ -20,9 +18,9 @@ const getOrders = async (req, res) => {
 
         res.json({ success: true, data: orders }); 
     }catch(err){
-        res.json({ success: false, data: {message:'Erreur'} });
+        res.json({ success: false, data: {message:'Error'} });
     }
-};
+  };
   
 //GET /order/:id
 const getOrder = async (req, res) => {
@@ -31,15 +29,15 @@ const getOrder = async (req, res) => {
       const order = await Order.findById(orderId).populate('customer publisher items.book');
       
       if (!order) {
-        return res.status(404).json({ success: false, data:{message: 'Commande introuvable'} });
+        return res.status(404).json({ success: false, data:{message: 'Order not found'} });
       }
       
       res.json({ success: true, data: order });
     } catch (err) {
-      console.Erreur(err);
-      res.status(500).json({ success: false, data:{message: 'Erreur interne du serveur'} });
+      console.error(err);
+      res.status(500).json({ success: false, data:{message: 'Internal server error'} });
     }
-};
+  };
   
 
 // POST /order
@@ -50,71 +48,49 @@ const createOrder = async (req, res) => {
       const customer_id = req.user.id
       const customer = await User.findById(customer_id).select('username');
       if (!customer)
-        return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
+        return res.json({ success: false, data: { message: 'You can\'t make an order' } });
 
       const book_found = await Book.findById(book);
       if (!book_found)
-        return res.json({ success: false, data: { message: "Livre introuvable" } });
+        return res.json({ success: false, data: { message: 'Book not found' } });
   
       if (book_found.stock == 0)
-        return res.json({ success: false, data: { message: "Ce livre n'est pas en stock" } });
+        return res.json({ success: false, data: { message: 'This book is not in stock' } });
 
       if (book_found.stock < qte)
-        return res.json({ success: false, data: { message: `Impossible de commander cette quantité, il ne reste que ${book_found.stock}` } });
+        return res.json({ success: false, data: { message: `Cannot order this quantity, there is only ${book_found.stock} left` } });
 
       const order = new Order({ customer: customer_id, book, qte, note, shippingAddress });
-      const messageOfCustomer = new Message({ 
-        sender: req.user.id, 
-        content: `${req.user.username} vous a demandé une commande`,
-        order: order._id
-      });
-      
-      const seller = book_found.createdBy
-      const inbox_found = Inbox.find({owner: seller})
-      
-
+  
       try{
-        if (!inbox_found){
-          const inboxOfSeller = new Inbox({
-            owner: seller,
-            messages: [messageOfCustomer._id]
-          });
-          await inboxOfSeller.save()
-        }else{
-          inbox_found.messages.push(messageOfCustomer._id)
-          await inbox_found.save()
-        }
-        await messageOfCustomer.save()
         await order.save();
-        //----------------------------------------------------------------on sucess:
-        return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès' , order } });
+        return res.json({ success: true, data: { message: 'Your created sucessfully' , order } });
       }
       catch(err){
-        //----------------------------------------------------------------on failing:
-        return res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'enregistrement de votre commande, veuillez réessayer !" } });
+        return res.json({ success: false, data: { message: 'There was an error while saving your order, please try again!' } });
       }
   
     }
     catch (err) {
-      console.Erreur(err);
-      return res.json({ success: false, data: { message: 'Erreur', err } });
+      console.error(err);
+      return res.json({ success: false, data: { message: 'Error', err } });
     }
-};
+  };
   
   
 
   // PUT /orders/:id
-const updateOrder = async (req, res) => {
+  const updateOrder = async (req, res) => {
     const { book, qte, note, shippingAddress } = req.body;
 
     try {
-        const order = await Order.findById(req.params.id).populate('book');
+        const order = await Order.findById(req.params.id);
 
         if(order.customer == req.user.id)
-          return res.status(404).json({ success: false, data: { message: "Ce n'est pas votre ordre de le mettre à jour" } });
+          return res.status(404).json({ success: false, data: { message: "It's not your order to update it" } });
 
         if (!order)
-            return res.status(404).json({ success: false, data: { message: 'Commande introuvable' } });
+            return res.status(404).json({ success: false, data: { message: 'Order not found' } });
 
         order.book = book || order.book;
         order.qte = qte || order.qte;
@@ -125,42 +101,11 @@ const updateOrder = async (req, res) => {
                 order.shippingAddress[key] = shippingAddress[key];
         }
 
-        const seller = order.book.createdBy
+        await order.save();
 
-        const messageOfCustomer = new Message({ 
-          sender: req.user.id, 
-          content: `${req.user.username} a mis à jour sa commande`,
-          order: order._id
-        });
-        
-        const inbox_found = Inbox.find({owner: seller})
-
-        try{
-          if (!inbox_found){
-            const inboxOfSeller = new Inbox({
-              owner: seller,
-              messages: [messageOfCustomer._id]
-            });
-            await inboxOfSeller.save()
-          }else{
-            inbox_found.messages.push(messageOfCustomer._id)
-            await inbox_found.save()
-          }
-          await messageOfCustomer.save()
-
-          await order.save();
-          
-        }catch(err) {
-          return res.json({
-            success: false, data: {
-              message: `il y a eu une erreur lors de la mise à jour de la commande`
-            }
-          })
-        }
-
-        res.json({ success: true, data: { message: 'Commande mise à jour', order } });
+        res.json({ success: true, data: { message: 'Order updated', order } });
     } catch (err) {
-        res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
+        res.status(500).json({ success: false, data: { message: 'Error', error: err } });
     }
 };
 
@@ -169,43 +114,22 @@ const updateOrder = async (req, res) => {
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
   try {
-      const order = await Order.findById(req.params.id).populate('book');
+      const order = await Order.findById(req.params.id);
 
       if (!order)
-          return res.status(404).json({ success: false, data: { message: 'Commande introuvable' }});
+          return res.status(404).json({ success: false, data: { message: 'Order not found' }});
 
       if (req.user.id !== order.customer)
-          return res.status(403).json({ success: false, data: { message: "Ce n'est pas votre ordre d'annuler" }});
-
-      const seller = order.book.createdBy
-
-      const messageOfCustomer = new Message({ 
-        sender: req.user.id, 
-        content: `${req.user.username} annulé sa commande`,
-        order: order._id
-      });
-      
-      const inbox_found = Inbox.find({owner: seller})
+          return res.status(403).json({ success: false, data: { message: "It's not your order to cancel" }});
 
       try{
-        if (!inbox_found){
-          const inboxOfSeller = new Inbox({
-            owner: seller,
-            messages: [messageOfCustomer._id]
-          });
-          await inboxOfSeller.save(messageOfCustomer)
-        }else{
-          inbox_found.messages.push(messageOfCustomer._id)
-          await inbox_found.save()
-        }
-        await messageOfCustomer.save()
         await order.remove();
-        res.json({ success: true, data: { message: 'Commande annulée avec succès' } });
+        res.json({ success: true, data: { message: 'Order deleted successfully' } });
       }catch{
-        res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'annulation de la commande" } });
+        res.json({ success: false, data: { message: 'There was an error while cancelling the order' } });
       }
   } catch(err) {
-      res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
+      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
   }
 };
 
@@ -217,56 +141,30 @@ const submitOrder = async (req, res) => {
 
     const order = await Order.findById(id).select('customer book qte status').populate('book')
     if(!order)
-      return res.json({success:false, data:{message:"Commande introuvable"}})
+      return res.json({success:false, data:{message:"Order not found"}})
 
     if (order.book.createdBy !== req.user.id)
-      return res.json({success:false, data:{message:"Ce livre ne vous est pas associé. Impossible d'envoyer cette demande."}})
+      return res.json({success:false, data:{message:"This book is not attached to you, can't submit this request"}})
 
     try{
-
-      const messageToCustomer = new Message({ 
-        sender: req.user.id, 
-        content: `${req.user.username} accepté votre commande`,
-        order: order._id
-      });
-      
-      const inbox_found = Inbox.find({owner: order.customer})
-
       switch(order.status){
         case "pending":
-          try{
-            order.status = "confirmed";
-
-            if (!inbox_found){
-              const inboxOfSCustomer = new Inbox({
-                owner: order.customer,
-                messages: [messageOfCustomer._id]
-              });
-              await inboxOfSCustomer.save()
-            }else{
-              inbox_found.messages.push(messageOfCustomer._id)
-              await inbox_found.save()
-            }
-            await messageToCustomer.save()
-
-            await order.save();
-          }catch{
-            return res.json({success:false, data:{message:"il y a eu une erreur lors de la soumission de cette commande"}})
-          }
+          order.status = "confirmed";
+          await order.save();
           break;
         case "confirmed":
-          return res.json({success:false, data:{message:"Cette commande est déjà confirmée"}})
+          return res.json({success:false, data:{message:"This order is already confirmed"}})
         case "delivered":
-          return res.json({success:false, data:{message:"Cette commande est déjà livrée"}})
+          return res.json({success:false, data:{message:"This order is already delivered"}})
         default:
-          return res.json({success:false, data:{message:"Il y a eu une erreur de traitement"}})
+          return res.json({success:false, data:{message:"There was an error processing"}})
       }
     }catch{
-      return res.json({success:false, data:{message:"Veuillez réessayer plus tard"}})
+      return res.json({success:false, data:{message:"Please try again later"}})
     }
 
   }catch(err) {
-      res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
+      res.status(500).json({ success: false, data: { message: 'Error', error: err } });
   }
 }
 
