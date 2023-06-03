@@ -70,7 +70,7 @@
 .book-single-container .book-single-cta{
     background: #fefefe;
     display: flex;
-    width: 60%;
+    width: 70%;
     padding: 2%;
     height: 35%;
     box-shadow: 0px 1px 2px 1px rgba(48, 48, 48, 0.5);
@@ -128,10 +128,30 @@
 .book-single-container .cta-section-2 .book-single-cta-buy-btn:hover {
     background: rgb(140, 3, 131);
 }
+.book-single-container .cta-section-2 .book-single-cta-buy-btn.loading-btn {
+    background: rgb(164, 120, 161);
+}
 .book-single-container .cta-section-2 .book-single-cta-buy-price {
     text-align: end;
     font-size: 0.9vw;
     margin-right: 5px;
+}
+
+.qte-container {
+    display: flex;
+    justify-self: flex-start;
+    align-self: flex-start;
+    align-items: center;
+}
+.qte-plus, .qte-minus {
+    padding: 5px;
+    cursor: pointer;
+}
+.qte-plus {
+    
+}
+.qte-minus {
+
 }
 
 @media (max-width: 1280px) {

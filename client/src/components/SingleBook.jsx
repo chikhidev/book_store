@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'
 import { display } from '../js/index.js';
 import '../css/single-book.css';
 const ENDPOINT = "http://localhost:4000"
@@ -12,16 +13,53 @@ import { getHumanDate } from '../js/index.js';
 import CategorySlider from './CategorySlider.jsx';
 import BookCard from './BookCard.jsx';
 import MoreLikeThis from "./MoreLikeThis"
+
 const SingleBook = () => {
     const { id } = useParams();
     const [isFetchRunned, setIsFetchRunned] = useState(false);
     const [fetchedBook, setFetchedBook] = useState(false);
     const [isBookFetched, setIsBookFetched] = useState(false);
     const [gotCats, setGotCats] = useState(false);
+    const [qte, setQte] = useState(1);
     const [cats, setCats] = useState([]);
-
-
-  
+    const [orderSuccess, setOrderSuccess] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
+    const [orderMsg, setOrderMsg] = useState("")
+    const orderBook = async () => {
+        setLoading(true)
+        let response = await fetch(`${ENDPOINT}/order`, {
+            method : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+            body : JSON.stringify({
+                book : id,
+                shippingAddress : {"addressLine1": "123 Main Street",
+                    "city": "New York",
+                    "state": "NY",
+                    "postalCode": "10001",
+                    "country": "USA"}, 
+                note : "note test",
+                qte : qte
+            })
+        })
+        let data = await response.json()
+        console.log(data.sucess);
+        setLoading(false)
+        setOrderSuccess(data.success)
+        if (!data.success)
+            {
+                setErrorMsg(data.data.message)
+                Swal.fire({title : data.data.message, icon: "error"})
+            }
+            else 
+            {
+                Swal.fire(data.data.message)
+                setOrderMsg(data.data.message)
+            }
+    }
     const getBook = async () => {
         setGotCats(false);
         try {
@@ -29,7 +67,7 @@ const SingleBook = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTNjMmE4Mjk4ZDQ2N2ZiNTQ4YjBiYSIsImlzQWRtaW4iOnRydWUsInVzZXJuYW1lIjoidGVzdDEyMyIsImVtYWlsIjoiZ291emkuZGV2QGdtYWlsLmNvbSIsImlhdCI6MTY4MzQ4NTI5NSwiZXhwIjoxNjgzNjU4MDk1fQ.Df8saqtW7_LIvcYbIgljryvTjtie_4-Kp5krJGyx4c0",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 },
             });
             const bookRes = await book.json();
@@ -50,7 +88,8 @@ const SingleBook = () => {
             console.log("Error retrieving book:", error);
         }
     };
-
+    const incrementQte = () => {setQte(qte + 1)}
+    const decrementQte = () => {if (qte > 1) setQte(qte - 1)}
     useEffect(() => {
         if (!isFetchRunned) {
             getBook();
@@ -107,8 +146,14 @@ const SingleBook = () => {
                                         <div className="book-single-cta-buy-price">
                                             ${fetchedBook.price}
                                         </div>
-                                        <button className="book-single-cta-buy-btn">
-                                            ADD TO CART 
+                                        <div className="qte-container">
+                                            <div className="qte-plus" onClick={incrementQte}>+</div>
+                                                <div className="qte">{qte}</div>
+                                            <div className="qte-minus" onClick={decrementQte}>-</div>
+                                        </div>
+                                        <button className={`${loading ? "loading-btn" : ""} book-single-cta-buy-btn`}
+                                            onClick={orderBook}>
+                                            {!loading && "Buy Now"}
                                         </button>
                                     </div>
                                 </div>

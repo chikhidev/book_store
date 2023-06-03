@@ -2,10 +2,11 @@ import store from "../redux/store"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import ChangeAvatar from "./ChangeAvatar"
-
+import { getHumanDate } from "../js"
 const Account  = () => {
     let details = useSelector(state => state.userDetails)
     const [{ username, email, isAdmin, createdAt, bio, avatar }, setDetails] = useState(details) 
+    console.log(details);
     return (
         <div className="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 md:px-24" id="panel">
         <div className="w-full px-6 py-6 mx-auto loopple-min-height-78vh text-slate-500">
@@ -23,7 +24,7 @@ const Account  = () => {
                                         <div className="flex flex-wrap -mx-3">
                                             <div className="flex-none w-auto max-w-full px-3">
                                                 <div className="text-base ease-soft-in-out h-24 w-24 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
-                                                    <img src={"http://localhost:4000" + avatar} alt="profile_image" className={`w-full shadow-soft-sm rounded-xl `}/>
+                                                    <img src="https://img.icons8.com/?size=512&id=98957&format=png " alt="profile_image" className={`w-full shadow-soft-sm rounded-xl `}/>
                                                 </div>
                                             </div>
                                             <div className="flex-none w-auto max-w-full px-3 py-2">
@@ -54,27 +55,13 @@ const Account  = () => {
                                 <hr className="h-px my-6 bg-transparent bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
                                 <ul className="flex flex-col pl-0 mb-0 rounded-lg">
                                     <li className="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit">
-                                        <strong className="text-slate-700">Full Name:</strong> &nbsp; Alec M. Thompson
+                                        <strong className="text-slate-700">User Name:</strong> &nbsp; {username}
                                     </li>
                                     <li className="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit">
-                                        <strong className="text-slate-700">Mobile:</strong> &nbsp; (44) 123 1234 123
+                                        <strong className="text-slate-700">Email:</strong> &nbsp; {email}
                                     </li>
                                     <li className="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit">
-                                        <strong className="text-slate-700">Email:</strong> &nbsp; alecthompson@mail.com
-                                    </li>
-                                    <li className="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit">
-                                        <strong className="text-slate-700">Location:</strong> &nbsp; USA
-                                    </li>
-                                    <li className="relative block px-4 py-2 pb-0 pl-0 bg-white border-0 border-t-0 rounded-b-lg text-inherit">
-                                        <strong className="leading-normal text-sm text-slate-700">Social:</strong> &nbsp; <a className="inline-block py-0 pl-1 pr-2 mb-0 font-bold text-center text-blue-800 align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-none" href="javascript:;">
-                                            <i className="fab fa-facebook fa-lg" aria-hidden="true"></i>
-                                        </a>
-                                        <a className="inline-block py-0 pl-1 pr-2 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-none text-sky-600" href="javascript:;">
-                                            <i className="fab fa-twitter fa-lg" aria-hidden="true"></i>
-                                        </a>
-                                        <a className="inline-block py-0 pl-1 pr-2 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-none text-sky-900" href="javascript:;">
-                                            <i className="fab fa-instagram fa-lg" aria-hidden="true"></i>
-                                        </a>
+                                        <strong className="text-slate-700">Member Since :</strong> &nbsp; {getHumanDate(createdAt)}
                                     </li>
                                 </ul>
                             </div>

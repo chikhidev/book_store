@@ -29,7 +29,6 @@ const MessagePopup = () => {
         },
       });
       let res = await response.json();
-      console.log(res);
       setContent(res.data.content);
       setEmail(res.data.sender.email)
       setUsername(res.data.sender.username)
@@ -42,7 +41,7 @@ const MessagePopup = () => {
   };
   const toggleIsRead = async () => {
     try {
-      let response = await fetch(`http://localhost:4000/inbox/message/647b52ce8dd5e653db23c72d`, {
+      let response = await fetch(`http://localhost:4000/inbox/message/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -52,6 +51,7 @@ const MessagePopup = () => {
       let res = await response.json();
       setContent(res.data.content);
       setIsRead(res.data.isRead);
+
     } catch (error) {
       console.error(error);
     }
