@@ -54,12 +54,8 @@ let swiperBreakPoints = {
     slidesPerView: 3,
     },
     400: {
-    slidesPerView : 2
-    },
-    200: {
-        slidesPerView : 1
+    slidesPerView : 1}
     }
-}
 const getCategories = async (setFnc) => {
   let books = await fetch(`http://localhost:4000/category`, {
       method : "GET",

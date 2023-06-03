@@ -1,18 +1,13 @@
-nav {
-	background: linear-gradient(to bottom, #e0e0e0, white);
-	display: flex;
-	flex-direction: row;
+.nav {
+	/* background: linear-gradient(to top, transparent,rgba(255,255,255,0.8) , white); */
+	background-color: rgba(255,255,255,0.95);
+	z-index: 100;
 	padding: 0 10%;
-	height: 80px;
-	align-items: center;
-	justify-content: space-between;
-	z-index: 110;
   }
   
   .hamburger {
 	display: none;
   }
-  
   
   .nav-left {
 	width: 30%;
