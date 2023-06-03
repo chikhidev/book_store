@@ -36,7 +36,15 @@ function mergeArraysRandomly(...arrays) {
   return merged;
 }
 
-
+const getHumanDate = (dateStr) => {
+  const date = new Date(dateStr);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  return formattedDate
+}
 
 
 let swiperBreakPoints = {
@@ -91,7 +99,7 @@ const getCategory = async (categoryId) => {
 
 export {
   display, capitalize, 
-  mergeArraysRandomly,
+  getHumanDate, mergeArraysRandomly,
   swiperBreakPoints,
   getCategories,
   getCategory}

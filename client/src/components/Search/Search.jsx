@@ -1,9 +1,9 @@
 import {useSearchParams} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
-import ThreeDotsWave from './FramerMotion/ThreeDotWave'
-import BookCard from './BookCard'
-import "../css/search.css"
+import ThreeDotsWave from '../FramerMotion/ThreeDotWave'
+import BookCard from '../BookCard'
+import "../../css/search.css"
 const Search = () => {
     const [currSearchPage, setCurrSearchPage] = useState(1)
     const [searchResCount, setSearchResCount] = useState(0)

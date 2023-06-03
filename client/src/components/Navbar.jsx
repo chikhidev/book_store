@@ -8,7 +8,10 @@ import store from "../redux/store"
 import { LOGIN, LOGOUT } from "../redux/actions"
 import { SET_USER_DETAILS } from "../redux/actions"
 import { useSearchParams } from "react-router-dom";
-
+import Inbox from './Inbox';
+import { display } from '../js';
+import ThreeDotsWave from './FramerMotion/ThreeDotWave';
+import MessagePopup from './MessagePopup';
 
 
 
@@ -17,10 +20,12 @@ function Navbar() {
   const loginStatus = useSelector(state => state.loginStatus);
   const adminStatus = useSelector(state => state.userDetails.isAdmin);
   const [isSearchError, setIsSearchError] = useState(false)
-
+  const [inbox, setInbox] = useState([])
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);
-
+  const [activeMessage, setActiveMessage] = useState("")
+  const [searchParams, setSearchParams] = useSearchParams()
+  
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
       setLogged(store.getState().loginStatus);
@@ -29,6 +34,22 @@ function Navbar() {
     return unsubscribe;
   }, [loginStatus, adminStatus]);
 
+  const fetchInbox = async () => {
+    try {
+        let response = await fetch("http://localhost:4000/inbox", {
+        method : "GET",
+        headers : {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        let data = await response.json()
+        setInbox(data.data[0])
+    }
+    catch (err) {
+      console.log("error getting inbox : ", err);
+    }
+  }
   const handleLogout = (e) => {
     localStorage.removeItem('token');
     store.dispatch(LOGOUT());
@@ -43,9 +64,19 @@ function Navbar() {
     }
     setTimeout(() => setIsSearchError(false), 1000)
   }
+  const handleMessageClick = (message) => {
+    setActiveMessage(message)
+  }
+  
+  useEffect( () => {
+    fetchInbox(), [loginStatus, adminStatus]
+  })
+  useEffect ( () => {
+    // console.log(activeMessage)
+  }, [activeMessage])
+
   const handleSearchQuery = (searchQuery.length > 2) ? (`/search?name=${searchQuery}`) : (`/`)
       return (
-        
           <nav className=" w-full relative">
             <div className="h-24 w-full "></div>
             <div className="w-full flex items-center justify-between mx-auto fixed top-0 nav ">
@@ -53,9 +84,6 @@ function Navbar() {
               Senteria
             </h2>
             <div className="flex md:order-2">
-                
-
-
             {logged ? 
               <>
                   {/* user icon */}
@@ -83,11 +111,32 @@ function Navbar() {
                   
                               </button>
                           </Link>
-                          <Link to="/inbox">
+                          <button onClick={() => fetchInbox()}>
+                              
+                          </button>
+                          <div className="dropdown">
+                            <div className="dropdown-hover user-icon">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                               </svg>
-                          </Link>
+                            </div>
+                            <div className="dropdown-menu">
+                              {inbox.messages ? 
+                                inbox.messages.length > 0 ? 
+                                  inbox.messages.map(message => {
+                                    return (
+                                      <Link to={`/inbox/message/${message._id}`}>
+                                        <div className={`dropdown-item ${message.isRead ? "already-read" : ""}`}>
+                                            {display(message.content, 15)}
+                                        </div> 
+                                      </Link>
+                                    )
+                                  })
+                                : <h4>no messages currently</h4>
+                              : <ThreeDotsWave />
+                              }
+                            </div>
+                        </div>
                         </>
                   }
                   <div className="dropdown">
@@ -110,24 +159,20 @@ function Navbar() {
               :
               <div className="flex items-center">
               <Link to="/login" className="flex items-center md:mr-2">
-                <button type="button" class=" focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" className=" focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 connexion
                 </button>
               </Link>
               <Link to="/register" className="flex items-center">
-                  <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2.5 ">
-                  s'inscrire
-                  </button>
+                <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2.5 ">
+                s'inscrire
+                </button>
               </Link>
               </div>
           }
-
-
-
-
-                <button data-collapse-toggle="navbar-cta" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
+              <button data-collapse-toggle="navbar-cta" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
                   <span className="sr-only">Open main menu</span>
-                  <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                  <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
               </button>
             </div>
             <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 " id="navbar-cta">
@@ -138,7 +183,6 @@ function Navbar() {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mr-2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                     </svg>
-
                       Home
                   </Link>
                 </li>
@@ -162,8 +206,8 @@ function Navbar() {
               </ul>
             </div>
             </div>
+            {activeMessage ? <MessagePopup message={activeMessage} /> : ""}
           </nav>
-
       );
   }
   

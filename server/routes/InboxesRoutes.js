@@ -13,12 +13,18 @@ InboxRouter.get(
     Controller.Inbox.getInbox
     )
 
-//get message: 
-// InboxRouter.get(
-//     '/message/:id',
-//     Middleware.auth.authenticateToken,
-//     Controller.Inbox.getMessage
-//     )
+// get message:     
+InboxRouter.get(
+    '/message/:id',
+    Middleware.auth.authenticateToken,
+    Controller.Inbox.getInboxMessage
+)
+// toggle read message: 
+InboxRouter.put(
+    '/message/:id',
+    Middleware.auth.authenticateToken,
+    Controller.Inbox.toggleMessageRead
+)
 
 
 

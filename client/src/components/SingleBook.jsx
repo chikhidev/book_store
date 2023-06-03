@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import { display } from '../js/index.js';
 import '../css/single-book.css';
 const ENDPOINT = "http://localhost:4000"
-import Register from './Register.jsx';
+import Register from './Auth/Register.jsx';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave.jsx';
 import { getCategory } from '../js/index.js';
 import { Navigate } from 'react-router-dom';
 import { mergeArraysRandomly } from '../js/index.js';
+import { getHumanDate } from '../js/index.js';
 import CategorySlider from './CategorySlider.jsx';
 import BookCard from './BookCard.jsx';
 import MoreLikeThis from "./MoreLikeThis"
@@ -19,15 +20,7 @@ const SingleBook = () => {
     const [gotCats, setGotCats] = useState(false);
     const [cats, setCats] = useState([]);
 
-    const getHumanDate = (dateStr) => {
-      const date = new Date(dateStr);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-      return formattedDate
-    }
+
   
     const getBook = async () => {
         setGotCats(false);

@@ -1,0 +1,30 @@
+.message-popup {
+    position: absolute;
+    top: 0;
+    background: #000000da;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.message-container {
+    position: relative;
+    background: #000;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.message-container .close-btn {
+    color: rgba(255, 30, 30, 0.74);
+    position: absolute;
+    top: 10px;
+    left : 10px;
+    cursor: pointer;
+}

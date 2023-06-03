@@ -50,7 +50,10 @@ const createOrder = async (req, res) => {
       if (!customer)
         return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
+        // salah added this line
       const book_found = await Book.findByIdAndUpdate(book, { $inc: { stock: -qte } } );
+      // instead of :
+      // const book_found = await Book.findById(book);
       if (!book_found)
         return res.json({ success: false, data: { message: "Livre introuvable" } });
   
@@ -83,9 +86,6 @@ const createOrder = async (req, res) => {
       }
       await messageOfCustomer.save()
       
-
-      // ...other code
-
       return res.json({ success: true, data: { message: 'Votre commande a été créée avec succès', order } });
     } catch (err) {
       return res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'enregistrement de votre commande, veuillez réessayer !" } });

@@ -1,9 +1,9 @@
-import "../css/forms.css";
+import "../../css/forms.css";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Link } from "react-router-dom";
-import store from '../redux/store';
-import { LOGIN, LOGOUT, SET_USER_DETAILS } from '../redux/actions';
+import store from '../../redux/store';
+import { LOGIN, LOGOUT, SET_USER_DETAILS } from '../../redux/actions';
 import { motion } from "framer-motion"
 
 const Login = () => {

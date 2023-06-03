@@ -7,8 +7,8 @@ const Account  = () => {
     let details = useSelector(state => state.userDetails)
     const [{ username, email, isAdmin, createdAt, bio, avatar }, setDetails] = useState(details) 
     return (
-        <div class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 md:px-24" id="panel">
-        <div class="w-full px-6 py-6 mx-auto loopple-min-height-78vh text-slate-500">
+        <div className="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 md:px-24" id="panel">
+        <div className="w-full px-6 py-6 mx-auto loopple-min-height-78vh text-slate-500">
             
             <div className="w-full pb-6 mx-auto removable">
                 <div className="flex flex-wrap -mx-3">
@@ -19,10 +19,10 @@ const Account  = () => {
                                     <div className="flex items-center w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-none">
                                         <h6 className="mb-0">Profile Information</h6>
                                     </div>
-                                    <div class="relative flex flex-col flex-auto min-w-0 py-4 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border">
-                                        <div class="flex flex-wrap -mx-3">
-                                            <div class="flex-none w-auto max-w-full px-3">
-                                                <div class="text-base ease-soft-in-out h-24 w-24 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
+                                    <div className="relative flex flex-col flex-auto min-w-0 py-4 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border">
+                                        <div className="flex flex-wrap -mx-3">
+                                            <div className="flex-none w-auto max-w-full px-3">
+                                                <div className="text-base ease-soft-in-out h-24 w-24 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
                                                     <img src={"http://localhost:4000" + avatar} alt="profile_image" className={`w-full shadow-soft-sm rounded-xl `}/>
                                                 </div>
                                             </div>
@@ -32,7 +32,7 @@ const Account  = () => {
                                                     <p className="mb-0 font-semibold leading-normal text-sm">{
                                                         isAdmin && 
                                                         <div className="">
-                                                            <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">admin</span>
+                                                            <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">admin</span>
                                                         </div>
                                                     
                                                     }</p>

@@ -194,7 +194,9 @@
 	background: rgb(219, 11, 11);
 	color: white;
   }
-  
+.already-read {
+	color: green;
+}
   @media (max-width: 300px) {
 	.nav-left {
 	  background: #555;
