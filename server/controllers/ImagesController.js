@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const BookImage = (req, res) => {
     const { id } = req.params;
