@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import ThreeDotsWave from '../FramerMotion/ThreeDotWave'
 import BookCard from '../BookCard'
 import "../../css/search.css"
+import { SERVER_ENDPOINT } from '../../js'
 const Search = () => {
     const [currSearchPage, setCurrSearchPage] = useState(1)
     const [searchResCount, setSearchResCount] = useState(0)
@@ -26,7 +27,7 @@ const Search = () => {
     }
     // fetch that book
     const getBookByTitle = async () => {
-        let response = await fetch(`http://localhost:4000/book?title=${bookTitle}&page=${currSearchPage}`, {
+        let response = await fetch(`${SERVER_ENDPOINT}/book?title=${bookTitle}&page=${currSearchPage}`, {
             method : "GET",
             }
          )

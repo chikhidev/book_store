@@ -25,6 +25,7 @@ const AnimatedRoutes = ({isLogged}) => {
                 <Route path="/login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/register" element={isLogged ? <Navigate to="/"/> : <Register />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories" element={<Categories/>} />
+                <Route path="/category/" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/category/" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/category/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
@@ -40,7 +41,6 @@ const AnimatedRoutes = ({isLogged}) => {
                 <Route path="/search" element={<SearchPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/search/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/dashboard" element={<Dashboard />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
-            
             </Routes>
         </AnimatePresence>
     )

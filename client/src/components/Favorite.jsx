@@ -5,6 +5,7 @@ import ThreeDotsWave from './FramerMotion/ThreeDotWave'
 import NewBookCard from './NewBookCard'
 import "../css/search.css"
 import store from '../redux/store';
+import { SERVER_ENDPOINT } from "../js";
 const Favorite = () => {
   const [favs, setFavs] = useState([]); // Accessing favBooks from Redux store
   const loginStatus = useSelector(state => state.loginStatus);
@@ -14,7 +15,7 @@ const Favorite = () => {
   const dispatch = useDispatch();
 
   const fetchFavBooks = async () => {
-    let books = await fetch(`http://localhost:4000/fav`, {
+    let books = await fetch(`${SERVER_ENDPOINT}/fav`, {
         method : "GET",
         headers : {
             "Content-Type" : "application/json",

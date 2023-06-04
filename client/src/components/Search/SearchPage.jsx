@@ -5,6 +5,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import BookCard from "../BookCard";
 import ThreeDotsWave from "../FramerMotion/ThreeDotWave";
 import { display } from "../../js";
+import { SERVER_ENDPOINT } from "../../js";
 const SearchPage = ()=> {
   
   const [currSearchPage, setCurrSearchPage] = useState(1)
@@ -53,7 +54,7 @@ const SearchPage = ()=> {
       }
   }
   const getBooks = async () => {
-    let response = await fetch(`http://localhost:4000/book?title=${searchQuery}&page=${currSearchPage}`, {
+    let response = await fetch(`${SERVER_ENDPOINT}/book?title=${searchQuery}&page=${currSearchPage}`, {
         method : "GET",
         }
      )
@@ -89,7 +90,7 @@ const SearchPage = ()=> {
                     foundBooks?.map(book => {
                         return (
                           <Link to={`book/${book._id}`} className="flex flex-row items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 lg:w-5/12 w-full">
-                            <img className=" bg-green-800 object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={"http://localhost:4000" + book.imageUrl} alt="" />
+                            <img className=" bg-green-800 object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={`${SERVER_ENDPOINT}${book.imageUrl}`} alt="" />
                             <div className="flex  flex-col justify-between p-4 leading-normal">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-800 ">{book.title}</h5>
                                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{display(book.description, 100)}</p>

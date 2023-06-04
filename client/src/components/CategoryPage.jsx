@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import ThreeDotsWave from './FramerMotion/ThreeDotWave'
 import NewBookCard from './NewBookCard'
 import "../css/search.css"
+import { SERVER_ENDPOINT } from "../js";
 
 const CategoryPage = () => {
     const [currSearchPage, setCurrSearchPage] = useState(1)
@@ -28,7 +29,7 @@ const CategoryPage = () => {
     }
     // fetch that book
     const getCatBooks = async () => {
-        let response = await fetch(`http://localhost:4000/category?name=${categoryQuery}&page=${currSearchPage}`, {
+        let response = await fetch(`${SERVER_ENDPOINT}/category?name=${categoryQuery}&page=${currSearchPage}`, {
             method : "GET",
             }
          )

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import store from "../redux/store";
 import { useState, useEffect } from "react";
 import "../css/new-books.css"
+import { SERVER_ENDPOINT } from "../js";
 const display = (text, n) => {
   let len = text.length;
   let long = false;
@@ -38,7 +39,7 @@ const NewBookCard = ({ book }) => {
   };
 
   const toggleFavBook = async (token, bookId) => {
-    fetch(`http://localhost:4000/fav/${bookId}`, {
+    fetch(`${SERVER_ENDPOINT}/fav/${bookId}`, {
         method : "POST",
         headers : {
             "Content-Type" : "application/json",
@@ -49,7 +50,7 @@ const NewBookCard = ({ book }) => {
 
   const fetchIsBookFav = async (token, bookId) => {
     try {
-      const response = await fetch(`http://localhost:4000/fav/${bookId}`, {
+      const response = await fetch(`${SERVER_ENDPOINT}/fav/${bookId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +104,7 @@ const NewBookCard = ({ book }) => {
                                 </svg>
                             </div>
                         </div>
-                        <img className="new-book-imageUrl" src={"http://localhost:4000" + book.imageUrl}/>
+                        <img className="new-book-imageUrl" src={`${SERVER_ENDPOINT}${book.imageUrl}`}/>
                     </div>
                     <div className="new-book-title">{display(book.title, 17)}</div>
                     <hr className="line"></hr>

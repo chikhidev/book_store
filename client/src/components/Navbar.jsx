@@ -12,6 +12,7 @@ import Inbox from './Inbox';
 import { display } from '../js';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import MessagePopup from './MessagePopup';
+import { SERVER_ENDPOINT } from "../js";
 
 
 
@@ -34,7 +35,7 @@ function Navbar() {
 
   const fetchInbox = async () => {
     try {
-        let response = await fetch("http://localhost:4000/inbox", {
+        let response = await fetch(`${SERVER_ENDPOINT}/inbox`, {
         method : "GET",
         headers : {
           "Content-Type" : "application/json",

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { TOGGLE_BOOK_FAV } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import store from "../redux/store";
+import { SERVER_ENDPOINT } from "../js";
 
 const display = (text, n) => {
   let len = text.length;
@@ -52,7 +53,7 @@ const Card = ({ book }) => {
                             </svg>
                         </div>
                     </div>
-                    <img className="book-imageUrl" src={"http://localhost:4000" + book.imageUrl}/>
+                    <img className="book-imageUrl" src={`${SERVER_ENDPOINT}${book.imageUrl}`}/>
                     <div className="book-title">{display(book.title, 18)}</div>
                     <hr className="line"></hr>
                     <div className="author-label-call-to-action-container">

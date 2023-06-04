@@ -14,6 +14,7 @@ import { motion } from "framer-motion"
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
 import ThreeDotsWave from './components/FramerMotion/ThreeDotWave';
 import { getCategories } from './js/index.js';
+import { SERVER_ENDPOINT } from './js/index.js';
 
 const motionDiv = (child) => {
   return (
@@ -31,7 +32,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
 
   const fetchAndSetUserDetails = async (token) => {
-    let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
+    let userDetailsResponse = await fetch(`${SERVER_ENDPOINT}/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

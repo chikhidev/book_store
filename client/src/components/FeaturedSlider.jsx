@@ -11,6 +11,7 @@ import '../css/index.css';
 import '../css/hero.css';
 import '../js/index.js';
 import { swiperBreakPoints } from '../js/index.js';
+import { SERVER_ENDPOINT } from "../js";
 
 const display = (text, n) => {
     let len = text.length;
@@ -63,7 +64,7 @@ const FeaturedSlider = () => {
     const [featuredBooks, setFeaturedBooks] = useState([]) 
 
     const fetchBooksByPage = async (page) => {
-        let books = await fetch(`http://localhost:4000/book?page=${page}`, {
+        let books = await fetch(`${SERVER_ENDPOINT}/book?page=${page}`, {
             method : "GET",
         })
     let res = await books.json();

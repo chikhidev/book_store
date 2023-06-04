@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import store from '../../redux/store';
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from '../../redux/actions';
 import { motion } from "framer-motion"
-
+import { SERVER_ENDPOINT } from "../../js";
 const Login = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const Login = () => {
         handleLogin(e)
     }
     const fetchAndSetUserDetails = async (token) => {
-        let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
+        let userDetailsResponse = await fetch(`${SERVER_ENDPOINT}/user`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const Login = () => {
         setLoading(true);
     
         try {
-        const response = await fetch('http://localhost:4000/auth/login', {
+        const response = await fetch(`${SERVER_ENDPOINT}/auth/login`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

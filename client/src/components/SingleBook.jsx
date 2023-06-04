@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 import { display } from '../js/index.js';
 import '../css/single-book.css';
-const ENDPOINT = "http://localhost:4000"
 import Register from './Auth/Register.jsx';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave.jsx';
 import { getCategory } from '../js/index.js';
@@ -14,7 +13,7 @@ import CategorySlider from './CategorySlider.jsx';
 import BookCard from './BookCard.jsx';
 import MoreLikeThis from "./MoreLikeThis"
 import store from "../redux/store";
-
+import { SERVER_ENDPOINT } from '../js/index.js';
 
 const SingleBook = () => {
 
@@ -69,7 +68,7 @@ const SingleBook = () => {
     const getBook = async () => {
         setGotCats(false);
         try {
-            const book = await fetch(`http://localhost:4000/book/${id}`, {
+            const book = await fetch(`${SERVER_ENDPOINT}/book/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,7 +98,7 @@ const SingleBook = () => {
     
     
     const checkFav = async () =>{
-        const res = await fetch('http://localhost:4000/fav/'+id, {
+        const res = await fetch(`${SERVER_ENDPOINT}/fav/${id}`, {
             headers : {
             "Content-Type" : "application/json",
             "Authorization" : `Bearer ${localStorage.getItem("token")}`,
@@ -111,7 +110,7 @@ const SingleBook = () => {
 
     }
     const handleFav = async () =>{
-        const res = await fetch('http://localhost:4000/fav/'+id, {
+        const res = await fetch(`${SERVER_ENDPOINT}/fav/${id}`, {
             method : "POST",
             headers : {
             "Content-Type" : "application/json",
@@ -146,7 +145,7 @@ const SingleBook = () => {
                         <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
                             <div className="flex -mx-4 flex-wrap items-center justify-between lg:justify-center lg:items-start xl:items-center">
                                 <div className="w-full sm:w-9/12 px-4">
-                                    <img className="mb-5 rounded-2xl" src={"http://localhost:4000" + fetchedBook.imageUrl} alt="" />
+                                    <img className="mb-5 rounded-2xl" src={`${SERVER_ENDPOINT}${fetchedBook.imageUrl}`} alt="" />
                                 </div>
                             </div>
                         </div>
@@ -155,7 +154,7 @@ const SingleBook = () => {
                             <span className="text-xs text-gray-400 tracking-wider">{fetchedBook._id}</span>
                             <div className="flex items-center py-2">
                                     <img class="w-12 h-12 rounded-2xl mr-4"
-                                        src={"http://localhost:4000"+fetchedBook.createdBy.avatar} alt="Rounded avatar"
+                                        src={`${SERVER_ENDPOINT}${fetchedBook.createdBy.avatar}`} alt="Rounded avatar"
                                     ></img>
                                     <p className=" flex items-center my-auto">
                                         {fetchedBook.createdBy.username}
