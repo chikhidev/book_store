@@ -8,7 +8,6 @@ import CategoryPage from "../CategoryPage";
 import Login from '../Auth/Login';
 import Register from '../Auth/Register';
 import CreateBookForm from '../CreateBookForm';
-import Search from '../Search/Search';
 import Favorite from '../Favorite';
 import Account from '../Account';
 import SingleBook from '../SingleBook';
@@ -16,6 +15,7 @@ import NewBooks from '../NewBooks';
 import Dashboard from "../Dashboard";
 import SearchPage from "../Search/SearchPage";
 import { AnimatePresence } from "framer-motion" 
+import NotFound from "../NotFound";
 const AnimatedRoutes = ({isLogged}) => {
     const location = useLocation()
     return (
@@ -41,6 +41,7 @@ const AnimatedRoutes = ({isLogged}) => {
                 <Route path="/search" element={<SearchPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/search/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/dashboard" element={<Dashboard />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+                <Route path="*" element={<NotFound />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
             </Routes>
         </AnimatePresence>
     )

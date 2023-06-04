@@ -51,7 +51,7 @@ const SingleBook = () => {
 
     const orderBook = async () => {
         setLoading(true)
-        let response = await fetch(`${ENDPOINT}/order`, {
+        let response = await fetch(`${SERVER_ENDPOINT}/order`, {
             method : "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const SingleBook = () => {
     }
 
     const cancelOrder = async () => {
-        const res = await fetch(`${ENDPOINT}/order/delete`,{
+        const res = await fetch(`${SERVER_ENDPOINT}/order/delete`,{
             method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

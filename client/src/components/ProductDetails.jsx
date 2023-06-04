@@ -29,7 +29,7 @@ const ProductDetails = () => {
     
     const orderBook = async () => {
         setLoading(true)
-        let response = await fetch(`${ENDPOINT}/order`, {
+        let response = await fetch(`${SERVER_ENDPOINT}/order`, {
             method : "POST",
             headers: {
                 "Content-Type": "application/json",
