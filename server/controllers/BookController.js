@@ -144,6 +144,14 @@ const createBook = async (req, res) => {
   } = req.body;
 
   try {
+
+    if (description.length > 100) {
+      return res.status(400).json({
+        success: false,
+        data: { message: 'La description est trop longue, 100 caractères maximum' }
+      });
+    }
+
     // Check if a book with the same title already exists
     const bookCount = await Book.countDocuments({ title: title });
     if (bookCount > 0) {
