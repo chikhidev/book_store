@@ -39,22 +39,23 @@ const CategoryPage = () => {
     useEffect( () => { getCatBooks();}, [searchParams.get("name"), categoryQuery, currSearchPage] )
    
     return (
-        <div className='search-container'>
-            <div className="search-count"> {categoryName.length > 0 ? `${categoryName} : ` : <ThreeDotsWave />}</div>
-            <motion.div className='search-result'
-                initial={{opacity : 0}}
-                animate={{opacity : 1}}
-                exit={{opacity : 0}}
+        <div className='search-container w-full flex flex-col justify-center items-center mx-auto my-20'>
+            <div className='search-count text-2xl font-semibold'>
+                {categoryName.length > 0 ? `${categoryName} : ` : <ThreeDotsWave />}
+            </div>
+            <motion.div
+                className='search-result flex flex-wrap justify-center'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
             >
-                {
-                    foundCatBooks.length > 0 ? 
-                        foundCatBooks.map(
-                            book => {
-                                return (<NewBookCard book={book} />)
-                        } )
-                        
-                    : <ThreeDotsWave />
-                }
+                {foundCatBooks.length > 0 ? (
+                foundCatBooks.map((book) => {
+                    return <NewBookCard book={book} />;
+                })
+                ) : (
+                <ThreeDotsWave />
+                )}
             </motion.div>
         </div>
 
