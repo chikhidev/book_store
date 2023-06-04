@@ -113,7 +113,7 @@ const getLatestBooks =  async (req, res) => {
 const getBookById = async (req, res) => {
   const id = req.params.id;
   try {
-    const book = await Book.findById(id);
+    const book = await Book.findById(id).populate('createdBy');
     if (!book) return res.status(404).json({ success: false, data: { message: 'Livre introuvable' } });
     return res.status(200).json({ success: true, data: { book } });
   } catch (error) {

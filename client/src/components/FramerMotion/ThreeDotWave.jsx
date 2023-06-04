@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
+import '../../css/loader.css'
 
 const LoadingDot = {
   display: "block",
@@ -46,37 +47,8 @@ const DotTransition = {
 
 export default function ThreeDotsWave() {
   return (
-    <div
-      style={{
-        paddingTop: "5rem",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}
-    >
-      <motion.div
-        style={LoadingContainer}
-        variants={ContainerVariants}
-        initial="initial"
-        animate="animate"
-      >
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-      </motion.div>
+    <div className="h-screen w-screen relative">
+      <div class="lds-dual-ring absolute top-0.5 left-0.5"></div>
     </div>
   );
 }
