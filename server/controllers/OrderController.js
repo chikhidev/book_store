@@ -34,11 +34,28 @@ const getOrder = async (req, res) => {
       
       res.json({ success: true, data: order });
     } catch (err) {
-      console.Erreur(err);
       res.status(500).json({ success: false, data:{message: 'Erreur interne du serveur'} });
     }
 };
   
+const isOrdered = async (req, res) => {
+  try{
+    const {book} = req.body;
+    if(!book) return;
+    const order = await Order.finOne({
+      customer: req.user.id,
+      book: book
+    }).select('status')
+    
+    if (!order){
+      return res.json({ success: true, data: false})
+    }
+    return res.json({ success: true, data: true})
+
+  }catch{
+    return res.json({ success: false, data:{message: 'Erreur interne du serveur'}})
+  }
+}
 
 // POST /order
 const createOrder = async (req, res) => {
@@ -50,8 +67,14 @@ const createOrder = async (req, res) => {
       if (!customer)
         return res.json({ success: false, data: { message: "Vous ne pouvez pas passer de commande" } });
 
+      const order_already_exist = await Order.findOne({customer: req.user.id, book: book})
+      if(order_already_exist)
+        return res.json({ success: false, data: { message: "vous avez déjà envoyé cette demande" } });
+        
+        
         // salah added this line
-      const book_found = await Book.findById(book);
+        const book_found = await Book.findById(book);
+
       // instead of :
       // const book_found = await Book.findById(book);
       if (!book_found)
@@ -94,7 +117,6 @@ const createOrder = async (req, res) => {
     }
 
   } catch (err) {
-    console.error(err);
     return res.json({ success: false, data: { message: 'Erreur', err } });
   }
 };
@@ -167,12 +189,13 @@ const updateOrder = async (req, res) => {
 // DELETE /orders/:id
 const deleteOrder = async (req, res) => {
   try {
-      const order = await Order.findById(req.params.id).populate('book');
+      let order = await Order.findById(req.params.id).populate('book');
+      
 
       if (!order)
           return res.status(404).json({ success: false, data: { message: 'Commande introuvable' }});
 
-      if (req.user.id !== order.customer)
+      if (req.user.id != order.customer)
           return res.status(403).json({ success: false, data: { message: "Ce n'est pas votre ordre d'annuler" }});
 
       const seller = order.book.createdBy
@@ -183,7 +206,7 @@ const deleteOrder = async (req, res) => {
         order: order._id
       });
       
-      const inbox_found = Inbox.find({owner: seller})
+      const inbox_found = Inbox.findOne({owner: seller})
 
       try{
         if (!inbox_found){
@@ -197,13 +220,61 @@ const deleteOrder = async (req, res) => {
           await inbox_found.save()
         }
         await messageOfCustomer.save()
-        await order.remove();
+        await order.deleteOne();
         res.json({ success: true, data: { message: 'Commande annulée avec succès' } });
       }catch{
         res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'annulation de la commande" } });
       }
   } catch(err) {
       res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
+  }
+};
+
+const deleteOrderByBook = async (req, res) => {
+  const book_id = req.body.book;
+  try {
+    const order = await Order.findOne({ book: book_id, customer: req.user.id }).populate('book');
+
+    if (!order)
+      return res.status(404).json({ success: false, data: { message: 'Commande introuvable' } });
+
+    if (req.user.id != order.customer)
+      return res.status(403).json({ success: false, data: { message: "Ce n'est pas votre ordre d'annuler" } });
+
+    const seller = order.book.createdBy;
+
+    const messageOfCustomer = new Message({
+      sender: req.user.id,
+      content: `${req.user.username} annulé sa commande`,
+      order: order._id
+    });
+
+    let inbox_found = await Inbox.findOne({ owner: seller });
+
+    try {
+
+      await messageOfCustomer.save();
+
+      if (!inbox_found) {
+        const inboxOfSeller = new Inbox({
+          owner: seller,
+          messages: [messageOfCustomer._id]
+        });
+        await inboxOfSeller.save();
+      } else {
+        inbox_found.messages.push(messageOfCustomer._id);
+        await inbox_found.save();
+      }
+
+      await order.deleteOne();
+
+      res.json({ success: true, data: { message: 'Commande annulée avec succès' } });
+
+    } catch (error) {
+      res.json({ success: false, data: { message: "Une erreur s'est produite lors de l'annulation de la commande" } });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, data: { message: 'Erreur', Erreur: err } });
   }
 };
 
@@ -282,5 +353,5 @@ const submitOrder = async (req, res) => {
 
 module.exports = {
     getOrders, createOrder, updateOrder, deleteOrder, getOrder,
-    submitOrder
+    submitOrder, isOrdered, deleteOrderByBook
 }

@@ -29,9 +29,26 @@ const SingleBook = () => {
     const [loading, setLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState("")
     const [orderMsg, setOrderMsg] = useState("")
+    const [alreadyDemanded, setAlreadyDemanded] = useState(null)
 //   const [user, setUser] = useState({})
 
-    
+    const isOrdered = async () => {
+        const res = await fetch(`http://localhost:4000/order/isordered`,{
+            method: 'POST',
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : `Bearer ${localStorage.getItem("token")}`,
+                },
+            body:JSON.stringify({
+                book: fetchedBook._id
+            })
+        })
+
+        const data = await res.json()
+        setAlreadyDemanded(data.data)
+    }
+
+
     const orderBook = async () => {
         setLoading(true)
         let response = await fetch(`${ENDPOINT}/order`, {
@@ -63,8 +80,39 @@ const SingleBook = () => {
             {
                 Swal.fire(data.data.message)
                 setOrderMsg(data.data.message)
+                setAlreadyDemanded(!alreadyDemanded)
             }
+            
+
     }
+
+    const cancelOrder = async () => {
+        const res = await fetch(`${ENDPOINT}/order/delete`,{
+            method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+            body: JSON.stringify({
+                book: fetchedBook._id
+            })
+        })
+
+        const data = await res.json()
+        if (!data.success)
+        {
+            setErrorMsg(data.data.message)
+            Swal.fire({title : data.data.message, icon: "error"})
+        }
+        else 
+        {
+            Swal.fire(data.data.message)
+            setOrderMsg(data.data.message)
+        }
+        isOrdered()
+    }
+
+
     const getBook = async () => {
         setGotCats(false);
         try {
@@ -127,9 +175,10 @@ const SingleBook = () => {
             getBook();
             checkFav()
         }
-        // getUser()
-    }, [id]);
+        
+        isOrdered()
 
+    }, [id]);
 
     return (
         <>
@@ -150,7 +199,7 @@ const SingleBook = () => {
                             </div>
                         </div>
                         <div className="w-full lg:w-1/2 px-4">
-                        <div className="max-w-md mb-6">
+                        <div className="max-w-md mb-2">
                             <span className="text-xs text-gray-400 tracking-wider">{fetchedBook._id}</span>
                             <div className="flex items-center py-2">
                                     <img class="w-12 h-12 rounded-2xl mr-4"
@@ -166,47 +215,79 @@ const SingleBook = () => {
                                         }
                                     </p>
                             </div>
-                            <h2 className="mt-6 mb-4 text-2xl md:text-3xl lg:text-4xl font-heading font-medium">{fetchedBook.title}</h2>
-                            <p className="flex items-center mb-6">
-                            <span className="mr-2 text-lg text-blue-500 font-medium">$</span>
-                            <span className="text-3xl text-blue-500 font-medium">{fetchedBook.price}</span>
-                            </p>
-                            <p className="text-lg text-gray-400">
-                                {fetchedBook.description}
-                                {/* {gotCats && cats.length > 0 ? "Categories : " : ""}
-                                    {gotCats && cats.length == 1 ? "Category : " : ""}
-                                    {
-                                        gotCats ? 
-                                            cats.length > 0 ? (
-                                            cats.map((category) => 
-                                                <span onClick={() => <Navigate to={"to"} />} className='book-single-category'>
-                                                        {(category.name + " ")}
-                                                </span>
-                                            )
-                                            ) : <p>
-                                            Catégories : inconnues</p>
-                                        : <i>Loading</i>
-                                } */}
-                            </p>
+                            <h2 className="mt-6 mb-2 text-2xl md:text-3xl font-heading font-medium">{fetchedBook.title}</h2>
+                            
+                            
+                            
                         </div>
-                        <div className="mb-8 d-flex flex-col ">
-                            <h4 className="mb-3 font-heading font-medium">Qty:</h4>
-                            <div className="qte-options d-flex gap-3">
-                                <div onClick={decrementQte} className="qte-minus text-xl">-</div>
+                        <div className="flex ">
+                            <div className="my-4 mr-4">
+                                <span className="mr-2 bg-pink-100 text-pink-800 font-medium mr-2 px-2.5 py-0.5 rounded">
+                                    Stock
+                                </span>
+                                <span className="text-pink-500 font-medium">
+                                    {fetchedBook.stock}
+                                </span>
+                                
+                            </div>
+                            <div className="my-4">
+                                <span className="mr-2 bg-gray-100 text-gray-800 font-medium mr-2 px-2.5 py-0.5 rounded">
+                                langue
+                                </span>
+                                <span className="text-gray-500 ">
+                                       {fetchedBook.language}
+                                    </span>
+                                
+                            </div>
+                        </div>
+                            
+                        {
+                            fetchedBook.stock > 0 ?
+                            <div className="mb-4 ">
+                                <div  className="mr-4 ">
+                                <h5 className=" font-medium mr-2">Qté:</h5>
                                 <input 
+                                    type="number" max={fetchedBook.stock}
                                     value={qte} 
-                                    onChange={(e) => setQte(e.target.value)} className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl" type="text" placeholder="1"
-                                />
-                                <div onClick={incrementQte} className="qte-plus text-xl">+</div>
+                                    onChange={(e) => setQte(e.target.value)} className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl" placeholder="1" />
+                                </div>
+
+                                
+                                
                             </div>
-                        </div>
+                            :
+                            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                <span class="sr-only">Info</span>
+                                <div>
+                                    <span class="font-medium">Ce livre est actuellement en rupture de stock</span>
+                                </div>
+                            </div>
+                        }
+                        <div className="flex items-center my-4">
+                                <div className="flex items- mr-4">
+                                    <span className="mr-2 text-lg text-blue-500 font-medium">$</span>
+                                    <span className="text-3xl text-blue-500 font-medium ">{fetchedBook.price}</span>
+                                </div>
+                                
+                            </div>
                         <div className="flex flex-wrap -mx-2 mb-12">
-                            <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
-                                <a className={`${loading ? "loading-btn" : ""} block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl`} href="#"
-                                onClick={orderBook}>
-                                    {!loading && "Acheter maintenant"}
-                                </a>
-                            </div>
+                            {
+                                alreadyDemanded ?
+                                <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
+                                    <a className={`${loading ? "loading-btn" : ""} block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl`} href="#"
+                                    onClick={cancelOrder}>
+                                        {!loading && "Annuler la demande"}
+                                    </a>
+                                </div>
+                                :
+                                <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
+                                    <a className={`${loading ? "loading-btn" : ""} block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl`} href="#"
+                                    onClick={orderBook}>
+                                        {!loading && "Demander"}
+                                    </a>
+                                </div>
+                            }
                             <div className="w-full md:w-1/3 px-2">
                             <a className="cursor-pointer flex w-full py-4 px-2 items-center justify-center leading-8 font-heading font-medium tracking-tighter text-xl text-center bg-white focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 hover:bg-opacity-60 rounded-xl" 
                                 onClick = {
@@ -225,8 +306,33 @@ const SingleBook = () => {
                                 }
                             </a>
                             </div>
+
+                                
+
+
                         </div>
+
+                        <p className="text-lg text-gray-400">
+                                {fetchedBook.description}
+                                {/* {gotCats && cats.length > 0 ? "Categories : " : ""}
+                                    {gotCats && cats.length == 1 ? "Category : " : ""}
+                                    {
+                                        gotCats ? 
+                                            cats.length > 0 ? (
+                                            cats.map((category) => 
+                                                <span onClick={() => <Navigate to={"to"} />} className='book-single-category'>
+                                                        {(category.name + " ")}
+                                                </span>
+                                            )
+                                            ) : <p>
+                                            Catégories : inconnues</p>
+                                        : <i>Loading</i>
+                                } */}
+                            </p>
+
                         </div>
+
+                        
                     </div>
                     </div>
                 </section>

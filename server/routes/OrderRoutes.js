@@ -22,6 +22,11 @@ OrderRoute.post(
     Controller.Order.createOrder
     );
 
+OrderRoute.post(
+    '/isordered',
+    Middleware.auth.authenticateToken,
+    Controller.Order.isOrdered
+)
 // UPDATE an existing order by ID
 OrderRoute.put("/:id",  Middleware.auth.authenticateToken, Controller.Order.updateOrder);
 
@@ -29,10 +34,16 @@ OrderRoute.put("/:id",  Middleware.auth.authenticateToken, Controller.Order.upda
 OrderRoute.post("/submit/:id", Middleware.auth.authenticateToken, Controller.Order.submitOrder)
 
 OrderRoute.delete(
+    "/delete", 
+    Middleware.auth.authenticateToken,
+    Controller.Order.deleteOrderByBook
+)
+OrderRoute.delete(
     "/:id", 
     Middleware.auth.authenticateToken,
-    Middleware.auth.isAdmin,
     Controller.Order.deleteOrder
     );
+
+
 
 module.exports = OrderRoute
