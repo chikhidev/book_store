@@ -137,11 +137,16 @@ const SingleBook = () => {
                                 } */}
                             </p>
                         </div>
-                        <div className="mb-10">
+                        <div className="mb-8 d-flex flex-col ">
                             <h4 className="mb-3 font-heading font-medium">Qty:</h4>
-                            <input 
-                                value={qte} 
-                                onChange={(e) => setQte(e.target.value)} className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl" type="text" placeholder="1" />
+                            <div className="qte-options d-flex gap-3">
+                                <div onClick={decrementQte} className="qte-minus text-xl">-</div>
+                                <input 
+                                    value={qte} 
+                                    onChange={(e) => setQte(e.target.value)} className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl" type="text" placeholder="1"
+                                />
+                                <div onClick={incrementQte} className="qte-plus text-xl">+</div>
+                            </div>
                         </div>
                         <div className="flex flex-wrap -mx-2 mb-12">
                             <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
