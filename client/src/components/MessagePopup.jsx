@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getHumanDate } from "../js";
 import { useNavigate } from "react-router-dom";
 import { SERVER_ENDPOINT } from "../js";
+import ThreeDotsWave from "./FramerMotion/ThreeDotWave";
 
 const MessagePopup = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const MessagePopup = () => {
             </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div><ThreeDotsWave /></div>
       )}
     </div>
   );

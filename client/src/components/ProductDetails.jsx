@@ -124,7 +124,7 @@ const ProductDetails = () => {
                                                 </span>
                                             )
                                           ) : <p>Categories : unknown</p>
-                                      : <i>Loading</i>
+                                      : <i><ThreeDotsWave/></i>
                                     }
                                     
                                 </div>
