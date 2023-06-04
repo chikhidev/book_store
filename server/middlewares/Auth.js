@@ -17,11 +17,11 @@ const authenticateToken = (req, res, next) => {
 
     if (!token)
     {
-      return res.status(401).json({success:false,data:{ message: 'You are not authorized, Please login'} });
+      return res.status(401).json({success:false,data:{ message: "Vous n'êtes pas autorisé, veuillez vous connecter"} });
     }
     // Verify the JWT token
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      if (err) return res.status(403).json({success:false, data:{ message: 'Your session has expired, Please login!', err }});
+      if (err) return res.status(403).json({success:false, data:{ message: "Votre session a expiré, veuillez vous connecter !", err }});
       req.user = payload
 
       next()
@@ -40,14 +40,14 @@ const isAdmin = async (req, res, next) => {
     }
 
     if (!req.user.isAdmin) {
-      return res.status(401).json({ success: false, data: { message: 'Unauthorized: You are not an admin' } });
+      return res.status(401).json({ success: false, data: { message: 'Non autorisé : utilisateur introuvable' } });
     }
     next();
   }
   catch (error)
   {
     console.error(error);
-    return res.status(500).json({ success: false, data: { message: 'Server error' } });
+    return res.status(500).json({ success: false, data: { message: 'Erreur du serveur' } });
   }
 };
 

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN, LOGOUT, TOGGLE_BOOK_FAV } from '../redux/actions';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
-import NewBookCard from './NewBookCard';
+import BookCard from './BookCard';
 import { motion } from "framer-motion"
 import store from '../redux/store';
 import "../css/new-books.css"
@@ -50,74 +50,104 @@ useEffect(() => {
 
 
 return (
-    <motion.div className='new-books-container'
-        initial={{opacity : 0}}
-        animate={{opacity : 1}}
-        exit={{opacity : 0}}
-    >
-        <div className="new-books-options">
-            <div className="options-grp">
+
+
+    <div>
+
+        <div className="flex flex-column px-24 py-2">
+            <div className="flex py-4 w-full">
+                <div className="options-grp mr-2">
+
                 <label htmlFor="asc">asc :</label>
                 <input
+                className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
                 name="sort"
                 defaultChecked={sortType == "asc" ? true : false}
                 type='radio' onClick={handleClick}
                 value="asc" 
                 id="asc"/>
-            </div>
-            <div className="options-grp">
+                </div>
+                <div className="options-grp mr-2">
                 <label htmlFor="desc">desc :</label>
                 <input
+                className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
                 name="sort" 
                 defaultChecked={sortType == "desc" ? true : false} 
                 type='radio' onClick={handleClick} 
                 value="desc"
                 id="desc"/>
+                </div>
+                Availibility : 
+                <div className="options-grp mr-4">
+                    <label htmlFor="in-stock">in stock</label>
+                    <input
+                    className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
+                    name="in-stock" 
+                    defaultChecked={sortType == "desc" ? true : false} 
+                    type='radio' onClick={handleClick} 
+                    value="in-stock"
+                    id="in-stock"/>
+                </div>
+                <div className="options-grp mr-4">
+                    <label htmlFor="out-stock">out stock</label>
+                    <input
+                    className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
+                    name="out-stock" 
+                    defaultChecked={sortType == "desc" ? true : false} 
+                    type='radio' onClick={handleClick} 
+                    value="out-stock"
+                    id="out-stock"/>
+                </div>
             </div>
-            Availibility : 
-            <div className="options-grp">
-                <label htmlFor="in-stock">in stock</label>
-                <input
-                name="in-stock" 
-                defaultChecked={sortType == "desc" ? true : false} 
-                type='radio' onClick={handleClick} 
-                value="in-stock"
-                id="in-stock"/>
-            </div>
-            <div className="options-grp">
-                <label htmlFor="out-stock">out stock</label>
-                <input
-                name="out-stock" 
-                defaultChecked={sortType == "desc" ? true : false} 
-                type='radio' onClick={handleClick} 
-                value="out-stock"
-                id="out-stock"/>
-            </div>
-            Price : 
+            {/* Price : 
             <input className='price-from' />
-            <input className='price-to' />
+            <input className='price-to' /> */}
             {store.getState().categories.length > 0 ? 
-            <div>
-                {categories.map(cat =>  <div onClick={(e) => handleCategoryClick(e, cat.name)}>{cat.name} ({cat.books.length})</div>)}
+            <div className='flex flex-wrap '>
+                {categories.map(cat =>  
+                
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded cursor-pointer"
+                onClick={(e) => handleCategoryClick(e, cat.name)}
+                >
+                    {cat.name} ({cat.books.length})
+                </span>
+                
+                )}
             </div>
             : ""
             }
 
+
+
+
         </div>
-        <div className={`new-books ${loading ? "center-loading" : ""}`}>
-            {loading ?
-                <h2><ThreeDotsWave /></h2>
-                :
-                <>
-                {fetchedNewBooks.length > 0 ? (
-                    fetchedNewBooks.map((book) => <NewBookCard book={book} key={book._id} />)
-                    ) : (
-                    <h2><ThreeDotsWave centerInScreen={true} /></h2>
-                    )}
-            </>
-            }
-        </div>
-    </motion.div>
+
+            <motion.div className='new-books-container'
+                initial={{opacity : 0}}
+                animate={{opacity : 1}}
+                exit={{opacity : 0}}
+                >
+            
+                <div className={`w-full ${loading ? "center-loading" : ""}`}>
+                    {loading ?
+                        <h2><ThreeDotsWave /></h2>
+                        :
+                        <div className="flex flex-wrap w-full">
+                        {fetchedNewBooks?.length > 0 ? (
+                            fetchedNewBooks?.map((book) => 
+                                <div className="w-80">
+                                    <BookCard book={book} key={book._id} className="w-80" />
+
+                                </div>
+                            )
+                            ) : (
+                                <h2><ThreeDotsWave centerInScreen={true} /></h2>
+                                )}
+                    </div>
+                    }
+                </div>
+            </motion.div>
+    </div>
   );
 };
 

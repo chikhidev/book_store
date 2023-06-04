@@ -55,11 +55,11 @@
 .book-single-container .book-single-title {
     font-weight: 600;
     /* font-size: 24px; */
-    font-size: 2vw;
+    font-size: 24px;
 }
 .book-single-container .book-single-author {
     font-weight: 600;
-    font-size: 1.5vw;
+    font-size: 18px;
 }
 .book-single-container .book-single-author::before{
     content : "By "

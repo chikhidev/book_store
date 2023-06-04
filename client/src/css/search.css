@@ -26,16 +26,11 @@
 }
 
 .pagination-btns > * {
-    height: 35px;
-    width: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
+    
 }
 .pagination-btns > :disabled {
     stroke-width: 1;
     stroke: #646464;
     fill: none;
-
 }
+

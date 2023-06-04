@@ -240,15 +240,22 @@ const submitOrder = async (req, res) => {
             if (!inbox_found){
               const inboxOfSCustomer = new Inbox({
                 owner: order.customer,
-                messages: [messageOfCustomer._id]
+                messages: [messageToCustomer._id]
               });
               await inboxOfSCustomer.save()
             }else{
-              inbox_found.messages.push(messageOfCustomer._id)
+              inbox_found.messages.push(messageToCustomer._id)
               await inbox_found.save()
             }
             await messageToCustomer.save()
-            book.stock = book.stock - order.stock
+            await inboxOfSCustomer.save()
+            
+            if (book.stock - order.stock < 0){
+              book.stock = book.stock - order.stock
+            }else{
+              return res.json({success:false, data:{message:"vous ne pouvez pas commander cette quantité maintenant!, le max possible est: " + book.stock}})
+            }
+
             await book.save()
 
             await order.save();

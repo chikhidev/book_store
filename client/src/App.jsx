@@ -78,6 +78,7 @@ function App() {
   );
 }
 
+
 function Home() {
   return (
     <motion.div className="hero featured"

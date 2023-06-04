@@ -46,7 +46,7 @@ const getBooks = async (req, res) => {
   }
 
   try {
-    const books = await Book.find(query).select('-description -createdAt -updatedAt -author')
+    const books = await Book.find(query).select('-createdAt -updatedAt -author')
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .exec();
@@ -113,7 +113,7 @@ const getLatestBooks =  async (req, res) => {
 const getBookById = async (req, res) => {
   const id = req.params.id;
   try {
-    const book = await Book.findById(id);
+    const book = await Book.findById(id).populate('createdBy');
     if (!book) return res.status(404).json({ success: false, data: { message: 'Livre introuvable' } });
     return res.status(200).json({ success: true, data: { book } });
   } catch (error) {
@@ -144,6 +144,14 @@ const createBook = async (req, res) => {
   } = req.body;
 
   try {
+
+    if (description.length > 100) {
+      return res.status(400).json({
+        success: false,
+        data: { message: 'La description est trop longue, 100 caractères maximum' }
+      });
+    }
+
     // Check if a book with the same title already exists
     const bookCount = await Book.countDocuments({ title: title });
     if (bookCount > 0) {
