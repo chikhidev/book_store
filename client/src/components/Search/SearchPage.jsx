@@ -5,6 +5,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import BookCard from "../BookCard";
 import ThreeDotsWave from "../FramerMotion/ThreeDotWave";
 import { display } from "../../js";
+import { motion } from "framer-motion";
 import { SERVER_ENDPOINT } from "../../js";
 const SearchPage = ()=> {
   
@@ -20,17 +21,36 @@ const SearchPage = ()=> {
       prev : false,
       next : false
   })
-    const [searchQuery, setSearchQuery] = useState("")
-    const [searchError, setSearchError] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchError, setSearchError] = useState(false)
 
+  const handleSearchBtnClick = (e) => {
+    if (searchQuery.length == 0) {
+      setSearchError(true)
+      setIsSearchSuccess(null);
+    }
+    else {
+      setLoading(true)
+      setCurrSearchPage(1)
+      setSearchError(false)
+      setTimeout(() => {
+        getBooks(setSearchQuery);
+      }, 500);
+    }
+  }
   const handleSearchChange = (e) => {
-    setLoading(true)
     setSearchQuery(e.target.value)
-    setCurrSearchPage(1)
-    // Delay the execution of getBooks after 500ms
-    setTimeout(() => {
-      getBooks(setSearchQuery);
-    }, 500);
+    if (e.target.value.length == 0) {
+      setIsSearchSuccess(null);
+    }
+    else {
+      setLoading(true)
+      setCurrSearchPage(1)
+      setSearchError(false)
+      setTimeout(() => {
+        getBooks(setSearchQuery);
+      }, 500);
+    }
   }
   const handlePaginationNext = (e) => {
     if (currSearchPage != totalPages)
@@ -76,23 +96,32 @@ const SearchPage = ()=> {
     });
   }, [currSearchPage, totalPages]);
     return (
-        <div className="flex justify-center flex-col">
-            <div className= {`pt-2 relative mx-auto text-gray-600 ${searchError ? "search-error" : ""}`}>
-              <input className=" h-16 px-5 mr-16 rounded-lg text-sm focus:outline-none"
+        <motion.div className="flex justify-center flex-col"
+        initial={{opacity : 0}}
+        animate={{opacity : 1}}
+        exit={{opacity : 0}}
+        >
+            <div className= {`pt-2 relative mx-auto  text-gray-600 `}>
+              <input className={` ${searchError ? "  border-2 border-red-500 search-error" : "border"}  h-16 px-5 mr-16 rounded-lg  text-md focus:outline-none `}
                 onChange={handleSearchChange}
                 value={searchQuery} 
                 type="search" name="search" placeholder="Search"/>
-                  <button onClick={getBooks}>
+                  <button onClick={(e) => handleSearchBtnClick(e)}>
                       < SearchRoundedIcon sx={{ color :'#444' }} />
                   </button>
             </div>
             {
               isSearchSuccess == null ?
-                <h3 className="text-center mt-9 text-gray-600 font-normal">Type Something ... </h3> :
-
+                <h3 className="text-center mt-9 text-gray-600 font-normal">Type Something ... </h3> 
+              :
                 !loading ?
                   <>
-                    <div className="p-5 d-flex w-full align-center justify-center flex-row flex-wrap  gap-5 ">
+                  {/* books */}
+                    <motion.div 
+                    initial={{opacity : 0}}
+                    animate={{opacity : 1}}
+                    exit={{opacity : 0}}
+                    className="p-5 d-flex w-full align-center justify-center flex-row flex-wrap  gap-5 ">
                       {foundBooks.length > 0 ?
                         foundBooks?.map(book => {
                             return (
@@ -106,9 +135,14 @@ const SearchPage = ()=> {
                               )
                         }) : <ThreeDotsWave />
                       }
-                    </div> 
-                    { totalPages > 1 ? 
-                      <div className="w-1/12 mx-auto mb-5 flex justify-between">
+                    </motion.div> 
+                    {/* pagination */}
+                    { totalPages > 1 && !loading ? 
+                      <motion.div 
+                      initial={{opacity : 0}}
+                      animate={{opacity : 1}}
+                      exit={{opacity : 0}}
+                      className="w-1/12 mx-auto mb-5 flex justify-between">
                         <button
                             disabled={buttonsState.prev}
                             className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded cursor-pointer disabled:opacity-25"
@@ -135,12 +169,12 @@ const SearchPage = ()=> {
                               />
                             </svg>
                         </button>
-                      </div>
+                      </motion.div>
                     : "" }
                   </>
                 : <ThreeDotsWave />
               }
-        </div>
+        </motion.div>
     )
 }
 

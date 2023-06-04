@@ -75,7 +75,7 @@ const getCurrentuserOffers = async (req, res) => {
 const getTopOffers = async (req, res) => {
     let limit = req.params.limit || 10
     try{
-        const offers = await Offer.find().sort({discount: -1}).limit(limit)
+        const offers = await Offer.find().sort({discount: -1}).limit(limit).populate("store")
         return res.json({ success: true, data:offers })
     }catch{
         return res.json({ success: false, data:{
