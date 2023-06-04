@@ -7,7 +7,6 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import store from "../redux/store"
 import { LOGIN, LOGOUT } from "../redux/actions"
 import { SET_USER_DETAILS } from "../redux/actions"
-import { useSearchParams } from "react-router-dom";
 import Inbox from './Inbox';
 import { display } from '../js';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave';
@@ -19,8 +18,6 @@ function Navbar() {
   
   const loginStatus = useSelector(state => state.loginStatus);
   const adminStatus = useSelector(state => state.userDetails.isAdmin);
- 
-  const [inbox, setInbox] = useState([])
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);
   
