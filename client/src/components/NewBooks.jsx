@@ -46,12 +46,7 @@ useEffect(() => {
    setCategories(store.getState().categories)
 }, []); // Re-fetch books when favBooks changes in the Redux store
 
- 
-
-
 return (
-
-
     <div>
 
         <div className="flex flex-column px-24 py-2">
@@ -76,27 +71,6 @@ return (
                 type='radio' onClick={handleClick} 
                 value="desc"
                 id="desc"/>
-                </div>
-                Availibility : 
-                <div className="options-grp mr-4">
-                    <label htmlFor="in-stock">in stock</label>
-                    <input
-                    className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
-                    name="in-stock" 
-                    defaultChecked={sortType == "desc" ? true : false} 
-                    type='radio' onClick={handleClick} 
-                    value="in-stock"
-                    id="in-stock"/>
-                </div>
-                <div className="options-grp mr-4">
-                    <label htmlFor="out-stock">out stock</label>
-                    <input
-                    className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  '
-                    name="out-stock" 
-                    defaultChecked={sortType == "desc" ? true : false} 
-                    type='radio' onClick={handleClick} 
-                    value="out-stock"
-                    id="out-stock"/>
                 </div>
             </div>
             {/* Price : 
@@ -128,11 +102,11 @@ return (
                 exit={{opacity : 0}}
                 >
             
-                <div className={`w-full ${loading ? "center-loading" : ""}`}>
+                <div className={`w-full ${loading ? "center-loading" : ""} `}>
                     {loading ?
                         <h2><ThreeDotsWave /></h2>
                         :
-                        <div className="flex flex-wrap w-full">
+                        <div className="flex flex-wrap w-full justify-center">
                         {fetchedNewBooks?.length > 0 ? (
                             fetchedNewBooks?.map((book) => 
                                 <div className="w-80">

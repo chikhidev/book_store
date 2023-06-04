@@ -48,7 +48,7 @@ const DotTransition = {
 export default function ThreeDotsWave() {
   return (
     <div className="h-screen w-screen relative">
-      <div class="lds-dual-ring absolute top-0.5 left-0.5"></div>
+      <div className="lds-dual-ring absolute top-0.5 left-0.5"></div>
     </div>
   );
 }

@@ -46,7 +46,7 @@ const getBooks = async (req, res) => {
   }
 
   try {
-    const books = await Book.find(query).select('-description -createdAt -updatedAt -author')
+    const books = await Book.find(query).select('-createdAt -updatedAt -author')
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .exec();

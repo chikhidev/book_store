@@ -337,9 +337,6 @@ const SingleBook = () => {
                     </div>
                     </div>
                 </section>
-
-                
-
                 <div className="more-books-container">
                     <span>plus comme: <i><b>{fetchedBook.title}</b></i></span>
                             <MoreLikeThis cats={cats} />
