@@ -5,6 +5,8 @@ import store from "../redux/store";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../css/single-book.css"
+import { SERVER_ENDPOINT } from "../js";
+
 const display = (text, n) => {
   let len = text.length;
   let long = false;
@@ -56,7 +58,8 @@ const BookCard = ({ book }) => {
                 
               >
                 <img
-                  src={"http://localhost:4000" + book.imageUrl}
+                  src={`${SERVER_ENDPOINT}${book.imageUrl}`}
+
                   alt={book.title}
                   className="h-full w-full object-cover object-center hover:opacity-75"
                 />

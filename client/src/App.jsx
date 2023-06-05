@@ -14,7 +14,8 @@ import { motion } from "framer-motion"
 import { LOGIN, LOGOUT, SET_USER_DETAILS } from './redux/actions';
 import ThreeDotsWave from './components/FramerMotion/ThreeDotWave';
 import { getCategories } from './js/index.js';
-
+import { SERVER_ENDPOINT } from './js/index.js';
+import { fetchWithTimeout } from './js/index.js';
 const motionDiv = (child) => {
   return (
     <motion.div
@@ -29,21 +30,27 @@ const motionDiv = (child) => {
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
-
+  const [isError, setIsError] = useState(false)
   const fetchAndSetUserDetails = async (token) => {
-    let userDetailsResponse = await fetch(`http://localhost:4000/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-    });
-    let res = await userDetailsResponse.json();
-    if (res.success) {
-        store.dispatch(SET_USER_DETAILS(res.data));
+    try {
+      let userDetailsResponse = await fetchWithTimeout(`${SERVER_ENDPOINT}/user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+      }, 2000)
+      let res = await userDetailsResponse.json();
+      if (res.success) {
+          store.dispatch(SET_USER_DETAILS(res.data));
+      }
+      else {
+        setIsError(true)
+      }
     }
-    else {
-        console.error("error setting user details...")
+    catch (err) 
+    {
+      setIsError(true)
     }
 };
   const checkAlreadyLogged = () => {

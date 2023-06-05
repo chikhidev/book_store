@@ -8,13 +8,13 @@ import CategoryPage from "../CategoryPage";
 import Login from '../Auth/Login';
 import Register from '../Auth/Register';
 import CreateBookForm from '../CreateBookForm';
-import Search from '../Search/Search';
 import Favorite from '../Favorite';
 import Account from '../Account';
 import SingleBook from '../SingleBook';
 import NewBooks from '../NewBooks';
 import SearchPage from "../Search/SearchPage";
 import { AnimatePresence } from "framer-motion" 
+import NotFound from "../NotFound";
 const AnimatedRoutes = ({isLogged}) => {
     const location = useLocation()
     return (
@@ -24,6 +24,7 @@ const AnimatedRoutes = ({isLogged}) => {
                 <Route path="/login" element={isLogged ? <Navigate to="/"/> : <Login />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/register" element={isLogged ? <Navigate to="/"/> : <Register />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories" element={<Categories/>} />
+                <Route path="/category/" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/category/" element={<CategoryPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/category/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/categories/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}

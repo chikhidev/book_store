@@ -1,6 +1,6 @@
 import store from "../redux/store";
 import { SET_CATEGORIES } from "../redux/actions";
-
+const SERVER_ENDPOINT = "http://localhost:4000"
 const display = (text, n) => {
     let len = text.length;
     let long = false;
@@ -63,9 +63,29 @@ let swiperBreakPoints = {
     },
     400: {
     slidesPerView : 1}
-    }
+}
+
+const fetchWithTimeout = (url, options, TIME_OUT_MS) => new Promise((resolve, reject) => {
+  const timeout = setTimeout(() => reject('timeout'), TIME_OUT_MS);
+  return fetch(url, options)
+    .then(response => {
+
+      clearTimeout(timeout);
+
+      if (response.status === 200) {
+        return resolve(response);
+      }
+      return reject(response);
+    }, rejectReason => {
+      clearTimeout(timeout);
+      console.log("ghiskd");
+      return reject(rejectReason);
+    });
+});
+
+
 const getCategories = async (setFnc) => {
-  let books = await fetch(`http://localhost:4000/category`, {
+  let books = await fetch(`${SERVER_ENDPOINT}/category`, {
       method : "GET",
       headers : {
           "Content-Type" : "application/json",
@@ -81,7 +101,7 @@ const getCategories = async (setFnc) => {
 
 const getCategory = async (categoryId) => {
   try {
-      const category = await fetch(`http://localhost:4000/category/${categoryId}`, {
+      const category = await fetch(`${SERVER_ENDPOINT}/category/${categoryId}`, {
           method: "GET",
           headers: {
               "Content-Type": "application/json",
@@ -98,8 +118,10 @@ const getCategory = async (categoryId) => {
 };
 
 export {
+  SERVER_ENDPOINT,
   display, capitalize, 
   getHumanDate, mergeArraysRandomly,
   swiperBreakPoints,
   getCategories,
-  getCategory}
+  getCategory,
+  fetchWithTimeout}

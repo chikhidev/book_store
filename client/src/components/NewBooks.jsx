@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import store from '../redux/store';
 import "../css/new-books.css"
 import { useNavigate } from 'react-router-dom';
+import { SERVER_ENDPOINT } from "../js";
 const NewBooks = () => {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +25,7 @@ const NewBooks = () => {
     
     const fetchNewBooks = async () => {
         setLoading(true)
-        let books = await fetch(`http://localhost:4000/book/latest?sort=${sortType}`, {
+        let books = await fetch(`${SERVER_ENDPOINT}/book/latest?sort=${sortType}`, {
             method : "GET",
         })
         let res = await books.json();
@@ -79,7 +80,6 @@ return (
             {store.getState().categories.length > 0 ? 
             <div className='flex flex-wrap '>
                 {categories.map(cat =>  
-                
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded cursor-pointer"
                 onClick={(e) => handleCategoryClick(e, cat.name)}
                 >
@@ -111,7 +111,6 @@ return (
                             fetchedNewBooks?.map((book) => 
                                 <div className="w-80">
                                     <BookCard book={book} key={book._id} className="w-80" />
-
                                 </div>
                             )
                             ) : (

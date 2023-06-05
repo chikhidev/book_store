@@ -13,6 +13,7 @@ import ThreeDotsWave from './FramerMotion/ThreeDotWave';
 import { swiperBreakPoints } from '../js/index.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_ENDPOINT } from "../js";
 
 function SlideNextButton() {
     const swiper = useSwiper();
@@ -54,7 +55,7 @@ const CategorySlider = ({category}) => {
     const navigate = useNavigate()
     const [categoryBooks, setCategoryBooks] = useState([]) 
     const fetchBooksByCategory = async (category) => {
-        let books = await fetch(`http://localhost:4000/category?name=${category}`, {
+        let books = await fetch(`${SERVER_ENDPOINT}/category?name=${category}`, {
             method : "GET",
             headers : {
                 "Content-Type" : "application/json",

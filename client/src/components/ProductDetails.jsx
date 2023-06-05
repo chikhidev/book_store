@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 import { display } from '../js/index.js';
 import '../css/single-book.css';
-const ENDPOINT = "http://localhost:4000"
 import Register from './Auth/Register.jsx';
 import ThreeDotsWave from './FramerMotion/ThreeDotWave.jsx';
 import { getCategory } from '../js/index.js';
@@ -13,6 +12,7 @@ import { getHumanDate } from '../js/index.js';
 import CategorySlider from './CategorySlider.jsx';
 import BookCard from './BookCard.jsx';
 import MoreLikeThis from "./MoreLikeThis"
+import { SERVER_ENDPOINT } from '../js/index.js';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -29,7 +29,7 @@ const ProductDetails = () => {
     
     const orderBook = async () => {
         setLoading(true)
-        let response = await fetch(`${ENDPOINT}/order`, {
+        let response = await fetch(`${SERVER_ENDPOINT}/order`, {
             method : "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const ProductDetails = () => {
     const getBook = async () => {
         setGotCats(false);
         try {
-            const book = await fetch(`http://localhost:4000/book/${id}`, {
+            const book = await fetch(`${SERVER_ENDPOINT}/book/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -106,7 +106,7 @@ const ProductDetails = () => {
                         <div className="book-single-row-one">
                             {/* img */}
                             <div className="book-single-col-one">
-                                <img className="book-single-imageUrl" src={"http://localhost:4000" + fetchedBook.imageUrl} />
+                                <img className="book-single-imageUrl" src={`${SERVER_ENDPOINT}${fetchedBook.imageUrl}`}/>
                             </div>
                             {/* book details */}
                             <div className="book-single-col-two">
@@ -124,7 +124,7 @@ const ProductDetails = () => {
                                                 </span>
                                             )
                                           ) : <p>Categories : unknown</p>
-                                      : <i>Loading</i>
+                                      : <i><ThreeDotsWave/></i>
                                     }
                                     
                                 </div>

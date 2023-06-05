@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
+=======
+import { SERVER_ENDPOINT } from "../js";
+>>>>>>> 6bb1070a1efef2fc34e31d7a8862272d6e7a3664
 
 const ChangeAvatar = ({setAvatar}) => {
   const [image, setImage] = useState(null);
@@ -15,7 +19,7 @@ const ChangeAvatar = ({setAvatar}) => {
     formData.append('image', e.target.files[0]);
 
     try {
-      const response = await fetch('http://localhost:4000/user/profile/upload', {
+      const response = await fetch(`${SERVER_ENDPOINT}/user/profile/upload`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,

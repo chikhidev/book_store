@@ -47,8 +47,14 @@ const DotTransition = {
 
 export default function ThreeDotsWave() {
   return (
-    <div className="h-screen w-screen relative">
-      <div className="lds-dual-ring absolute top-0.5 left-0.5"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7] ">
+    <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+      <div class="flex justify-center">
+        <div class="animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
     </div>
+  </div>
   );
 }

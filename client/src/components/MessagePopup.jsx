@@ -4,6 +4,8 @@ import {useState, useEffect} from "react"
 import { useParams } from "react-router-dom";
 import { getHumanDate } from "../js";
 import { useNavigate } from "react-router-dom";
+import { SERVER_ENDPOINT } from "../js";
+import ThreeDotsWave from "./FramerMotion/ThreeDotWave";
 
 const MessagePopup = () => {
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const MessagePopup = () => {
   }
   const fetchMessage = async () => {
     try {
-      let response = await fetch(`http://localhost:4000/inbox/message/${id}`, {
+      let response = await fetch(`${SERVER_ENDPOINT}/inbox/message/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +43,7 @@ const MessagePopup = () => {
   };
   const toggleIsRead = async () => {
     try {
-      let response = await fetch(`http://localhost:4000/inbox/message/${id}`, {
+      let response = await fetch(`${SERVER_ENDPOINT}/inbox/message/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +77,7 @@ const MessagePopup = () => {
             </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div><ThreeDotsWave /></div>
       )}
     </div>
   );
