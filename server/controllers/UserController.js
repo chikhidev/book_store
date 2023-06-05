@@ -239,6 +239,7 @@ const uploadProfile = async (req, res) => {
         success: true,
         data: {
           message: 'Votre avatar a été changé avec succès',
+          avatar: user.avatar
         },
       });
     } catch (error) {
