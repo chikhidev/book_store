@@ -5,6 +5,7 @@ import store from "../redux/store";
 import { useState, useEffect } from "react";
 import "../css/new-books.css"
 import { SERVER_ENDPOINT } from "../js";
+import { fetchWithTimeout } from "../js";
 const display = (text, n) => {
   let len = text.length;
   let long = false;
@@ -22,6 +23,7 @@ const display = (text, n) => {
 const NewBookCard = ({ book }) => {
   const navigate = useNavigate()
   const userToken = useSelector(state => state.token)
+  const [isError , setIsError] = useState(false)
 
   const [isBookFav, setIsBookFav] = useState("");
 
@@ -50,18 +52,18 @@ const NewBookCard = ({ book }) => {
 
   const fetchIsBookFav = async (token, bookId) => {
     try {
-      const response = await fetch(`${SERVER_ENDPOINT}/fav/${bookId}`, {
+      const response = await fetchWithTimeout(`${SERVER_ENDPOINT}/fav/${bookId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-      });
+      }, 2000);
       const res = await response.json();
       setIsBookFav(res.data.isFav);
     } catch (error) {
       // Handle any errors during the fetch
-      console.error("Error fetching book favorite status:", error);
+      setIsError(true)
     }
   };
   
@@ -71,11 +73,6 @@ const NewBookCard = ({ book }) => {
       store.dispatch(TOGGLE_BOOK_FAV(book._id))
       toggleFavBook(userToken, book._id)
       let favs = store.getState().favBooks
-      // console.log("fav books are ");
-      // console.log(favs);
-      // console.log("id => ");
-      // console.log(book._id);
-      
       e.currentTarget.classList.toggle("heart-active")
     }
     else {

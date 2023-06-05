@@ -63,7 +63,27 @@ let swiperBreakPoints = {
     },
     400: {
     slidesPerView : 1}
-    }
+}
+
+const fetchWithTimeout = (url, options, TIME_OUT_MS) => new Promise((resolve, reject) => {
+  const timeout = setTimeout(() => reject('timeout'), TIME_OUT_MS);
+  return fetch(url, options)
+    .then(response => {
+
+      clearTimeout(timeout);
+
+      if (response.status === 200) {
+        return resolve(response);
+      }
+      return reject(response);
+    }, rejectReason => {
+      clearTimeout(timeout);
+      console.log("ghiskd");
+      return reject(rejectReason);
+    });
+});
+
+
 const getCategories = async (setFnc) => {
   let books = await fetch(`${SERVER_ENDPOINT}/category`, {
       method : "GET",
@@ -103,4 +123,5 @@ export {
   getHumanDate, mergeArraysRandomly,
   swiperBreakPoints,
   getCategories,
-  getCategory}
+  getCategory,
+  fetchWithTimeout}

@@ -80,7 +80,6 @@ return (
             {store.getState().categories.length > 0 ? 
             <div className='flex flex-wrap '>
                 {categories.map(cat =>  
-                
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded cursor-pointer"
                 onClick={(e) => handleCategoryClick(e, cat.name)}
                 >
@@ -112,7 +111,6 @@ return (
                             fetchedNewBooks?.map((book) => 
                                 <div className="w-80">
                                     <BookCard book={book} key={book._id} className="w-80" />
-
                                 </div>
                             )
                             ) : (

@@ -15,15 +15,21 @@ const Favorite = () => {
   const dispatch = useDispatch();
 
   const fetchFavBooks = async () => {
-    let books = await fetch(`${SERVER_ENDPOINT}/fav`, {
+   try {
+    let books = await fetchWithTimeout(`${SERVER_ENDPOINT}/fav`, {
         method : "GET",
         headers : {
             "Content-Type" : "application/json",
             "Authorization" : `Bearer ${userToken}`,
         },
-    })
+    }, 2000 )
     let res = await books.json();
     setFavs(res.data)
+    }
+    catch (err) 
+    {
+        setIsError(true)
+    }
   }
   
   useEffect(() => {
