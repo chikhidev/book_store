@@ -2,7 +2,7 @@
 	/* background: linear-gradient(to top, transparent,rgba(255,255,255,0.8) , white); */
 	background-color: rgba(255,255,255,0.95);
 	z-index: 100;
-	padding: 0 10%;
+	/* padding: 0 10%; */
   }
   
   .hamburger {

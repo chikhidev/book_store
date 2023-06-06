@@ -26,7 +26,7 @@ function Navbar() {
   const [logged, setLogged] = useState(loginStatus);
   const [admin, setAdmin] = useState(adminStatus);
   const [inbox, setInbox] = useState([]);
-  const [prettyBtn, setPretty] = useState("md:mr-2 hover:text-pink-500")
+  const [prettyBtn, setPretty] = useState("md:mx-2 hover:text-pink-500")
   const [user, setUser] = useState({})
 
 
@@ -75,21 +75,14 @@ function Navbar() {
   
 
   return (
-    <nav className=" w-full relative">
+    <nav className=" w-full relative ">
       <div className="h-24 w-full "></div>
-      <div className="w-full flex items-center justify-between mx-auto fixed top-0 nav ">
+      <div className="w-full flex items-center justify-between fixed  top-0 px-12 z-[100] bg-gradient-to-b from-white to-white/80">
         <h2 className="logo flex items-center">Senteria</h2>
         <div className="flex md:order-2">
           {logged ? (
             <div className="flex items-center">
-              <Link
-                className={"md:mr-2 bg-gradient-to-r from-pink-600 to-pink-400 p-2 rounded-lg hover:bg-pink-400 "}
-                to={"/search"}
-              >
-                <button>
-                  <SearchRoundedIcon sx={{ color: "#fff" }} />
-                </button>
-              </Link>
+              
 
               <div className="flex items-center">
                 <Link to="favorite" className={prettyBtn}>
@@ -114,7 +107,7 @@ function Navbar() {
                 {store.getState().userDetails.isAdmin && (
                   <div className="flex items-center">
                     <Link to="book/create" className={prettyBtn}>
-                      <button className="nav-btn cart ">
+                      <button className="py-2 ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -131,7 +124,7 @@ function Navbar() {
                         </svg>
                       </button>
                     </Link>
-                    <div className={`dropdown ${prettyBtn}`} >
+                    <Link to="/inbox" className={`dropdown ${prettyBtn}`} >
                       <div className="dropdown-hover user-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +141,7 @@ function Navbar() {
                           />
                         </svg>
                       </div>
-                      <div className="dropdown-menu">
+                      {/* <div className="dropdown-menu absolute">
                         {inbox?.messages ? (
                           inbox?.messages.length > 0 ? (
                             inbox?.messages.map((message) => {
@@ -159,7 +152,7 @@ function Navbar() {
                                       message.isRead ? "already-read" : ""
                                     }`}
                                   >
-                                    {display(message.content, 15)}
+                                    {display(message.content, 50)}
                                   </div>
                                 </Link>
                               );
@@ -170,12 +163,20 @@ function Navbar() {
                         ) : (
                           <ThreeDotsWave />
                         )}
-                      </div>
-                    </div>
+                      </div> */}
+                    </Link>
                   </div>
                 )}
-                <Link to="account">
-                    <div className="dropdown-hover">
+                <Link
+                className={"md:mr-4 bg-gradient-to-r from-pink-600/30 to-pink-400/30 p-2 rounded-xl hover:bg-pink-400/30 "}
+                to={"/search"}
+              >
+                <button>
+                  <SearchRoundedIcon sx={{ color: "#fff" }} />
+                </button>
+              </Link>
+                <Link to="account" className={""}>
+                    <div className="">
                           {    
                             <img className="h-10 w-10 rounded-xl fit-cover" src={ENDPOINT + 
                               

@@ -17,6 +17,19 @@ UserRouter.post(
             "/",
             Middleware.auth.authenticateToken,
             Controller.User.getUserByToken
+
+            )
+UserRouter.put(
+            "/",
+            Middleware.auth.authenticateToken,
+            Middleware.validate.updateUser,
+            Controller.User.updateUser
+            )
+            
+UserRouter.delete(
+            "/",
+            Middleware.auth.authenticateToken,
+            Controller.User.deleteUser
             )
 
 UserRouter.get("/:id", Controller.User.findById)
@@ -35,6 +48,14 @@ UserRouter.post(
     Middleware.file.uploadUserImage,
     Controller.User.uploadProfile
     )
-                
+    
+UserRouter.post(
+    "/request_admin", 
+    Middleware.auth.authenticateToken,
+    Controller.User.requestToBeAdmin
+    )
+        
+
+
 
 module.exports = UserRouter

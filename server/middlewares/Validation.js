@@ -341,12 +341,39 @@ const uploadUserProfile = async (req, res, next) => {
   }
 }
 
+const updateUser  = async (req, res, next) => {
+  try {
+    const schema = Joi.object({
+      username: Joi.string().required().min(3).max(50),
+      email: Joi.string().required().email(),
+      bio: Joi.string().allow('').max(100),
+    });
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        data: {
+          message: error.details[0].message
+        }
+      });
+    }
+
+    // If validation passes, pass the request to the next middleware
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, data: { message: "Assurez-vous d'entrer les informations nécessaires" } });
+  }
+}
+
+
 
   module.exports = {
     validateEmailPass, validateUserNameEmailPass, createBook, updatePassword, searchUsers,
     createCategory, updateCategory,
     createOrder,
     createStore, getStore,
-    uploadUserProfile,
+    uploadUserProfile, updateUser,
     createOffer
   }

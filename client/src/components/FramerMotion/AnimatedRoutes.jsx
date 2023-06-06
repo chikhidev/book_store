@@ -10,6 +10,7 @@ import Register from '../Auth/Register';
 import CreateBookForm from '../CreateBookForm';
 import Favorite from '../Favorite';
 import Account from '../Account';
+import Inbox from "../Inbox";
 import SingleBook from '../SingleBook';
 import NewBooks from '../NewBooks';
 import SearchPage from "../Search/SearchPage";
@@ -36,6 +37,7 @@ const AnimatedRoutes = ({isLogged}) => {
                 <Route path="/inbox/message/:id" element={<MessagePopup />} />
                 <Route path="/search" element={<SearchPage />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                 <Route path="/search/book/:id" element={<SingleBook />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
+                <Route path="/inbox" element={<Inbox />} />    {/* If user is logged in, then redirect to home page, else go to login page */}
                     {/* If user is logged in, then redirect to home page, else go to login page */}
 
                 {/* If user is logged in, then redirect to home page, else go to login page */}

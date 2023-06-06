@@ -2,19 +2,28 @@ const Inbox = require('../models/InboxModel')
 const Message = require('../models/MessageModel')
 
 const getInbox = async (req, res) => {
-    try{
-        const inbox = await Inbox.find({owner: req.user.id}).populate({path :"messages", select : "_id isRead content"}) 
-        return res.json({
-            success: true, data: inbox
-        })
-    }catch{
-        res.json({
-            success: false, data: {
-                message:"n'a pas réussi à obtenir votre boîte de réception !"
-            }
-        })
+    try {
+        const inbox = await Inbox.findOne({ owner: req.user.id }).populate({
+            path: "messages",
+            populate: {
+              path: "sender order"
+            },
+          });
+      return res.json({
+        success: true,
+        data: inbox,
+      });
+    } catch (error) {
+      console.log("Erreur lors de la récupération de la boîte de réception :", error);
+      res.status(500).json({
+        success: false,
+        data: {
+          message: "Impossible de récupérer votre boîte de réception !",
+        },
+      });
     }
-}
+  };
+  
 
 const getInboxMessage = async (req, res) => {
     try{
@@ -62,6 +71,7 @@ const toggleMessageRead = async (req, res) => {
         })
     }
 }
+
 module.exports = {
     getInbox, getInboxMessage, toggleMessageRead
 }

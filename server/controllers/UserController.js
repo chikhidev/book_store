@@ -2,6 +2,8 @@
 const User = require("../models/userModel");
 const fs = require("fs")
 const path = require("path")
+const Message = require("../models/MessageModel")
+const Inbox = require("../models/InboxModel")
 
 // function for getting a user by email
 const findById = async (req, res) => {
@@ -263,10 +265,141 @@ const uploadProfile = async (req, res) => {
 };
 
 
+const updateUser = async (req, res) => {
+  const id = req.user.id;
+  const { username, email, bio } = req.body;
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        data: { message: `Utilisateur avec l'identifiant ${id} introuvable` },
+      });
+    }
+
+    // Check if the provided email is already taken by another user
+    if (email !== user.email) {
+      const existingUser = await User.findOne({ email: email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          data: { message: 'Cet e-mail est déjà utilisé par un autre utilisateur' },
+        });
+      }
+    }
+
+    if (username === user.username && email === user.email && bio === user.bio) {
+      return res.status(400).json({
+        success: false,
+        data: { message: 'Aucune modification apportée aux informations de l\'utilisateur' },
+      });
+    }
+
+    user.username = username;
+    user.email = email;
+    user.bio = bio;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: { message: 'Les informations de l\'utilisateur ont été mises à jour avec succès' },
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      data: { message: 'Erreur lors de la mise à jour des informations de l\'utilisateur' },
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+
+  try{
+    const user = User.findByIdAndRemove(req.user.id)
+    if (!user)
+      return res.json({ status:false, data:{ message: "Utilisateur non trouvé"}})
+
+  }catch{
+    return res.json({ status:false, data:{ message: "Erreur interne"}})
+
+  }
+}
+
+
+const requestToBeAdmin = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        data: { message: `Utilisateur avec l'identifiant ${userId} introuvable` },
+      });
+    }
+
+    if (user.isAdmin) {
+      return res.json({
+        success: false,
+        data: { message: 'Cet utilisateur est déjà administrateur' },
+      });
+    }
+
+    const adminUsers = await User.find({ isAdmin: true });
+
+    if (adminUsers.length === 0) {
+      return res.json({
+        success: false,
+        data: { message: 'Il n\'y a pas d\'administrateur disponible' },
+      });
+    }
+
+    const messageContent = 'Demande de devenir administrateur';
+    const order = null; // Set the order here if needed
+
+    const message = new Message({
+      sender: user._id,
+      content: messageContent,
+      order: order,
+    });
+
+    await message.save();
+
+    for (const adminUser of adminUsers) {
+      const inbox = await Inbox.findOne({ owner: adminUser._id });
+
+      if (!inbox) {
+        const newInbox = new Inbox({ owner: adminUser._id, messages: [] });
+        await newInbox.save();
+        inbox = newInbox;
+      }
+
+      inbox.messages.push(message._id);
+      await inbox.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: { message: 'Demande envoyée avec succès' },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      data: { message: 'Erreur lors de l\'envoi de la demande' },
+    });
+  }
+};
+
+
 
 module.exports = {
     findById, findFullById, 
     findByEmail, searchUsers, makeAdmin,
     getUserByToken,
-    uploadProfile
+    uploadProfile,
+    updateUser, deleteUser,
+    requestToBeAdmin
 }

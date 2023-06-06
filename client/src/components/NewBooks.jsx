@@ -106,10 +106,10 @@ return (
                     {loading ?
                         <h2><ThreeDotsWave /></h2>
                         :
-                        <div className="flex flex-wrap w-full justify-center">
+                        <div className="flex flex-wrap w-full">
                         {fetchedNewBooks?.length > 0 ? (
                             fetchedNewBooks?.map((book) => 
-                                <div className="w-80">
+                                <div className="w-56">
                                     <BookCard book={book} key={book._id} className="w-80" />
                                 </div>
                             )

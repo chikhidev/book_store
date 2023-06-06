@@ -59,6 +59,7 @@ const EditUserProfile = () => {
       .then((response) => response.json())
       .then((data) => {
         setMessage(data.data.message);
+        setErr(!data.success);
       })
       .catch((error) => {
         console.error('Error updating user data:', error);
@@ -107,7 +108,9 @@ const EditUserProfile = () => {
             {isLoading ? 'Enregistrement...' : 'Enregistrer'}
           </button>
         </form>
-        <p>{message}</p>
+        <p className={`py-4 ${err? "text-red-500 " : "text-green-500"}`}>
+          {message}
+          </p>
       </div>
     )
   );
